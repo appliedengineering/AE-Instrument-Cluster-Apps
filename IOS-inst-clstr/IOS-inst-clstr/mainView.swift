@@ -8,15 +8,34 @@
 import UIKit
 
 
-class mainViewClass: UIViewController {
+class mainViewClass: UIViewController, UIScrollViewDelegate {
 
     //@IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainScrollView: UIScrollView!
-
+    @IBOutlet var mainView: UIView!
+    
+    var topSafeAreaInsetHeight = CGFloat(0);
+    let scrollViewFadeButtonThresholdHeight = CGFloat(250);
+    let settingsButton = UIButton();
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view
+        topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
+        print("top - \(topSafeAreaInsetHeight)")
+        
+        // set up view buttons
+        let settingsButtonPadding = CGFloat(12);
+        let settingsButtonWidth = CGFloat(45);
+        let settingsButtonFrame = CGRect(x: settingsButtonPadding, y: settingsButtonPadding + topSafeAreaInsetHeight, width: settingsButtonWidth, height: settingsButtonWidth);
+        settingsButton.frame = settingsButtonFrame;
+        settingsButton.backgroundColor = UIColor.gray;
+        
+        mainView.addSubview(settingsButton);
+        
+        mainScrollView.tag = -1;
+        //mainScrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 1).isActive = true;
+        mainScrollView.delegate = self;
         renderViews();
     }
     
@@ -56,6 +75,14 @@ class mainViewClass: UIViewController {
         }
         
         mainScrollView.contentSize = CGSize(width: screenWidth, height: nextY);
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.tag == -1){
+            let scrollContentYPercent = min(1, max(1 - ((scrollView.contentOffset.y + topSafeAreaInsetHeight) / scrollViewFadeButtonThresholdHeight), 0)); // some maths
+            //print("scroll content offset = \(scrollView.contentOffset.y) : \(scrollContentYPercent)")
+            settingsButton.alpha = scrollContentYPercent;
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
