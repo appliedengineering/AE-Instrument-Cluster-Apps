@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		330B1446253CFA2B000CE59E /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330B1445253CFA2B000CE59E /* Package.swift */; };
+		33055F83253CFF5E00B98CDD /* MessagePack in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F82253CFF5E00B98CDD /* MessagePack */; };
 		332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332A082A253A51FF00BD3081 /* AppUtility.swift */; };
 		33E0625F25381B4C004F171C /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0625E25381B4C004F171C /* mainView.swift */; };
 		33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059D25357B540000FBFF /* AppDelegate.swift */; };
@@ -37,7 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		330B1445253CFA2B000CE59E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		332A082A253A51FF00BD3081 /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
 		33E0625E25381B4C004F171C /* mainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
 		33EC059A25357B540000FBFF /* IOS-inst-clstr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS-inst-clstr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33055F83253CFF5E00B98CDD /* MessagePack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +107,6 @@
 				332A082A253A51FF00BD3081 /* AppUtility.swift */,
 				33EC059F25357B540000FBFF /* SceneDelegate.swift */,
 				33E0625E25381B4C004F171C /* mainView.swift */,
-				330B1445253CFA2B000CE59E /* Package.swift */,
 				33EC05A325357B540000FBFF /* Main.storyboard */,
 				33EC05A625357B550000FBFF /* Assets.xcassets */,
 				33EC05A825357B550000FBFF /* LaunchScreen.storyboard */,
@@ -150,6 +149,9 @@
 			dependencies = (
 			);
 			name = "IOS-inst-clstr";
+			packageProductDependencies = (
+				33055F82253CFF5E00B98CDD /* MessagePack */,
+			);
 			productName = "IOS-inst-clstr";
 			productReference = 33EC059A25357B540000FBFF /* IOS-inst-clstr.app */;
 			productType = "com.apple.product-type.application";
@@ -221,6 +223,9 @@
 				Base,
 			);
 			mainGroup = 33EC059125357B540000FBFF;
+			packageReferences = (
+				33055F81253CFF5E00B98CDD /* XCRemoteSwiftPackageReference "MessagePack-Swift" */,
+			);
 			productRefGroup = 33EC059B25357B540000FBFF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -265,7 +270,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */,
-				330B1446253CFA2B000CE59E /* Package.swift in Sources */,
 				33E0625F25381B4C004F171C /* mainView.swift in Sources */,
 				33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */,
 				33EC05A025357B540000FBFF /* SceneDelegate.swift in Sources */,
@@ -601,6 +605,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		33055F81253CFF5E00B98CDD /* XCRemoteSwiftPackageReference "MessagePack-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BatchLabs/MessagePack-Swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		33055F82253CFF5E00B98CDD /* MessagePack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33055F81253CFF5E00B98CDD /* XCRemoteSwiftPackageReference "MessagePack-Swift" */;
+			productName = MessagePack;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 33EC059225357B540000FBFF /* Project object */;
 }

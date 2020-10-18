@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "MessagePack",
+        "repositoryURL": "https://github.com/BatchLabs/MessagePack-Swift.git",
+        "state": {
+          "branch": "master",
+          "revision": "c6fabe5afe1261f927a448187b20e84b9af34720",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
