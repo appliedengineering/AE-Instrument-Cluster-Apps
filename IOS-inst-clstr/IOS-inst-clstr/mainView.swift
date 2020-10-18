@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import MessagePack
+
 
 class mainViewClass: UIViewController, UIScrollViewDelegate {
 
@@ -23,7 +23,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view
         topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
         //print("top - \(topSafeAreaInsetHeight)")
-        print("scale const - \(45/UIScreen.main.scale)")
+        //print("scale const - \(45/UIScreen.main.scale)")
         // set up view buttons
         let settingsButtonPadding = CGFloat(12);
         let settingsButtonWidth = CGFloat(20*UIScreen.main.scale);

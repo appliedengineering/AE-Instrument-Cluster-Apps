@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		20381D8021BFBB3F4ED28EA1 /* Pods_IOS_inst_clstrTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC9E960EE6719D6D11ED7F22 /* Pods_IOS_inst_clstrTests.framework */; };
 		2A6423980F7A276758BA6F9E /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E36174AE9C86C960D08C70 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework */; };
-		33055F83253CFF5E00B98CDD /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F82253CFF5E00B98CDD /* SwiftPackageProductDependency */; };
+		33055F83253CFF5E00B98CDD /* MessagePack in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F82253CFF5E00B98CDD /* MessagePack */; };
+		33055F9C253D085600B98CDD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F9B253D085600B98CDD /* Charts */; };
 		332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332A082A253A51FF00BD3081 /* AppUtility.swift */; };
 		33E0625F25381B4C004F171C /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0625E25381B4C004F171C /* mainView.swift */; };
 		33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059D25357B540000FBFF /* AppDelegate.swift */; };
@@ -71,7 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				33055F83253CFF5E00B98CDD /* BuildFile in Frameworks */,
+				33055F83253CFF5E00B98CDD /* MessagePack in Frameworks */,
+				33055F9C253D085600B98CDD /* Charts in Frameworks */,
 				AF26146F2F920C3FF825A3F0 /* Pods_IOS_inst_clstr.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,7 +162,6 @@
 				3397BCE3C16FA22CD9AAB1E2 /* Pods-IOS-inst-clstrTests.debug.xcconfig */,
 				64760A4F10D449E8089325A1 /* Pods-IOS-inst-clstrTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -193,7 +194,8 @@
 			);
 			name = "IOS-inst-clstr";
 			packageProductDependencies = (
-				33055F82253CFF5E00B98CDD /* SwiftPackageProductDependency */,
+				33055F82253CFF5E00B98CDD /* MessagePack */,
+				33055F9B253D085600B98CDD /* Charts */,
 			);
 			productName = "IOS-inst-clstr";
 			productReference = 33EC059A25357B540000FBFF /* IOS-inst-clstr.app */;
@@ -270,7 +272,8 @@
 			);
 			mainGroup = 33EC059125357B540000FBFF;
 			packageReferences = (
-				33055F81253CFF5E00B98CDD /* RemoteSwiftPackageReference */,
+				33055F81253CFF5E00B98CDD /* XCRemoteSwiftPackageReference "MessagePack-Swift" */,
+				33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 33EC059B25357B540000FBFF /* Products */;
 			projectDirPath = "";
@@ -762,7 +765,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		33055F81253CFF5E00B98CDD /* RemoteSwiftPackageReference */ = {
+		33055F81253CFF5E00B98CDD /* XCRemoteSwiftPackageReference "MessagePack-Swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BatchLabs/MessagePack-Swift.git";
 			requirement = {
@@ -770,13 +773,26 @@
 				kind = branch;
 			};
 		};
+		33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		33055F82253CFF5E00B98CDD /* SwiftPackageProductDependency */ = {
+		33055F82253CFF5E00B98CDD /* MessagePack */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 33055F81253CFF5E00B98CDD /* RemoteSwiftPackageReference */;
+			package = 33055F81253CFF5E00B98CDD /* XCRemoteSwiftPackageReference "MessagePack-Swift" */;
 			productName = MessagePack;
+		};
+		33055F9B253D085600B98CDD /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
