@@ -22,11 +22,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad();
         // Do any additional setup after loading the view
         topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
-        print("top - \(topSafeAreaInsetHeight)")
-        
+        //print("top - \(topSafeAreaInsetHeight)")
+        print("scale const - \(45/UIScreen.main.scale)")
         // set up view buttons
         let settingsButtonPadding = CGFloat(12);
-        let settingsButtonWidth = CGFloat(45);
+        let settingsButtonWidth = CGFloat(20*UIScreen.main.scale);
         let settingsButtonFrame = CGRect(x: settingsButtonPadding, y: settingsButtonPadding + topSafeAreaInsetHeight, width: settingsButtonWidth, height: settingsButtonWidth);
         settingsButton.frame = settingsButtonFrame;
         settingsButton.backgroundColor = UIColor.gray;
