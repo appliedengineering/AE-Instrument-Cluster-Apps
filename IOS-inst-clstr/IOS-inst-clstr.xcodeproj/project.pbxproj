@@ -12,6 +12,8 @@
 		33055F83253CFF5E00B98CDD /* MessagePack in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F82253CFF5E00B98CDD /* MessagePack */; };
 		33055F9C253D085600B98CDD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F9B253D085600B98CDD /* Charts */; };
 		332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332A082A253A51FF00BD3081 /* AppUtility.swift */; };
+		33D5498C253FE61400737F95 /* communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D5498B253FE61400737F95 /* communication.swift */; };
+		33D54991253FE68C00737F95 /* msgpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D54990253FE68C00737F95 /* msgpack.swift */; };
 		33E0625F25381B4C004F171C /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0625E25381B4C004F171C /* mainView.swift */; };
 		33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059D25357B540000FBFF /* AppDelegate.swift */; };
 		33EC05A025357B540000FBFF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059F25357B540000FBFF /* SceneDelegate.swift */; };
@@ -46,6 +48,8 @@
 		19583371012A8C7D9043A247 /* Pods-IOS-inst-clstr-IOS-inst-clstrUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOS-inst-clstr-IOS-inst-clstrUITests.debug.xcconfig"; path = "Target Support Files/Pods-IOS-inst-clstr-IOS-inst-clstrUITests/Pods-IOS-inst-clstr-IOS-inst-clstrUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		332A082A253A51FF00BD3081 /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
 		3397BCE3C16FA22CD9AAB1E2 /* Pods-IOS-inst-clstrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOS-inst-clstrTests.debug.xcconfig"; path = "Target Support Files/Pods-IOS-inst-clstrTests/Pods-IOS-inst-clstrTests.debug.xcconfig"; sourceTree = "<group>"; };
+		33D5498B253FE61400737F95 /* communication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = communication.swift; sourceTree = "<group>"; };
+		33D54990253FE68C00737F95 /* msgpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = msgpack.swift; sourceTree = "<group>"; };
 		33E0625E25381B4C004F171C /* mainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
 		33EC059A25357B540000FBFF /* IOS-inst-clstr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS-inst-clstr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33EC059D25357B540000FBFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				33EC059D25357B540000FBFF /* AppDelegate.swift */,
 				332A082A253A51FF00BD3081 /* AppUtility.swift */,
 				33EC059F25357B540000FBFF /* SceneDelegate.swift */,
+				33D5498B253FE61400737F95 /* communication.swift */,
+				33D54990253FE68C00737F95 /* msgpack.swift */,
 				33E0625E25381B4C004F171C /* mainView.swift */,
 				33EC05A325357B540000FBFF /* Main.storyboard */,
 				33EC05A625357B550000FBFF /* Assets.xcassets */,
@@ -423,6 +429,8 @@
 			files = (
 				332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */,
 				33E0625F25381B4C004F171C /* mainView.swift in Sources */,
+				33D54991253FE68C00737F95 /* msgpack.swift in Sources */,
+				33D5498C253FE61400737F95 /* communication.swift in Sources */,
 				33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */,
 				33EC05A025357B540000FBFF /* SceneDelegate.swift in Sources */,
 			);
