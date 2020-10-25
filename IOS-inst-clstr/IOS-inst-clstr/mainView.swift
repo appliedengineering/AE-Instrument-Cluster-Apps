@@ -37,7 +37,24 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         //mainScrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 1).isActive = true;
         mainScrollView.delegate = self;
         renderViews();
+        
+        let protocolString = "pgm";
+        var connectionIPAddress = "224.0.0.1";
+        var connectionPort = "5555";
+        
+        var connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
+        
+        let comms = communicationClass(connectionstr: connectionAddress, communicationProtocol: protocolString);
+        let msgpack = msgpackClass();
+        
+        // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
+        /*DispatchQueue.global(qos: .background).async{
+            
+                
+            
+        }*/
     }
+    
     
     func renderViews(){
         

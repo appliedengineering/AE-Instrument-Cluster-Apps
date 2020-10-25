@@ -13,6 +13,10 @@
 		2582A4EFCFA925364DCF7322B26B24E8 /* Pods-IOS-inst-clstrTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EC9195BD28498D2E43D4F175BBBD8013 /* Pods-IOS-inst-clstrTests-dummy.m */; };
 		2E08758D8E4F7AAB2F0B84F5CDC39B0F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		2F2432B9CC0ADAFADAF8E8EAFD0BD553 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF7FBD9B2949C502B55CE26E230928 /* Context.swift */; };
+		334DC518254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
+		334DC519254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
+		334DC51A254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
+		334DC51B254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
 		41E4BF98B81ED299A3F16B6320DA0E0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		6E377CACCA74A4A3098835893B31E42B /* SwiftyZeroMQ5-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 85991D8C0E7F2D49ED4DC26E9287197C /* SwiftyZeroMQ5-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		70AAE550AC7F7DCA424A2F38A5217E2C /* SocketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B92FEF0BC283EAC4BA52479F45F7EC2 /* SocketType.swift */; };
@@ -66,12 +70,13 @@
 		1A8EA7573FE81F2BE774A08EA380CD4A /* SwiftyZeroMQ5-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyZeroMQ5-dummy.m"; sourceTree = "<group>"; };
 		1EAE20563D1040C1725ADF4817A89E62 /* SwiftyZeroMQ5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyZeroMQ5.debug.xcconfig; sourceTree = "<group>"; };
 		1F30C0E798C3917F479EAEA65FF7D6DA /* Pods-IOS-inst-clstrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-IOS-inst-clstrTests.debug.xcconfig"; sourceTree = "<group>"; };
-		20946BEF7C2B1DD614A5FF602B4B991A /* SwiftyZeroMQ5.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftyZeroMQ5.framework; path = SwiftyZeroMQ5.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		20946BEF7C2B1DD614A5FF602B4B991A /* SwiftyZeroMQ5.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyZeroMQ5.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24E2F4574D2A44AE0AD3723527A64C4F /* Pods-IOS-inst-clstr-IOS-inst-clstrUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-IOS-inst-clstr-IOS-inst-clstrUITests-Info.plist"; sourceTree = "<group>"; };
 		277A53C93AA048369D133B2836E8CBC1 /* SwiftyZeroMQ5.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftyZeroMQ5.modulemap; sourceTree = "<group>"; };
 		2B92FEF0BC283EAC4BA52479F45F7EC2 /* SocketType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketType.swift; path = Sources/SocketType.swift; sourceTree = "<group>"; };
 		2CD6576F5F43C5D01B49CF05C82012D1 /* Pods-IOS-inst-clstr-IOS-inst-clstrUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-IOS-inst-clstr-IOS-inst-clstrUITests-acknowledgements.plist"; sourceTree = "<group>"; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		334DC517254642B300C991DB /* libzmq-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libzmq-ios.a"; path = "Libraries/libzmq-ios.a"; sourceTree = "<group>"; };
 		33D9B7B0E390971B44AEE7463E5A2F12 /* Socket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Socket.swift; path = Sources/Socket.swift; sourceTree = "<group>"; };
 		3AC7243BA23259D33848D97B286D6BFC /* Pods-IOS-inst-clstr-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-IOS-inst-clstr-acknowledgements.markdown"; sourceTree = "<group>"; };
 		40FAC73827554B7E4B716D5A39B8B931 /* Pods-IOS-inst-clstr.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-IOS-inst-clstr.modulemap"; sourceTree = "<group>"; };
@@ -87,13 +92,12 @@
 		8695E5DF17D0CB8AAB3A8CE82850AAB7 /* SwiftyZeroMQ5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyZeroMQ5.release.xcconfig; sourceTree = "<group>"; };
 		8E441DF2F3A07F33EF7997B296E56137 /* Pods-IOS-inst-clstr-IOS-inst-clstrUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-IOS-inst-clstr-IOS-inst-clstrUITests-dummy.m"; sourceTree = "<group>"; };
 		90C65973136508C4BB475344B0842E4D /* Pods-IOS-inst-clstrTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-IOS-inst-clstrTests.modulemap"; sourceTree = "<group>"; };
-		92DC1B21740F4F0347E36CADEB542EA5 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework; path = "Pods-IOS-inst-clstr-IOS-inst-clstrUITests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		977EB457360078DEA4FED75D16DB3015 /* libzmq-ios.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = "libzmq-ios.a"; path = "Libraries/libzmq-ios.a"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		92DC1B21740F4F0347E36CADEB542EA5 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AA7001C33B3C60EBA9144FFCC1FECAAF /* ZeroMQError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZeroMQError.swift; path = Sources/ZeroMQError.swift; sourceTree = "<group>"; };
-		AD090AFA71BE7E684B3448CF74292C29 /* Pods_IOS_inst_clstr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_IOS_inst_clstr.framework; path = "Pods-IOS-inst-clstr.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD090AFA71BE7E684B3448CF74292C29 /* Pods_IOS_inst_clstr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_inst_clstr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4D203DB52A8AF303643AB78E138F753 /* Pods-IOS-inst-clstrTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-IOS-inst-clstrTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		B7C8DE6B978C7D0CBB8573EAA841AC3D /* Pods_IOS_inst_clstrTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_IOS_inst_clstrTests.framework; path = "Pods-IOS-inst-clstrTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C8DE6B978C7D0CBB8573EAA841AC3D /* Pods_IOS_inst_clstrTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_inst_clstrTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAA46219D960FCB95963F01EDF564C25 /* SwiftyZeroMQ.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SwiftyZeroMQ.h; path = Sources/SwiftyZeroMQ.h; sourceTree = "<group>"; };
 		C96138CA8EF490AC6126492E84C375DD /* Pods-IOS-inst-clstr-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-IOS-inst-clstr-dummy.m"; sourceTree = "<group>"; };
 		C9EE9D1DE88F00C7ACEBE2102132DC26 /* Pods-IOS-inst-clstr-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-IOS-inst-clstr-umbrella.h"; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				334DC518254642B300C991DB /* libzmq-ios.a in Frameworks */,
 				41E4BF98B81ED299A3F16B6320DA0E0E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				334DC51A254642B300C991DB /* libzmq-ios.a in Frameworks */,
 				2E08758D8E4F7AAB2F0B84F5CDC39B0F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -129,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				334DC51B254642B300C991DB /* libzmq-ios.a in Frameworks */,
 				8AFA8E85ECF1348966BF113AC7C2291D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				334DC519254642B300C991DB /* libzmq-ios.a in Frameworks */,
 				B18A8A5659C6A40B03E7377EB5995ADE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,7 +200,7 @@
 		5849544D4A0DFA243DCAF6CFE1935CCD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				977EB457360078DEA4FED75D16DB3015 /* libzmq-ios.a */,
+				334DC517254642B300C991DB /* libzmq-ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -289,7 +297,6 @@
 				5849544D4A0DFA243DCAF6CFE1935CCD /* Frameworks */,
 				BDDB4D544B24EEC8590445B30528B6CD /* Support Files */,
 			);
-			name = SwiftyZeroMQ5;
 			path = SwiftyZeroMQ5;
 			sourceTree = "<group>";
 		};
@@ -557,6 +564,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-IOS-inst-clstrTests/Pods-IOS-inst-clstrTests.modulemap";
 				OTHER_LDFLAGS = "";
@@ -595,6 +606,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
+				);
 				MODULEMAP_FILE = "Target Support Files/SwiftyZeroMQ5/SwiftyZeroMQ5.modulemap";
 				PRODUCT_MODULE_NAME = SwiftyZeroMQ5;
 				PRODUCT_NAME = SwiftyZeroMQ5;
@@ -630,6 +645,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
 				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-IOS-inst-clstrTests/Pods-IOS-inst-clstrTests.modulemap";
@@ -669,6 +688,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-IOS-inst-clstr/Pods-IOS-inst-clstr.modulemap";
 				OTHER_LDFLAGS = "";
@@ -706,6 +729,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
 				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-IOS-inst-clstr/Pods-IOS-inst-clstr.modulemap";
@@ -745,6 +772,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
 				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-IOS-inst-clstr-IOS-inst-clstrUITests/Pods-IOS-inst-clstr-IOS-inst-clstrUITests.modulemap";
@@ -909,6 +940,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
+				);
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-IOS-inst-clstr-IOS-inst-clstrUITests/Pods-IOS-inst-clstr-IOS-inst-clstrUITests.modulemap";
 				OTHER_LDFLAGS = "";
@@ -945,6 +980,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwiftyZeroMQ5/Libraries",
 				);
 				MODULEMAP_FILE = "Target Support Files/SwiftyZeroMQ5/SwiftyZeroMQ5.modulemap";
 				PRODUCT_MODULE_NAME = SwiftyZeroMQ5;
