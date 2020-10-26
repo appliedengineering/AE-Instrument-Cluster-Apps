@@ -20,7 +20,7 @@ class communicationClass{
         print("SwiftyZeroMQ version is \(SwiftyZeroMQ.frameworkVersion)");
         connectionString = connectionstr;
         print("protocol \(communicationProtocol) is " + (checkValidProtocol(communicationProtocol: communicationProtocol) ? "supported" : "not supported"));
-        let protocols = ["ipc", "pgm", "epgm", "tipc", "norm", "curve", "gssapi"]
+        let protocols = ["ipc", "pgm", "tipc", "norm", "curve", "gssapi"]
         for i in protocols{
             print("\(i) - \(checkValidProtocol(communicationProtocol: i))")
         }
@@ -42,8 +42,6 @@ class communicationClass{
             return SwiftyZeroMQ.has(.ipc);
         case "pgm":
             return SwiftyZeroMQ.has(.pgm);
-        case "epgm":
-            return SwiftyZeroMQ.has(.pgm);
         case "tipc":
             return SwiftyZeroMQ.has(.tipc);
         case "norm":
@@ -53,7 +51,7 @@ class communicationClass{
         case "gssapi":
             return SwiftyZeroMQ.has(.gssapi);
         default:
-            print("not valid protocol")
+            print("not valid protocol for checking")
             return false;
         }
     }

@@ -13,10 +13,10 @@
 		2582A4EFCFA925364DCF7322B26B24E8 /* Pods-IOS-inst-clstrTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EC9195BD28498D2E43D4F175BBBD8013 /* Pods-IOS-inst-clstrTests-dummy.m */; };
 		2E08758D8E4F7AAB2F0B84F5CDC39B0F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		2F2432B9CC0ADAFADAF8E8EAFD0BD553 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF7FBD9B2949C502B55CE26E230928 /* Context.swift */; };
-		334DC518254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
-		334DC519254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
-		334DC51A254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
-		334DC51B254642B300C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC517254642B300C991DB /* libzmq-ios.a */; };
+		334DC5212546482800C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC5202546482800C991DB /* libzmq-ios.a */; };
+		334DC5222546482800C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC5202546482800C991DB /* libzmq-ios.a */; };
+		334DC5232546482800C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC5202546482800C991DB /* libzmq-ios.a */; };
+		334DC5242546482800C991DB /* libzmq-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334DC5202546482800C991DB /* libzmq-ios.a */; };
 		41E4BF98B81ED299A3F16B6320DA0E0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		6E377CACCA74A4A3098835893B31E42B /* SwiftyZeroMQ5-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 85991D8C0E7F2D49ED4DC26E9287197C /* SwiftyZeroMQ5-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		70AAE550AC7F7DCA424A2F38A5217E2C /* SocketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B92FEF0BC283EAC4BA52479F45F7EC2 /* SocketType.swift */; };
@@ -76,7 +76,7 @@
 		2B92FEF0BC283EAC4BA52479F45F7EC2 /* SocketType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketType.swift; path = Sources/SocketType.swift; sourceTree = "<group>"; };
 		2CD6576F5F43C5D01B49CF05C82012D1 /* Pods-IOS-inst-clstr-IOS-inst-clstrUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-IOS-inst-clstr-IOS-inst-clstrUITests-acknowledgements.plist"; sourceTree = "<group>"; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		334DC517254642B300C991DB /* libzmq-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libzmq-ios.a"; path = "Libraries/libzmq-ios.a"; sourceTree = "<group>"; };
+		334DC5202546482800C991DB /* libzmq-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libzmq-ios.a"; path = "Libraries/libzmq-ios.a"; sourceTree = "<group>"; };
 		33D9B7B0E390971B44AEE7463E5A2F12 /* Socket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Socket.swift; path = Sources/Socket.swift; sourceTree = "<group>"; };
 		3AC7243BA23259D33848D97B286D6BFC /* Pods-IOS-inst-clstr-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-IOS-inst-clstr-acknowledgements.markdown"; sourceTree = "<group>"; };
 		40FAC73827554B7E4B716D5A39B8B931 /* Pods-IOS-inst-clstr.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-IOS-inst-clstr.modulemap"; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				334DC518254642B300C991DB /* libzmq-ios.a in Frameworks */,
+				334DC5212546482800C991DB /* libzmq-ios.a in Frameworks */,
 				41E4BF98B81ED299A3F16B6320DA0E0E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,7 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				334DC51A254642B300C991DB /* libzmq-ios.a in Frameworks */,
+				334DC5232546482800C991DB /* libzmq-ios.a in Frameworks */,
 				2E08758D8E4F7AAB2F0B84F5CDC39B0F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,7 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				334DC51B254642B300C991DB /* libzmq-ios.a in Frameworks */,
+				334DC5242546482800C991DB /* libzmq-ios.a in Frameworks */,
 				8AFA8E85ECF1348966BF113AC7C2291D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,7 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				334DC519254642B300C991DB /* libzmq-ios.a in Frameworks */,
+				334DC5222546482800C991DB /* libzmq-ios.a in Frameworks */,
 				B18A8A5659C6A40B03E7377EB5995ADE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,7 +200,7 @@
 		5849544D4A0DFA243DCAF6CFE1935CCD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				334DC517254642B300C991DB /* libzmq-ios.a */,
+				334DC5202546482800C991DB /* libzmq-ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
