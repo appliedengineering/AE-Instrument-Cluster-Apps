@@ -15,6 +15,8 @@ library. It is written in Swift 5 and features a bundled stable
 [`libzmq`](https://github.com/zeromq/libzmq) library. It provides ZeroMQ's
 low-level API along with an object-oriented API.
 
+WARNING: THIS VERISON USES DRAFT APIS SUCH AS ZMQ_DISH AND ZMQ_RADIO
+
 ## What is ZeroMQ?
 
 > ZeroMQ (also spelled ØMQ, 0MQ or ZMQ) is a high-performance asynchronous
@@ -22,6 +24,7 @@ low-level API along with an object-oriented API.
 > provides a message queue, but unlike message-oriented middleware, a ZeroMQ
 > system can run without a dedicated message broker. The library's API is
 > designed to resemble that of Berkeley sockets.
+
 
 ## Requirements
 

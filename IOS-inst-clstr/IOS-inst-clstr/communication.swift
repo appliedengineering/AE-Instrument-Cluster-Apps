@@ -14,27 +14,27 @@ class communicationClass{
     var context : SwiftyZeroMQ.Context?;
     var subscriber : SwiftyZeroMQ.Socket?;
     
-    init(connectionstr: String, communicationProtocol: String){
+    func setup(connectionstr: String, communicationProtocol: String)->Bool{
         let (major, minor, patch, versionString) = SwiftyZeroMQ.version
         print("ZeroMQ library version is \(major).\(minor) with patch level .\(patch)")
         print("SwiftyZeroMQ version is \(SwiftyZeroMQ.frameworkVersion)");
         connectionString = connectionstr;
-        print("protocol \(communicationProtocol) is " + (checkValidProtocol(communicationProtocol: communicationProtocol) ? "supported" : "not supported"));
+        /*print("protocol \(communicationProtocol) is " + (checkValidProtocol(communicationProtocol: communicationProtocol) ? "supported" : "not supported"));
         let protocols = ["ipc", "pgm", "tipc", "norm", "curve", "gssapi"]
         for i in protocols{
             print("\(i) - \(checkValidProtocol(communicationProtocol: i))")
-        }
+        }*/
     
         do{
             context = try SwiftyZeroMQ.Context();
-            subscriber = try context?.socket(.subscribe);
+            subscriber = try context?.socket(.dish);
             try subscriber?.connect(connectionstr);
         }
         catch{
-            print("error - \(error)");
-            //return;
+            print("COMMUNICATION error - \(error)");
+            return false;
         }
-        
+        return true;
     }
     func checkValidProtocol(communicationProtocol: String) -> Bool{
         switch communicationProtocol {

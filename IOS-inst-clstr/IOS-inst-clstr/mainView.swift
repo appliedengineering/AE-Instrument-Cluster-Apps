@@ -7,6 +7,13 @@
 
 import UIKit
 
+let protocolString = "udp";
+var connectionIPAddress = "";
+var connectionPort = "";
+var connectionAddress = "";
+
+let communication = communicationClass();
+let msgpack = msgpackClass();
 
 class mainViewClass: UIViewController, UIScrollViewDelegate {
 
@@ -18,12 +25,23 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     let scrollViewFadeButtonThresholdHeight = CGFloat(250);
     let settingsButton = UIButton();
     
+    func loadPreferences(){
+        connectionIPAddress = "224.0.0.1";
+        connectionPort = "5555";
+        
+        
+        connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         // Do any additional setup after loading the view
+        
+        
+        loadPreferences();
+        
+        
         topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
-        //print("top - \(topSafeAreaInsetHeight)")
-        //print("scale const - \(45/UIScreen.main.scale)")
         // set up view buttons
         let settingsButtonPadding = CGFloat(12);
         let settingsButtonWidth = CGFloat(20*UIScreen.main.scale);
@@ -37,22 +55,17 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         //mainScrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 1).isActive = true;
         mainScrollView.delegate = self;
         renderViews();
+    
         
-        let protocolString = "pgm";
-        var connectionIPAddress = "224.0.0.1";
-        var connectionPort = "5555";
-        
-        var connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
-        
-        let comms = communicationClass(connectionstr: connectionAddress, communicationProtocol: protocolString);
-        let msgpack = msgpackClass();
+        //let comms = communicationClass(connectionstr: connectionAddress, communicationProtocol: protocolString);
+        //let msgpack = msgpackClass();
         
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
-        /*DispatchQueue.global(qos: .background).async{
+        DispatchQueue.global(qos: .background).async{
             
-                
+            communication.setup(connectionstr: connectionAddress, communicationProtocol: protocolString);
             
-        }*/
+        }
     }
     
     

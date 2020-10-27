@@ -2,15 +2,21 @@ PODS:
   - SwiftyZeroMQ5 (1.3.0)
 
 DEPENDENCIES:
-  - SwiftyZeroMQ5
+  - SwiftyZeroMQ5 (from `https://github.com/appliedengineering/SwiftyZeroMQ5.git`, branch `master`)
 
-SPEC REPOS:
-  trunk:
-    - SwiftyZeroMQ5
+EXTERNAL SOURCES:
+  SwiftyZeroMQ5:
+    :branch: master
+    :git: https://github.com/appliedengineering/SwiftyZeroMQ5.git
+
+CHECKOUT OPTIONS:
+  SwiftyZeroMQ5:
+    :commit: 03bec2a770d63234aea4bc28d31cdd7911d7884e
+    :git: https://github.com/appliedengineering/SwiftyZeroMQ5.git
 
 SPEC CHECKSUMS:
   SwiftyZeroMQ5: 2eef9b705384a9a94c50484ad01b503e7cce0d24
 
-PODFILE CHECKSUM: 6b483d5ab10e2b4998aa1aaeb4e301952749a743
+PODFILE CHECKSUM: fb1143618bed85fdc8081a3d0d13e75478eed5a3
 
 COCOAPODS: 1.9.3

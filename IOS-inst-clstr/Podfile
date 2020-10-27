@@ -6,7 +6,7 @@ target 'IOS-inst-clstr' do
   use_frameworks!
 
   # Pods for IOS-inst-clstr
-  pod 'SwiftyZeroMQ5'
+  pod 'SwiftyZeroMQ5', :git => 'https://github.com/appliedengineering/SwiftyZeroMQ5.git', :branch => 'master'
 
   target 'IOS-inst-clstrTests' do
     inherit! :search_paths

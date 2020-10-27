@@ -247,6 +247,11 @@ extension SwiftyZeroMQ {
             This is a workaround to return dynamically loaded native `ZMQ_`
             constants
          */
+        // BELOW ARE DRAFT APIs
+        case radio
+        
+        case dish
+        
         public init(_ value: Int32) throws {
             switch value {
                 // Request-reply pattern
@@ -272,6 +277,10 @@ extension SwiftyZeroMQ {
 
                 // Native pattern
                 case ZMQ_STREAM:  self = .stream; return;
+                    
+                // Draft radio/dish pattern
+                case ZMQ_RADIO: self = .radio; return;
+                case ZMQ_DISH: self = .dish; return;
                 default:
                     throw ZeroMQError(description: "Unknown socket type \(value)");
             }
@@ -302,8 +311,17 @@ extension SwiftyZeroMQ {
 
                 // Native pattern
                 case .stream:     return ZMQ_STREAM
+                    
+                // Using Draft API: Radio and Dish pattern
+                case .radio: return ZMQ_RADIO
+                case .dish: return ZMQ_DISH
+                
             }
         }
     }
 
 }
+/*
+ #define ZMQ_RADIO 14
+ #define ZMQ_DISH 15
+ */
