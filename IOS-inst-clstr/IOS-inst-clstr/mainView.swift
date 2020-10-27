@@ -26,7 +26,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     let settingsButton = UIButton();
     
     func loadPreferences(){
-        connectionIPAddress = "224.0.0.1";
+        connectionIPAddress = "239.0.0.1";
         connectionPort = "5555";
         
         
@@ -63,7 +63,10 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
             
-            communication.setup(connectionstr: connectionAddress, communicationProtocol: protocolString);
+            if (!communication.setup(connectionstr: connectionAddress, communicationProtocol: protocolString)){
+                // errored out
+            }
+            
             
         }
     }

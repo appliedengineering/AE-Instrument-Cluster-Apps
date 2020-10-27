@@ -28,7 +28,7 @@ class communicationClass{
         do{
             context = try SwiftyZeroMQ.Context();
             subscriber = try context?.socket(.dish);
-            try subscriber?.connect(connectionstr);
+            try subscriber?.bind("udp://231.0.0.1:5555");
         }
         catch{
             print("COMMUNICATION error - \(error)");
