@@ -1,0 +1,6 @@
+framework module Pods_IOS_inst_clstr_IOS_inst_clstrUITests {
+  umbrella header "Pods-IOS-inst-clstr-IOS-inst-clstrUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
