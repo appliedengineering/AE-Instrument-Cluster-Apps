@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MessagePacker
 
 let protocolString = "udp";
 var connectionIPAddress = "";
@@ -14,7 +15,6 @@ var connectionAddress = "";
 var recieveTimeout = 0;
 
 let communication = communicationClass();
-let msgpack = msgpackClass();
 
 class mainViewClass: UIViewController, UIScrollViewDelegate {
 
@@ -29,7 +29,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     func loadPreferences(){
         connectionIPAddress = "224.0.0.1"; // defaults
         connectionPort = "28650"; // defaults
-        recieveTimeout = 500; // defaults
+        recieveTimeout = 1000; // defaults
         
         // load user pref
         
@@ -78,8 +78,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
                         
                         //print("iteration")
                         
-                        let data = try communication.dish?.recv(options: .none);
-                        print("recieved data - \(data)");
+                        let data = try MessagePackDecoder().decode(String.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        print("recieved data - \(data) - \(type(of: data))");
                         
                         
                     }
