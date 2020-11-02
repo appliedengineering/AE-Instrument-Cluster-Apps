@@ -192,6 +192,8 @@ extension SwiftyZeroMQ {
             // Limit string buffer to actual buffer size
             let data = Data(bytes: buffer, count: Int(bufferSize))
             
+            //print("recieved data before encoding - \(data)")
+            
             // Return read UTF8 string
             return String(data: data, encoding: String.Encoding.utf8)
         }
@@ -607,6 +609,22 @@ extension SwiftyZeroMQ {
             }
         }
         
+        
+        // DRAFT SOCKET METHODS ---------
+        
+        public func joinGroup(_ group: String) throws{
+            let result = zmq_join(self.handle, group);
+            if result == -1 {
+                throw ZeroMQError.last;
+            }
+        }
+        
+        public func leaveGroup(_ group: String) throws{
+            let result = zmq_leave(self.handle, group);
+            if result == -1 {
+                throw ZeroMQError.last;
+            }
+        }
     }
     
 }

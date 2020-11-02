@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-//import MessagePack
+import MessagePack
 
 class msgpackClass{
     
