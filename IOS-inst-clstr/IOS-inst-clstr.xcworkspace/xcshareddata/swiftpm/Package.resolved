@@ -11,11 +11,11 @@
         }
       },
       {
-        "package": "MessagePack",
-        "repositoryURL": "https://github.com/BatchLabs/MessagePack-Swift.git",
+        "package": "MessagePacker",
+        "repositoryURL": "https://github.com/hirotakan/MessagePacker.git",
         "state": {
           "branch": "master",
-          "revision": "c6fabe5afe1261f927a448187b20e84b9af34720",
+          "revision": "47feef26d1367d4fbf7d5d636f1a0869541b4743",
           "version": null
         }
       }

@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import MessagePacker
 
 let protocolString = "udp";
 var connectionIPAddress = "";
 var connectionPort = "";
 var connectionAddress = "";
+var recieveTimeout = 0;
 
 let communication = communicationClass();
-let msgpack = msgpackClass();
 
 class mainViewClass: UIViewController, UIScrollViewDelegate {
 
@@ -26,8 +27,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     let settingsButton = UIButton();
     
     func loadPreferences(){
-        connectionIPAddress = "239.0.0.1";
-        connectionPort = "5555";
+        connectionIPAddress = "224.0.0.1"; // defaults
+        connectionPort = "28650"; // defaults
+        recieveTimeout = 1000; // defaults
+        
+        // load user pref
         
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
@@ -63,10 +67,34 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
             
-            if (!communication.setup(connectionstr: connectionAddress, communicationProtocol: protocolString)){
+            if (!communication.setup(connectionstr: connectionAddress, recvTimeout: recieveTimeout)){
                 // errored out
+                print("Communicatin setup error - see above console output for reason.");
             }
-            
+            else{
+                
+                while true{
+                    do{
+                        
+                        //print("iteration")
+                        
+                        let data = try MessagePackDecoder().decode(String.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        print("recieved data - \(data) - \(type(of: data))");
+                        
+                        
+                    }
+                    catch {
+                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
+                            print("Communication recieve error - \(error)");
+                        }
+                        else{
+                            print("No data packets recieved");
+                        }
+                    }
+                    
+                }
+                
+            }
             
         }
     }

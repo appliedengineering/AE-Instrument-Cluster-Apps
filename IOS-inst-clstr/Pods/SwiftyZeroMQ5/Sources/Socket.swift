@@ -168,7 +168,7 @@ extension SwiftyZeroMQ {
         public func recv(
             bufferLength : Int = 256,
             options      : SocketSendRecvOption = .none
-        ) throws -> String? {
+        ) throws -> Data? {
             // Validate allowed options
             guard options.isValidRecvOption() else {
                 throw ZeroMQError.invalidOption
@@ -189,11 +189,8 @@ extension SwiftyZeroMQ {
                 throw ZeroMQError.last
             }
             
-            // Limit string buffer to actual buffer size
-            let data = Data(bytes: buffer, count: Int(bufferSize))
             
-            // Return read UTF8 string
-            return String(data: data, encoding: String.Encoding.utf8)
+            return Data(bytes: buffer, count: Int(bufferSize))
         }
         
         public func hash(into hasher: inout Hasher) {
@@ -607,6 +604,22 @@ extension SwiftyZeroMQ {
             }
         }
         
+        
+        // DRAFT SOCKET METHODS ---------
+        
+        public func joinGroup(_ group: String) throws{
+            let result = zmq_join(self.handle, group);
+            if result == -1 {
+                throw ZeroMQError.last;
+            }
+        }
+        
+        public func leaveGroup(_ group: String) throws{
+            let result = zmq_leave(self.handle, group);
+            if result == -1 {
+                throw ZeroMQError.last;
+            }
+        }
     }
     
 }
