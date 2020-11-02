@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		25F1C185D9756B3741AAD403 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AF22F27EAA09AE92FC2483 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework */; };
-		33055F83253CFF5E00B98CDD /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F82253CFF5E00B98CDD /* SwiftPackageProductDependency */; };
-		33055F9C253D085600B98CDD /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F9B253D085600B98CDD /* SwiftPackageProductDependency */; };
+		33055F9C253D085600B98CDD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F9B253D085600B98CDD /* Charts */; };
 		332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332A082A253A51FF00BD3081 /* AppUtility.swift */; };
 		33D5498C253FE61400737F95 /* communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D5498B253FE61400737F95 /* communication.swift */; };
 		33D54991253FE68C00737F95 /* msgpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D54990253FE68C00737F95 /* msgpack.swift */; };
@@ -21,6 +20,7 @@
 		33EC05AA25357B550000FBFF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33EC05A825357B550000FBFF /* LaunchScreen.storyboard */; };
 		33EC05B525357B550000FBFF /* IOS_inst_clstrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC05B425357B550000FBFF /* IOS_inst_clstrTests.swift */; };
 		33EC05C025357B550000FBFF /* IOS_inst_clstrUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC05BF25357B550000FBFF /* IOS_inst_clstrUITests.swift */; };
+		33FF0C67254FD0A700F81124 /* MessagePacker in Frameworks */ = {isa = PBXBuildFile; productRef = 33FF0C66254FD0A700F81124 /* MessagePacker */; };
 		4773C599A9EB133EB35650DC /* Pods_IOS_inst_clstrTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462816973C372E69609E9967 /* Pods_IOS_inst_clstrTests.framework */; };
 		72F39EA5D2E9F38B65669FCB /* Pods_IOS_inst_clstr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D51EEDDF1C0109C800394FAE /* Pods_IOS_inst_clstr.framework */; };
 /* End PBXBuildFile section */
@@ -76,8 +76,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				33055F83253CFF5E00B98CDD /* BuildFile in Frameworks */,
-				33055F9C253D085600B98CDD /* BuildFile in Frameworks */,
+				33FF0C67254FD0A700F81124 /* MessagePacker in Frameworks */,
+				33055F9C253D085600B98CDD /* Charts in Frameworks */,
 				72F39EA5D2E9F38B65669FCB /* Pods_IOS_inst_clstr.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,8 +200,8 @@
 			);
 			name = "IOS-inst-clstr";
 			packageProductDependencies = (
-				33055F82253CFF5E00B98CDD /* SwiftPackageProductDependency */,
-				33055F9B253D085600B98CDD /* SwiftPackageProductDependency */,
+				33055F9B253D085600B98CDD /* Charts */,
+				33FF0C66254FD0A700F81124 /* MessagePacker */,
 			);
 			productName = "IOS-inst-clstr";
 			productReference = 33EC059A25357B540000FBFF /* IOS-inst-clstr.app */;
@@ -278,8 +278,8 @@
 			);
 			mainGroup = 33EC059125357B540000FBFF;
 			packageReferences = (
-				33055F81253CFF5E00B98CDD /* RemoteSwiftPackageReference */,
-				33055F9A253D085600B98CDD /* RemoteSwiftPackageReference */,
+				33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */,
+				33FF0C65254FD0A700F81124 /* XCRemoteSwiftPackageReference "MessagePacker" */,
 			);
 			productRefGroup = 33EC059B25357B540000FBFF /* Products */;
 			projectDirPath = "";
@@ -773,15 +773,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		33055F81253CFF5E00B98CDD /* RemoteSwiftPackageReference */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BatchLabs/MessagePack-Swift.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		33055F9A253D085600B98CDD /* RemoteSwiftPackageReference */ = {
+		33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts.git";
 			requirement = {
@@ -789,18 +781,26 @@
 				minimumVersion = 3.6.0;
 			};
 		};
+		33FF0C65254FD0A700F81124 /* XCRemoteSwiftPackageReference "MessagePacker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hirotakan/MessagePacker.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		33055F82253CFF5E00B98CDD /* SwiftPackageProductDependency */ = {
+		33055F9B253D085600B98CDD /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 33055F81253CFF5E00B98CDD /* RemoteSwiftPackageReference */;
-			productName = MessagePack;
-		};
-		33055F9B253D085600B98CDD /* SwiftPackageProductDependency */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 33055F9A253D085600B98CDD /* RemoteSwiftPackageReference */;
+			package = 33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = Charts;
+		};
+		33FF0C66254FD0A700F81124 /* MessagePacker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33FF0C65254FD0A700F81124 /* XCRemoteSwiftPackageReference "MessagePacker" */;
+			productName = MessagePacker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
