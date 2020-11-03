@@ -10,10 +10,10 @@ import UIKit
 import SwiftyZeroMQ5
 
 struct APiDataPack : Decodable{
-    var psuMode : Int = 2;
+    var psuMode : Int = 0;
     var throttlePercent : Int = 0;
     var dutyPercent : Int = 0;
-    var pwmFrequency : Int = 20000;
+    var pwmFrequency : Int = 0;
     var tempC : Int = 0;
     var sourceVoltage : Float = 0.0;
     var pwmCurrent : Float = 0.0;
@@ -24,39 +24,95 @@ struct APiDataPack : Decodable{
     var ovpStatus : Bool = false;
 };
 
+var lastCommunicationError = "";
 
 class communicationClass{
     var connectionString = "";
+    var group = "";
     var context : SwiftyZeroMQ.Context?;
     var dish : SwiftyZeroMQ.Socket?;
     
-    func setup(connectionstr: String, recvTimeout: Int)->Bool{
+    func printVersion(){
         let (major, minor, patch, _) = SwiftyZeroMQ.version
         print("ZeroMQ library version is \(major).\(minor) with patch level .\(patch)")
         print("SwiftyZeroMQ version is \(SwiftyZeroMQ.frameworkVersion)");
+    }
+    
+    func connect(connectionstr: String, connectionGroup: String, recvTimeout: Int)->Bool{
+        
+        printVersion();
         
         connectionString = connectionstr;
-        
-        /*print("protocol \(communicationProtocol) is " + (checkValidProtocol(communicationProtocol: communicationProtocol) ? "supported" : "not supported"));
-        let protocols = ["ipc", "pgm", "tipc", "norm", "curve", "gssapi"]
-        for i in protocols{
-            print("\(i) - \(checkValidProtocol(communicationProtocol: i))")
-        }*/
+        group = connectionGroup;
     
         do{
             context = try SwiftyZeroMQ.Context();
             dish = try context?.socket(.dish);
             try dish?.bind(connectionString);
             //try dish?.setSubscribe("telemetry");
-            try dish?.joinGroup("telemetry");
+            try dish?.joinGroup(group);
             try dish?.setRecvTimeout(Int32(recvTimeout)); // in ms
         }
         catch{
             print("COMMUNICATION error - \(error)");
+            lastCommunicationError = "\(error)";
             return false;
         }
         return true;
     }
+    
+    func disconnect()->Bool{
+        do{
+            try dish?.leaveGroup(group);
+            try dish?.disconnect(connectionString);
+        }
+        catch{
+            print("COMMUNICATION error - \(error)");
+            lastCommunicationError = "\(error)";
+            return false;
+        }
+        return true;
+    }
+    
+    func newconnection(connectionstr: String, connectionGroup: String, recvTimeout: Int)->Bool{ // when changing ports or address
+        
+        if (!disconnect()){
+            return false;
+        }
+        
+        if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvTimeout: recvTimeout)){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    func tempDisconnect()->Bool{
+        do{
+            //try dish?.unbind(connectionString);
+            try dish?.leaveGroup(group);
+        }
+        catch{
+            print("COMMUNICATION error - \(error)");
+            lastCommunicationError = "\(error)";
+            return false;
+        }
+        return true;
+    }
+    
+    func tempReconnect()->Bool{
+        do{
+            //try dish?.bind(connectionString);
+            try dish?.joinGroup(group);
+        }
+        catch{
+            print("COMMUNICATION error - \(error)");
+            lastCommunicationError = "\(error)";
+            return false;
+        }
+        return true;
+    }
+    
     func checkValidProtocol(communicationProtocol: String) -> Bool{
         switch communicationProtocol {
         case "ipc":
@@ -75,8 +131,5 @@ class communicationClass{
             print("not valid protocol for checking")
             return false;
         }
-    }
-    func start(){
-        print("start")
     }
 }

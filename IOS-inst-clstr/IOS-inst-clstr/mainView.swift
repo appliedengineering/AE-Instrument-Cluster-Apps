@@ -12,6 +12,7 @@ let protocolString = "udp";
 var connectionIPAddress = "";
 var connectionPort = "";
 var connectionAddress = "";
+var connectionGroup = "";
 var recieveTimeout = 0;
 
 let communication = communicationClass();
@@ -30,7 +31,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         connectionIPAddress = "224.0.0.1"; // defaults
         connectionPort = "28650"; // defaults
         recieveTimeout = 1000; // defaults
-        
+        connectionGroup = "telemetry";
         // load user pref
         
         
@@ -64,10 +65,15 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         //let comms = communicationClass(connectionstr: connectionAddress, communicationProtocol: protocolString);
         //let msgpack = msgpackClass();
         
+        startCommunicationThread();
+    }
+    
+    
+    func startCommunicationThread(){
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
             
-            if (communication.setup(connectionstr: connectionAddress, recvTimeout: recieveTimeout)){
+            if (communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
                 
                 while true{
                     do{
@@ -80,17 +86,16 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
                             print("Communication recieve error - \(error)");
                         }
                     }
-                    
                 }
                 
             }
             else{
+                // also access lastCommunicationError for string of error
                 print("Communication setup error - see above console output for reason.");
             }
             
         }
     }
-    
     
     func renderViews(){
         
@@ -107,7 +112,16 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         let headerViewFrame = CGRect(x: 0, y: nextY, width: UIScreen.main.bounds.width, height: headerViewHeight);
         let headerView = UIView(frame: headerViewFrame);
         
-        headerView.backgroundColor = UIColor.white;
+        headerView.backgroundColor = UIColor.systemBackground;
+        
+        let appIconViewVerticalPadding = CGFloat(5);
+        let appIconViewSide = CGFloat(headerViewHeight - 2*appIconViewVerticalPadding);
+        let appIconViewFrame = CGRect(x: (headerViewFrame.size.width / 2) - (appIconViewSide / 2), y: appIconViewVerticalPadding, width: appIconViewSide, height: appIconViewSide);
+        let appIconView = UIImageView(frame: appIconViewFrame);
+        appIconView.image = UIImage(named: "AELogo");
+        appIconView.contentMode = .scaleAspectFill;
+        
+        headerView.addSubview(appIconView);
         
         mainScrollView.addSubview(headerView);
         
