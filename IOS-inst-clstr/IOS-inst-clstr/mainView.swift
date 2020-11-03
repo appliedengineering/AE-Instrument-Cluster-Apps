@@ -23,7 +23,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     @IBOutlet var mainView: UIView!
     
     var topSafeAreaInsetHeight = CGFloat(0);
-    let scrollViewFadeButtonThresholdHeight = CGFloat(250);
+    let scrollViewFadeButtonThresholdHeight = CGFloat(300);
     let settingsButton = UIButton();
     
     func loadPreferences(){
@@ -67,33 +67,25 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
             
-            if (!communication.setup(connectionstr: connectionAddress, recvTimeout: recieveTimeout)){
-                // errored out
-                print("Communicatin setup error - see above console output for reason.");
-            }
-            else{
+            if (communication.setup(connectionstr: connectionAddress, recvTimeout: recieveTimeout)){
                 
                 while true{
                     do{
                         
-                        //print("iteration")
-                        
-                        let data = try MessagePackDecoder().decode(String.self, from: try communication.dish?.recv(options: .none) ?? Data());
-                        print("recieved data - \(data) - \(type(of: data))");
-                        
-                        
+                        let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        print("recieved data - \(data)");
                     }
                     catch {
                         if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
                             print("Communication recieve error - \(error)");
                         }
-                        else{
-                            print("No data packets recieved");
-                        }
                     }
                     
                 }
                 
+            }
+            else{
+                print("Communication setup error - see above console output for reason.");
             }
             
         }
@@ -111,9 +103,18 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         
         var nextY = CGFloat(0);
     
+        let headerViewHeight = CGFloat(50);
+        let headerViewFrame = CGRect(x: 0, y: nextY, width: UIScreen.main.bounds.width, height: headerViewHeight);
+        let headerView = UIView(frame: headerViewFrame);
+        
+        headerView.backgroundColor = UIColor.white;
+        
+        mainScrollView.addSubview(headerView);
+        
+        nextY += headerViewHeight;
         
         let mainInstrumentViewHeight = CGFloat(screenWidth * 1.0666666666666667);
-        let mainInstrumentViewFrame = CGRect(x: 0, y: 0, width: screenWidth, height: mainInstrumentViewHeight);
+        let mainInstrumentViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: mainInstrumentViewHeight);
         let mainInstrumentView = UIView(frame: mainInstrumentViewFrame);
         mainInstrumentView.backgroundColor = UIColor.systemPink;
         mainInstrumentView.tag = 1;

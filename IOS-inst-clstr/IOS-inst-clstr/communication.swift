@@ -9,6 +9,22 @@ import Foundation
 import UIKit
 import SwiftyZeroMQ5
 
+struct APiDataPack : Decodable{
+    var psuMode : Int = 2;
+    var throttlePercent : Int = 0;
+    var dutyPercent : Int = 0;
+    var pwmFrequency : Int = 20000;
+    var tempC : Int = 0;
+    var sourceVoltage : Float = 0.0;
+    var pwmCurrent : Float = 0.0;
+    var powerChange : Float = 0.0;
+    var voltageChange : Float = 0.0;
+    var mddStatus : Bool = false;
+    var ocpStatus : Bool = false;
+    var ovpStatus : Bool = false;
+};
+
+
 class communicationClass{
     var connectionString = "";
     var context : SwiftyZeroMQ.Context?;
