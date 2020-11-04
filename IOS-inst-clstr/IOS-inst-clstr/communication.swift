@@ -32,6 +32,17 @@ class communicationClass{
     var context : SwiftyZeroMQ.Context?;
     var dish : SwiftyZeroMQ.Socket?;
     
+    init(){
+        printVersion();
+        do{
+            context = try SwiftyZeroMQ.Context();
+        }
+        catch{
+            print("COMMUNICATION ERROR : CONTEXT CREATION - \(error)");
+            lastCommunicationError = "Socket: " + "\(error)";
+        }
+    }
+    
     func printVersion(){
         let (major, minor, patch, _) = SwiftyZeroMQ.version
         print("ZeroMQ library version is \(major).\(minor) with patch level .\(patch)")
@@ -40,14 +51,12 @@ class communicationClass{
     
     func connect(connectionstr: String, connectionGroup: String, recvTimeout: Int)->Bool{
         
-        printVersion();
-        
         connectionString = connectionstr;
         group = connectionGroup;
     
         do{
-            context = try SwiftyZeroMQ.Context();
             dish = try context?.socket(.dish);
+            
             try dish?.bind(connectionString);
             //try dish?.setSubscribe("telemetry");
             try dish?.joinGroup(group);
@@ -64,7 +73,8 @@ class communicationClass{
     func disconnect()->Bool{
         do{
             try dish?.leaveGroup(group);
-            try dish?.disconnect(connectionString);
+            dish = nil;
+            //try context?.close();
         }
         catch{
             print("COMMUNICATION error - \(error)");
@@ -87,31 +97,6 @@ class communicationClass{
         return true;
     }
     
-    func tempDisconnect()->Bool{
-        do{
-            //try dish?.unbind(connectionString);
-            try dish?.leaveGroup(group);
-        }
-        catch{
-            print("COMMUNICATION error - \(error)");
-            lastCommunicationError = "\(error)";
-            return false;
-        }
-        return true;
-    }
-    
-    func tempReconnect()->Bool{
-        do{
-            //try dish?.bind(connectionString);
-            try dish?.joinGroup(group);
-        }
-        catch{
-            print("COMMUNICATION error - \(error)");
-            lastCommunicationError = "\(error)";
-            return false;
-        }
-        return true;
-    }
     
     func checkValidProtocol(communicationProtocol: String) -> Bool{
         switch communicationProtocol {

@@ -13,7 +13,9 @@ var connectionIPAddress = "";
 var connectionPort = "";
 var connectionAddress = "";
 var connectionGroup = "";
-var recieveTimeout = 0;
+var recieveTimeout = -1; // in ms
+
+var reconnectTimeout = -1; // in sec
 
 let communication = communicationClass();
 
@@ -31,7 +33,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         connectionIPAddress = "224.0.0.1"; // defaults
         connectionPort = "28650"; // defaults
         recieveTimeout = 1000; // defaults
-        connectionGroup = "telemetry";
+        connectionGroup = "telemetry"; // defaults
+        reconnectTimeout = 3; // defaults
         // load user pref
         
         
@@ -65,35 +68,41 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         //let comms = communicationClass(connectionstr: connectionAddress, communicationProtocol: protocolString);
         //let msgpack = msgpackClass();
         
-        startCommunicationThread();
+        communicationThread();
     }
     
     
-    func startCommunicationThread(){
+    func communicationThread(){
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
-            
-            if (communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
-                
-                while true{
-                    do{
+            while true{ // keeps on reconnecting
+                if (communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+                    
+                    while communication.dish != nil{
+                       // print("iteration");
                         
-                        let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
-                        print("recieved data - \(data)");
-                    }
-                    catch {
-                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
-                            print("Communication recieve error - \(error)");
+                        do{
+                            
+                            let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                            print("recieved data - \(data)");
+                        }
+                        catch {
+                            //print("recieved catch")
+                            if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
+                                print("Communication recieve error - \(error)");
+                            }
                         }
                     }
+                    
+                }
+                else{
+                    // also access lastCommunicationError for string of error
+                    print("Communication setup error - see above console output for reason.");
                 }
                 
+                sleep(UInt32(reconnectTimeout));
+               // print("sleep")
             }
-            else{
-                // also access lastCommunicationError for string of error
-                print("Communication setup error - see above console output for reason.");
-            }
-            
         }
     }
     
