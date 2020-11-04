@@ -7,6 +7,7 @@
 
 import UIKit
 import MessagePacker
+import AudioToolbox
 
 let protocolString = "udp";
 var connectionIPAddress = "";
@@ -26,8 +27,13 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     @IBOutlet var mainView: UIView!
     
     var topSafeAreaInsetHeight = CGFloat(0);
-    let scrollViewFadeButtonThresholdHeight = CGFloat(300);
+    let scrollViewFadeButtonThresholdHeight = CGFloat(250);
     let settingsButton = UIButton();
+    
+    @objc func openSettings(){
+        performSegue(withIdentifier: "settingSegue", sender: nil);
+        UIImpactFeedbackGenerator(style: .light).impactOccurred();
+    }
     
     func loadPreferences(){
         connectionIPAddress = "224.0.0.1"; // defaults
@@ -56,6 +62,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         let settingsButtonFrame = CGRect(x: settingsButtonPadding, y: settingsButtonPadding + topSafeAreaInsetHeight, width: settingsButtonWidth, height: settingsButtonWidth);
         settingsButton.frame = settingsButtonFrame;
         settingsButton.backgroundColor = UIColor.gray;
+        
+        settingsButton.clipsToBounds = true;
+        settingsButton.layer.cornerRadius = settingsButtonWidth/2;
+        
+        settingsButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside);
         
         mainView.addSubview(settingsButton);
    
