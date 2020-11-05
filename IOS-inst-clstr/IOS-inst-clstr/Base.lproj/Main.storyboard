@@ -3,6 +3,7 @@
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -42,24 +43,44 @@
             </objects>
             <point key="canvasLocation" x="140.57971014492756" y="94.419642857142847"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings Class-->
         <scene sceneID="rmE-k3-ik5">
             <objects>
-                <viewController id="GXS-os-aYx" sceneMemberID="viewController">
+                <viewController id="GXS-os-aYx" customClass="settingsClass" customModule="IOS_inst_clstr" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Oyw-MK-v0c">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uSe-lq-yLC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                <color key="backgroundColor" name="AccentColor"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Wqt-TA-gnw"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="07c-Fz-RFE"/>
+                            </scrollView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="IU2-C2-byX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uSe-lq-yLC" firstAttribute="leading" secondItem="IU2-C2-byX" secondAttribute="leading" id="XbO-Ln-czn"/>
+                            <constraint firstItem="uSe-lq-yLC" firstAttribute="top" secondItem="IU2-C2-byX" secondAttribute="top" id="px4-rR-rYf"/>
+                            <constraint firstItem="IU2-C2-byX" firstAttribute="trailing" secondItem="uSe-lq-yLC" secondAttribute="trailing" id="whp-GW-IPH"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="b8N-SX-dcd"/>
+                    <connections>
+                        <outlet property="mainScrollView" destination="uSe-lq-yLC" id="VHW-bH-CuD"/>
+                        <outlet property="mainView" destination="Oyw-MK-v0c" id="tu0-Zx-6tA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s2J-Q0-7Bh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1164" y="94"/>
+            <point key="canvasLocation" x="1163.768115942029" y="93.750000000000014"/>
         </scene>
     </scenes>
     <resources>
+        <namedColor name="AccentColor">
+            <color red="0.20399999618530273" green="0.77999997138977051" blue="0.34900000691413879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
