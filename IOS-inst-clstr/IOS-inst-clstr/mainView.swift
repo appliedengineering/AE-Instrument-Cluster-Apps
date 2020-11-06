@@ -20,7 +20,7 @@ var reconnectTimeout = -1; // in sec
 
 let communication = communicationClass();
 
-class mainViewClass: UIViewController, UIScrollViewDelegate {
+class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
 
     //@IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainScrollView: UIScrollView!
@@ -38,6 +38,10 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     let scrollViewFadeButtonThresholdHeight = CGFloat(250);
     let settingsButton = UIButton();
 
+    
+    // textfields needed to submit in settings
+    let ipAddressInput = UITextField();
+    // end textfields
     
     func loadPreferences(){
         connectionIPAddress = "224.0.0.1"; // defaults
@@ -60,6 +64,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         
         if (isHamBurgMenuOpen){
             hamBurgMenuViewLeadingConstraint.constant = -hamBurgMenuViewWidth;
+            self.view.endEditing(true);
             isHamBurgMenuOpen = false;
         }
         else{
@@ -134,13 +139,15 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         nextY += ipAddressLabelFrame.height;
         
         let ipAddressInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
-        let ipAddressInput = UITextField(frame: ipAddressInputFrame);
-        ipAddressInput.font = UIFont(name: "SFProDisplay-Semibold", size: 15);
+        ipAddressInput.frame = ipAddressInputFrame; // already declared above
+        ipAddressInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        ipAddressInput.text = connectionIPAddress;
         ipAddressInput.allowsEditingTextAttributes = false;
         ipAddressInput.autocorrectionType = .no;
         ipAddressInput.spellCheckingType = .no;
         ipAddressInput.keyboardType = .numbersAndPunctuation; // experiment with this
         ipAddressInput.setUnderLine();
+        ipAddressInput.delegate = self;
         
         hamBurgMenuScrollView.addSubview(ipAddressInput);
         nextY += ipAddressInputFrame.height + verticalPadding;
@@ -176,6 +183,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         
         
         communicationThread();
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true);
+        return false;
     }
     
     
