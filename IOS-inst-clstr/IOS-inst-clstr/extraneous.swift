@@ -8,6 +8,11 @@
 import Foundation
 import UIKit
 
+let AccentColor = UIColor(named: "AccentColor")!;
+let BackgroundColor = UIColor(named: "BackgroundColor")!;
+let BackgroundGray = UIColor(named: "BackgroundGray")!;
+let InverseBackgroundColor = UIColor(named: "InverseBackgroundColor")!;
+
 func printAllFonts(){
     UIFont.familyNames.forEach({ familyName in
         let fontNames = UIFont.fontNames(forFamilyName: familyName)
@@ -30,4 +35,18 @@ extension String {
         
         return ceil(boundingBox.width)
     }
+}
+
+extension UITextField {
+
+    func setUnderLine() {
+        let border = CALayer()
+        let width = CGFloat(0.5)
+        border.borderColor = InverseBackgroundColor.cgColor
+        border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width - 10, height: self.frame.size.height)
+        border.borderWidth = width
+        self.layer.addSublayer(border)
+        self.layer.masksToBounds = true
+    }
+
 }

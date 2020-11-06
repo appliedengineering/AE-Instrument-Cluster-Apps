@@ -14,72 +14,73 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="mainViewClass" customModule="IOS_inst_clstr" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IkZ-FF-8t7">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2eR-a2-D6V">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <viewLayoutGuide key="contentLayoutGuide" id="1yL-cx-r89"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="qBu-aq-qX7"/>
-                            </scrollView>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IkZ-FF-8t7">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="1yL-cx-r89"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="qBu-aq-qX7"/>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" name="BackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="IkZ-FF-8t7" firstAttribute="top" secondItem="2eR-a2-D6V" secondAttribute="top" id="4Gc-sb-A56"/>
+                                    <constraint firstAttribute="trailing" secondItem="IkZ-FF-8t7" secondAttribute="trailing" id="EhP-p5-JuA"/>
+                                    <constraint firstAttribute="width" constant="414" id="aHY-9C-FJd"/>
+                                    <constraint firstItem="IkZ-FF-8t7" firstAttribute="leading" secondItem="2eR-a2-D6V" secondAttribute="leading" id="hxZ-Pg-1gY"/>
+                                    <constraint firstAttribute="bottom" secondItem="IkZ-FF-8t7" secondAttribute="bottom" id="xtN-sW-Ukk"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="asN-Lp-afB">
+                                <rect key="frame" x="-270" y="0.0" width="270" height="896"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XV1-yf-3tp">
+                                        <rect key="frame" x="-21" y="0.0" width="291" height="896"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="Hf2-WB-bqh"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="rG7-HF-CNQ"/>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" name="BackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="XV1-yf-3tp" firstAttribute="leading" secondItem="asN-Lp-afB" secondAttribute="leading" id="GSC-4e-d8C"/>
+                                    <constraint firstAttribute="trailing" secondItem="XV1-yf-3tp" secondAttribute="trailing" id="Uja-pO-Aej"/>
+                                    <constraint firstAttribute="bottom" secondItem="XV1-yf-3tp" secondAttribute="bottom" id="dv0-DL-Mh8"/>
+                                    <constraint firstItem="XV1-yf-3tp" firstAttribute="top" secondItem="asN-Lp-afB" secondAttribute="top" id="oOC-OL-aS6"/>
+                                    <constraint firstAttribute="width" constant="270" id="tAv-8u-IU6"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="IkZ-FF-8t7" secondAttribute="bottom" id="2ox-Wd-dd6"/>
-                            <constraint firstItem="IkZ-FF-8t7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7SL-sC-EvH"/>
-                            <constraint firstItem="IkZ-FF-8t7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Feu-GY-fkp"/>
-                            <constraint firstItem="IkZ-FF-8t7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Y8x-Hj-ufl"/>
+                            <constraint firstItem="asN-Lp-afB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="-270" id="0Nc-nu-ne0"/>
+                            <constraint firstItem="2eR-a2-D6V" firstAttribute="leading" secondItem="asN-Lp-afB" secondAttribute="trailing" id="Cpy-rO-KwE"/>
                         </constraints>
                     </view>
+                    <size key="freeformSize" width="414" height="896"/>
                     <connections>
+                        <outlet property="hamBurgMenuScrollView" destination="XV1-yf-3tp" id="1qJ-R7-Th2"/>
+                        <outlet property="hamBurgMenuView" destination="asN-Lp-afB" id="Ewa-Bm-NlF"/>
+                        <outlet property="hamBurgMenuViewLeadingConstraint" destination="0Nc-nu-ne0" id="grP-8W-UeD"/>
+                        <outlet property="hamBurgMenuViewWidthConstraint" destination="tAv-8u-IU6" id="guQ-tc-wpd"/>
                         <outlet property="mainScrollView" destination="IkZ-FF-8t7" id="NBJ-bw-KrK"/>
-                        <outlet property="mainView" destination="8bC-Xf-vdC" id="ArQ-zS-KTM"/>
-                        <segue destination="GXS-os-aYx" kind="show" identifier="settingSegue" id="o4f-W5-B95"/>
+                        <outlet property="mainView" destination="2eR-a2-D6V" id="UhP-uA-xHg"/>
+                        <outlet property="mainViewWidthConstraint" destination="aHY-9C-FJd" id="Ojq-uD-1fp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140.57971014492756" y="94.419642857142847"/>
-        </scene>
-        <!--Settings Class-->
-        <scene sceneID="rmE-k3-ik5">
-            <objects>
-                <viewController id="GXS-os-aYx" customClass="settingsClass" customModule="IOS_inst_clstr" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Oyw-MK-v0c">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uSe-lq-yLC">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
-                                <color key="backgroundColor" name="AccentColor"/>
-                                <viewLayoutGuide key="contentLayoutGuide" id="Wqt-TA-gnw"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="07c-Fz-RFE"/>
-                            </scrollView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="IU2-C2-byX"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="uSe-lq-yLC" firstAttribute="leading" secondItem="IU2-C2-byX" secondAttribute="leading" id="XbO-Ln-czn"/>
-                            <constraint firstItem="uSe-lq-yLC" firstAttribute="top" secondItem="IU2-C2-byX" secondAttribute="top" id="px4-rR-rYf"/>
-                            <constraint firstItem="IU2-C2-byX" firstAttribute="trailing" secondItem="uSe-lq-yLC" secondAttribute="trailing" id="whp-GW-IPH"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="b8N-SX-dcd"/>
-                    <connections>
-                        <outlet property="mainScrollView" destination="uSe-lq-yLC" id="VHW-bH-CuD"/>
-                        <outlet property="mainView" destination="Oyw-MK-v0c" id="tu0-Zx-6tA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s2J-Q0-7Bh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1163.768115942029" y="93.750000000000014"/>
+            <point key="canvasLocation" x="140.57971014492756" y="93.750000000000014"/>
         </scene>
     </scenes>
     <resources>
-        <namedColor name="AccentColor">
-            <color red="0.20399999618530273" green="0.77999997138977051" blue="0.34900000691413879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BackgroundColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

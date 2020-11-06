@@ -25,15 +25,19 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
     //@IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet var mainView: UIView!
+    @IBOutlet weak var hamBurgMenuView: UIView!
+    @IBOutlet weak var hamBurgMenuScrollView: UIScrollView!
+    
+    @IBOutlet weak var mainViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var hamBurgMenuViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var hamBurgMenuViewWidthConstraint: NSLayoutConstraint!
+    
+    let hamBurgMenuViewWidth = CGFloat(270);
     
     var topSafeAreaInsetHeight = CGFloat(0);
     let scrollViewFadeButtonThresholdHeight = CGFloat(250);
     let settingsButton = UIButton();
-    
-    @objc func openSettings(){
-        performSegue(withIdentifier: "settingSegue", sender: nil);
-        UIImpactFeedbackGenerator(style: .light).impactOccurred();
-    }
+
     
     func loadPreferences(){
         connectionIPAddress = "224.0.0.1"; // defaults
@@ -47,6 +51,28 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
     }
     
+    
+    // HamBurg menu funcs and vars
+    
+    var isHamBurgMenuOpen = false;
+    
+    @objc func toggleHamBurgMenu(){
+        
+        if (isHamBurgMenuOpen){
+            hamBurgMenuViewLeadingConstraint.constant = -hamBurgMenuViewWidth;
+            isHamBurgMenuOpen = false;
+        }
+        else{
+            hamBurgMenuViewLeadingConstraint.constant = 0;
+            isHamBurgMenuOpen = true;
+        }
+    
+    }
+    
+    // end HamBurg menu funcs and vars
+    
+    // SFProDisplay-Regular, SFProDisplay-Semibold, SFProDisplay-Black, SFProText-Bold
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         // Do any additional setup after loading the view
@@ -54,8 +80,78 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         
         loadPreferences();
         
-        
+        //printAllFonts();
         topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
+        
+        // set up outerview stuff
+        
+        mainViewWidthConstraint.constant = UIScreen.main.bounds.width;
+        
+        mainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
+        mainView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
+        hamBurgMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
+        hamBurgMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
+    
+        hamBurgMenuViewWidthConstraint.constant = hamBurgMenuViewWidth;
+        
+        //
+        
+        // ham burg menu rendering stuff
+        // we won't have to rerender this menu because it only takes in stuff for addresses and crap
+        
+        
+        
+        var nextY = topSafeAreaInsetHeight;
+        
+        let horizontalPadding = CGFloat(20);
+        let subVerticalPadding = CGFloat(10);
+        let verticalPadding = CGFloat(10);
+        
+        let hamBurgMenuSubViewWidth = hamBurgMenuViewWidth - 2*horizontalPadding;
+        let hamBurgMenuInputHeight = CGFloat(35);
+        let hamBurgMenuTextHeight = CGFloat(50);
+        
+        
+        let settingsHeaderFrame = CGRect(x: 0, y: nextY, width: hamBurgMenuViewWidth, height: hamBurgMenuTextHeight);
+        let settingsHeader = UILabel(frame: settingsHeaderFrame);
+        settingsHeader.text = "Settings";
+        settingsHeader.textAlignment = .center;
+        settingsHeader.font = UIFont(name: "SFProDisplay-Black", size: 25);
+        settingsHeader.textColor = InverseBackgroundColor;
+        
+        hamBurgMenuScrollView.addSubview(settingsHeader);
+        nextY += settingsHeaderFrame.height + verticalPadding;
+        
+        let ipAddressLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let ipAddressLabel = UILabel(frame: ipAddressLabelFrame);
+        ipAddressLabel.text = "Connection IP Address";
+        ipAddressLabel.textColor = InverseBackgroundColor;
+        ipAddressLabel.textAlignment = .left;
+        ipAddressLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        //ipAddressLabel.backgroundColor = UIColor.blue;
+        
+        hamBurgMenuScrollView.addSubview(ipAddressLabel);
+        nextY += ipAddressLabelFrame.height;
+        
+        let ipAddressInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        let ipAddressInput = UITextField(frame: ipAddressInputFrame);
+        ipAddressInput.font = UIFont(name: "SFProDisplay-Semibold", size: 15);
+        ipAddressInput.allowsEditingTextAttributes = false;
+        ipAddressInput.autocorrectionType = .no;
+        ipAddressInput.spellCheckingType = .no;
+        ipAddressInput.keyboardType = .numbersAndPunctuation; // experiment with this
+        ipAddressInput.setUnderLine();
+        
+        hamBurgMenuScrollView.addSubview(ipAddressInput);
+        nextY += ipAddressInputFrame.height + verticalPadding;
+        
+        
+        hamBurgMenuScrollView.contentSize = CGSize(width: hamBurgMenuViewWidth, height: nextY);
+        hamBurgMenuScrollView.delegate = self;
+        
+        
+        // end ham burg menu rendering
+        
         // set up view buttons
         let settingsButtonPadding = CGFloat(12);
         let settingsButtonWidth = CGFloat(20*UIScreen.main.scale);
@@ -66,18 +162,18 @@ class mainViewClass: UIViewController, UIScrollViewDelegate {
         settingsButton.clipsToBounds = true;
         settingsButton.layer.cornerRadius = settingsButtonWidth/2;
         
-        settingsButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside);
+        settingsButton.addTarget(self, action: #selector(toggleHamBurgMenu), for: .touchUpInside);
         
         mainView.addSubview(settingsButton);
    
         mainScrollView.tag = -1;
         //mainScrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 1).isActive = true;
         mainScrollView.delegate = self;
-        renderViews();
-    
+        mainScrollView.showsVerticalScrollIndicator = false;
+        mainScrollView.showsHorizontalScrollIndicator = false;
         
-        //let comms = communicationClass(connectionstr: connectionAddress, communicationProtocol: protocolString);
-        //let msgpack = msgpackClass();
+        renderViews();
+        
         
         communicationThread();
     }

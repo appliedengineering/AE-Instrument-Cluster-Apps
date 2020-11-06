@@ -9,9 +9,20 @@
 /* Begin PBXBuildFile section */
 		25F1C185D9756B3741AAD403 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AF22F27EAA09AE92FC2483 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework */; };
 		33055F9C253D085600B98CDD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F9B253D085600B98CDD /* Charts */; };
-		331C55702553D1EB00DEF3A3 /* settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C556F2553D1EB00DEF3A3 /* settings.swift */; };
 		331C55782553DEF900DEF3A3 /* extraneous.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C55772553DEF900DEF3A3 /* extraneous.swift */; };
 		332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332A082A253A51FF00BD3081 /* AppUtility.swift */; };
+		3367306B255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */; };
+		3367306C255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */; };
+		3367306D255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */; };
+		3367306E255521ED007C99F2 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673068255521ED007C99F2 /* SFProText-Bold.ttf */; };
+		3367306F255521ED007C99F2 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673068255521ED007C99F2 /* SFProText-Bold.ttf */; };
+		33673070255521ED007C99F2 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673068255521ED007C99F2 /* SFProText-Bold.ttf */; };
+		33673071255521ED007C99F2 /* SFProDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */; };
+		33673072255521ED007C99F2 /* SFProDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */; };
+		33673073255521ED007C99F2 /* SFProDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */; };
+		33673074255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */; };
+		33673075255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */; };
+		33673076255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */; };
 		33D5498C253FE61400737F95 /* communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D5498B253FE61400737F95 /* communication.swift */; };
 		33E0625F25381B4C004F171C /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0625E25381B4C004F171C /* mainView.swift */; };
 		33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059D25357B540000FBFF /* AppDelegate.swift */; };
@@ -45,9 +56,12 @@
 
 /* Begin PBXFileReference section */
 		273280052F0B6B845FA7CB89 /* Pods-IOS-inst-clstrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOS-inst-clstrTests.release.xcconfig"; path = "Target Support Files/Pods-IOS-inst-clstrTests/Pods-IOS-inst-clstrTests.release.xcconfig"; sourceTree = "<group>"; };
-		331C556F2553D1EB00DEF3A3 /* settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settings.swift; sourceTree = "<group>"; };
 		331C55772553DEF900DEF3A3 /* extraneous.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extraneous.swift; sourceTree = "<group>"; };
 		332A082A253A51FF00BD3081 /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
+		33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Regular.ttf"; path = "Assets/SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		33673068255521ED007C99F2 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "Assets/SFProText-Bold.ttf"; sourceTree = "<group>"; };
+		33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Black.ttf"; path = "Assets/SFProDisplay-Black.ttf"; sourceTree = "<group>"; };
+		3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Semibold.ttf"; path = "Assets/SFProDisplay-Semibold.ttf"; sourceTree = "<group>"; };
 		33D5498B253FE61400737F95 /* communication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = communication.swift; sourceTree = "<group>"; };
 		33E0625E25381B4C004F171C /* mainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
 		33EC059A25357B540000FBFF /* IOS-inst-clstr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS-inst-clstr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,12 +147,15 @@
 				33EC059F25357B540000FBFF /* SceneDelegate.swift */,
 				33D5498B253FE61400737F95 /* communication.swift */,
 				33E0625E25381B4C004F171C /* mainView.swift */,
-				331C556F2553D1EB00DEF3A3 /* settings.swift */,
 				331C55772553DEF900DEF3A3 /* extraneous.swift */,
 				33EC05A325357B540000FBFF /* Main.storyboard */,
 				33EC05A625357B550000FBFF /* Assets.xcassets */,
 				33EC05A825357B550000FBFF /* LaunchScreen.storyboard */,
 				33EC05AB25357B550000FBFF /* Info.plist */,
+				33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */,
+				33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */,
+				3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */,
+				33673068255521ED007C99F2 /* SFProText-Bold.ttf */,
 			);
 			path = "IOS-inst-clstr";
 			sourceTree = "<group>";
@@ -302,7 +319,11 @@
 			files = (
 				33EC05AA25357B550000FBFF /* LaunchScreen.storyboard in Resources */,
 				33EC05A725357B550000FBFF /* Assets.xcassets in Resources */,
+				33673074255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */,
+				33673071255521ED007C99F2 /* SFProDisplay-Black.ttf in Resources */,
+				3367306E255521ED007C99F2 /* SFProText-Bold.ttf in Resources */,
 				33EC05A525357B540000FBFF /* Main.storyboard in Resources */,
+				3367306B255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +331,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3367306C255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */,
+				33673075255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */,
+				3367306F255521ED007C99F2 /* SFProText-Bold.ttf in Resources */,
+				33673072255521ED007C99F2 /* SFProDisplay-Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +342,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3367306D255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */,
+				33673076255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */,
+				33673070255521ED007C99F2 /* SFProText-Bold.ttf in Resources */,
+				33673073255521ED007C99F2 /* SFProDisplay-Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +462,6 @@
 				332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */,
 				331C55782553DEF900DEF3A3 /* extraneous.swift in Sources */,
 				33E0625F25381B4C004F171C /* mainView.swift in Sources */,
-				331C55702553D1EB00DEF3A3 /* settings.swift in Sources */,
 				33D5498C253FE61400737F95 /* communication.swift in Sources */,
 				33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */,
 				33EC05A025357B540000FBFF /* SceneDelegate.swift in Sources */,
