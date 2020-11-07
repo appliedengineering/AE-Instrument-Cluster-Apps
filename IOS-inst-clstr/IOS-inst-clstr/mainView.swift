@@ -31,6 +31,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     @IBOutlet weak var mainViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var hamBurgMenuViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var hamBurgMenuViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var hamBurgMenuScrollViewHeightConstraint: NSLayoutConstraint!
     
     let hamBurgMenuViewWidth = CGFloat(270);
     
@@ -41,6 +42,10 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     // textfields needed to submit in settings
     let ipAddressInput = UITextField();
+    let connectionPortInput = UITextField();
+    let connectionGroupInput = UITextField();
+    let recieveTimeoutInput = UITextField(); // in ms
+    let reconnectTimeoutInput = UITextField(); // in sec
     // end textfields
     
     func loadPreferences(){
@@ -74,36 +79,13 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     }
     
-    // end HamBurg menu funcs and vars
+    @objc func applySettings(){
+        
+    }
     
-    // SFProDisplay-Regular, SFProDisplay-Semibold, SFProDisplay-Black, SFProText-Bold
-    
-    override func viewDidLoad() {
-        super.viewDidLoad();
-        // Do any additional setup after loading the view
-        
-        
-        loadPreferences();
-        
-        //printAllFonts();
-        topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
-        
-        // set up outerview stuff
-        
-        mainViewWidthConstraint.constant = UIScreen.main.bounds.width;
-        
-        mainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
-        mainView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
-        hamBurgMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
-        hamBurgMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
-    
-        hamBurgMenuViewWidthConstraint.constant = hamBurgMenuViewWidth;
-        
-        //
-        
+    func renderHamBurgMenu(){
         // ham burg menu rendering stuff
         // we won't have to rerender this menu because it only takes in stuff for addresses and crap
-        
         
         
         var nextY = topSafeAreaInsetHeight;
@@ -127,6 +109,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         hamBurgMenuScrollView.addSubview(settingsHeader);
         nextY += settingsHeaderFrame.height + verticalPadding;
         
+        /// ------- IP ADDRESS
+        
         let ipAddressLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
         let ipAddressLabel = UILabel(frame: ipAddressLabelFrame);
         ipAddressLabel.text = "Connection IP Address";
@@ -145,19 +129,154 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         ipAddressInput.allowsEditingTextAttributes = false;
         ipAddressInput.autocorrectionType = .no;
         ipAddressInput.spellCheckingType = .no;
-        ipAddressInput.keyboardType = .numbersAndPunctuation; // experiment with this
+        ipAddressInput.keyboardType = .decimalPad; // experiment with this
         ipAddressInput.setUnderLine();
         ipAddressInput.delegate = self;
         
         hamBurgMenuScrollView.addSubview(ipAddressInput);
         nextY += ipAddressInputFrame.height + verticalPadding;
         
+        /// ----- CONNECTION PORT
+        
+        let connectionPortLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let connectionPortLabel = UILabel(frame: connectionPortLabelFrame);
+        connectionPortLabel.text = "Connection Port";
+        connectionPortLabel.textColor = InverseBackgroundColor;
+        connectionPortLabel.textAlignment = .left;
+        connectionPortLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        
+        hamBurgMenuScrollView.addSubview(connectionPortLabel);
+        nextY += connectionPortLabelFrame.height;
+        
+        let connectionPortInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        connectionPortInput.frame = connectionPortInputFrame; // already declared above
+        connectionPortInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        connectionPortInput.text = connectionPort;
+        connectionPortInput.allowsEditingTextAttributes = false;
+        connectionPortInput.autocorrectionType = .no;
+        connectionPortInput.spellCheckingType = .no;
+        connectionPortInput.keyboardType = .numberPad; // experiment with this
+        connectionPortInput.setUnderLine();
+        connectionPortInput.delegate = self;
+        
+        hamBurgMenuScrollView.addSubview(connectionPortInput);
+        nextY += connectionPortInputFrame.height + verticalPadding;
+        
+        /// -------- CONNECTION GROUP
+        
+        let connectionGroupLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let connectionGroupLabel = UILabel(frame: connectionGroupLabelFrame);
+        connectionGroupLabel.text = "Connection Group";
+        connectionGroupLabel.textColor = InverseBackgroundColor;
+        connectionGroupLabel.textAlignment = .left;
+        connectionGroupLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        
+        hamBurgMenuScrollView.addSubview(connectionGroupLabel);
+        nextY += connectionGroupLabelFrame.height;
+        
+        let connectionGroupInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        connectionGroupInput.frame = connectionGroupInputFrame; // already declared above
+        connectionGroupInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        connectionGroupInput.text = connectionGroup;
+        connectionGroupInput.allowsEditingTextAttributes = false;
+        connectionGroupInput.autocorrectionType = .no;
+        connectionGroupInput.spellCheckingType = .no;
+        connectionGroupInput.keyboardType = .default; // experiment with this
+        connectionGroupInput.setUnderLine();
+        connectionGroupInput.delegate = self;
+        
+        hamBurgMenuScrollView.addSubview(connectionGroupInput);
+        nextY += connectionGroupInputFrame.height + verticalPadding;
+        
+        /// ----------- RECIEVE TIMEOUT
+        
+        let recieveTimeoutLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let recieveTimeoutLabel = UILabel(frame: recieveTimeoutLabelFrame);
+        recieveTimeoutLabel.text = "Recieve Timeout (ms)";
+        recieveTimeoutLabel.textColor = InverseBackgroundColor;
+        recieveTimeoutLabel.textAlignment = .left;
+        recieveTimeoutLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        
+        hamBurgMenuScrollView.addSubview(recieveTimeoutLabel);
+        nextY += recieveTimeoutLabelFrame.height;
+        
+        let recieveTimeoutInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        recieveTimeoutInput.frame = recieveTimeoutInputFrame; // already declared above
+        recieveTimeoutInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        recieveTimeoutInput.text = String(recieveTimeout);
+        recieveTimeoutInput.allowsEditingTextAttributes = false;
+        recieveTimeoutInput.autocorrectionType = .no;
+        recieveTimeoutInput.spellCheckingType = .no;
+        recieveTimeoutInput.keyboardType = .numberPad; // experiment with this
+        recieveTimeoutInput.setUnderLine();
+        recieveTimeoutInput.delegate = self;
+        
+        hamBurgMenuScrollView.addSubview(recieveTimeoutInput);
+        nextY += recieveTimeoutInputFrame.height + verticalPadding;
+        
+        /// ----------- RECONNECT TIMEOUT
+        
+        let reconnectTimeoutLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let reconnectTimeoutLabel = UILabel(frame: reconnectTimeoutLabelFrame);
+        reconnectTimeoutLabel.text = "Reconnect Timeout (s)";
+        reconnectTimeoutLabel.textColor = InverseBackgroundColor;
+        reconnectTimeoutLabel.textAlignment = .left;
+        reconnectTimeoutLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        
+        hamBurgMenuScrollView.addSubview(reconnectTimeoutLabel);
+        nextY += reconnectTimeoutLabelFrame.height;
+        
+        let reconnectTimeoutInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        reconnectTimeoutInput.frame = reconnectTimeoutInputFrame; // already declared above
+        reconnectTimeoutInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        reconnectTimeoutInput.text = String(reconnectTimeout);
+        reconnectTimeoutInput.allowsEditingTextAttributes = false;
+        reconnectTimeoutInput.autocorrectionType = .no;
+        reconnectTimeoutInput.spellCheckingType = .no;
+        reconnectTimeoutInput.keyboardType = .numberPad; // experiment with this
+        reconnectTimeoutInput.setUnderLine();
+        reconnectTimeoutInput.delegate = self;
+        
+        hamBurgMenuScrollView.addSubview(reconnectTimeoutInput);
+        nextY += reconnectTimeoutInputFrame.height + verticalPadding;
+        
+        
+        // END
         
         hamBurgMenuScrollView.contentSize = CGSize(width: hamBurgMenuViewWidth, height: nextY);
         hamBurgMenuScrollView.delegate = self;
         
-        
         // end ham burg menu rendering
+    }
+    
+    // end HamBurg menu funcs and vars
+    
+    // SFProDisplay-Regular, SFProDisplay-Semibold, SFProDisplay-Black, SFProText-Bold
+    
+    override func viewDidLoad() {
+        super.viewDidLoad();
+        // Do any additional setup after loading the view
+        self.hideKeyboardWhenTappedAround();
+        
+        loadPreferences();
+        
+        //printAllFonts();
+        topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
+        
+        // set up outerview stuff
+        
+        mainViewWidthConstraint.constant = UIScreen.main.bounds.width;
+        
+        mainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
+        mainView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
+        hamBurgMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
+        hamBurgMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
+    
+        hamBurgMenuViewWidthConstraint.constant = hamBurgMenuViewWidth;
+        
+        //
+        
+        renderHamBurgMenu();
         
         // set up view buttons
         let settingsButtonPadding = CGFloat(12);
@@ -198,7 +317,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                 if (communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
                     
                     while communication.dish != nil{
-                       // print("iteration");
+                        //print("iteration");
                         
                         do{
                             
@@ -295,6 +414,51 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         print("changed orientation");
         renderViews();
     }
+    
+    
+    // for keyboard stuff
+    
+    
+    var keyboardAdjusted = false
+    var lastKeyboardOffset: CGFloat = 0.0
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated);
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil);
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil);
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if keyboardAdjusted == false {
+            lastKeyboardOffset = getKeyboardHeight(notification: notification);
+            //hamBurgMenuScrollView.frame.origin.y -= lastKeyboardOffset;
+            hamBurgMenuScrollViewHeightConstraint.constant -= lastKeyboardOffset;
+            keyboardAdjusted = true;
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if keyboardAdjusted == true {
+            //hamBurgMenuScrollView.frame.origin.y += lastKeyboardOffset;
+            hamBurgMenuScrollViewHeightConstraint.constant += lastKeyboardOffset;
+            keyboardAdjusted = false;
+        }
+    }
+
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo;
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue;
+        return keyboardSize.cgRectValue.height;
+    }
+    
+    //
+    
     
     
 }

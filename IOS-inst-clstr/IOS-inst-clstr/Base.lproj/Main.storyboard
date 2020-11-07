@@ -48,8 +48,8 @@
                                 <color key="backgroundColor" name="BackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="XV1-yf-3tp" firstAttribute="leading" secondItem="asN-Lp-afB" secondAttribute="leading" id="GSC-4e-d8C"/>
+                                    <constraint firstItem="XV1-yf-3tp" firstAttribute="height" secondItem="asN-Lp-afB" secondAttribute="height" id="Hla-14-gGn"/>
                                     <constraint firstAttribute="trailing" secondItem="XV1-yf-3tp" secondAttribute="trailing" id="Uja-pO-Aej"/>
-                                    <constraint firstAttribute="bottom" secondItem="XV1-yf-3tp" secondAttribute="bottom" id="dv0-DL-Mh8"/>
                                     <constraint firstItem="XV1-yf-3tp" firstAttribute="top" secondItem="asN-Lp-afB" secondAttribute="top" id="oOC-OL-aS6"/>
                                     <constraint firstAttribute="width" constant="270" id="tAv-8u-IU6"/>
                                 </constraints>
@@ -65,6 +65,7 @@
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
                         <outlet property="hamBurgMenuScrollView" destination="XV1-yf-3tp" id="1qJ-R7-Th2"/>
+                        <outlet property="hamBurgMenuScrollViewHeightConstraint" destination="Hla-14-gGn" id="lJV-OH-Nyn"/>
                         <outlet property="hamBurgMenuView" destination="asN-Lp-afB" id="Ewa-Bm-NlF"/>
                         <outlet property="hamBurgMenuViewLeadingConstraint" destination="0Nc-nu-ne0" id="grP-8W-UeD"/>
                         <outlet property="hamBurgMenuViewWidthConstraint" destination="tAv-8u-IU6" id="guQ-tc-wpd"/>
