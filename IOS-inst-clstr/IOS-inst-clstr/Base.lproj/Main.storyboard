@@ -57,10 +57,14 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="asN-Lp-afB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="-270" id="0Nc-nu-ne0"/>
                             <constraint firstItem="2eR-a2-D6V" firstAttribute="leading" secondItem="asN-Lp-afB" secondAttribute="trailing" id="Cpy-rO-KwE"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="aEm-mO-L7U" appends="YES" id="J41-j0-rLU"/>
+                        </connections>
                     </view>
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
@@ -75,6 +79,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="aEm-mO-L7U">
+                    <connections>
+                        <action selector="handlePan:" destination="BYZ-38-t0r" id="k7K-Q5-H7v"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="140.57971014492756" y="93.750000000000014"/>
         </scene>

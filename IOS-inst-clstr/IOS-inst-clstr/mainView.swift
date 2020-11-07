@@ -35,6 +35,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     let hamBurgMenuViewWidth = CGFloat(270);
     
+    
     var topSafeAreaInsetHeight = CGFloat(0);
     let scrollViewFadeButtonThresholdHeight = CGFloat(250);
     let settingsButton = UIButton();
@@ -63,20 +64,102 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     // HamBurg menu funcs and vars
     
-    var isHamBurgMenuOpen = false;
+    var enableHamBurgMenu = false;
     
     @objc func toggleHamBurgMenu(){
-        
-        if (isHamBurgMenuOpen){
-            hamBurgMenuViewLeadingConstraint.constant = -hamBurgMenuViewWidth;
-            self.view.endEditing(true);
-            isHamBurgMenuOpen = false;
+        //rint("toggled - \(enableHamBurgMenu)")
+        if (enableHamBurgMenu){
+            closeHamBurgMenu();
         }
         else{
-            hamBurgMenuViewLeadingConstraint.constant = 0;
-            isHamBurgMenuOpen = true;
+            openHamBurgMenu();
         }
     
+    }
+    
+    func openHamBurgMenu(){
+        enableHamBurgMenu = true;
+        //self.hamBurgMenuViewLeadingConstraint.constant = 0;
+        UIView.animate(withDuration: 0.2){
+            self.hamBurgMenuViewLeadingConstraint.constant = 0;
+            self.view.layoutIfNeeded();
+        }
+    }
+    
+    func closeHamBurgMenu(){
+        enableHamBurgMenu = false;
+        //self.hamBurgMenuViewLeadingConstraint.constant = -self.hamBurgMenuViewWidth;
+        UIView.animate(withDuration: 0.2){
+            self.hamBurgMenuViewLeadingConstraint.constant = -self.hamBurgMenuViewWidth; // const
+            self.view.layoutIfNeeded();
+        }
+    }
+    
+    @IBAction func handlePan(_ sender: UIPanGestureRecognizer) { // main goal is to set the hamburgmenuconstraint
+        let percentThreshold: CGFloat = 0.3;
+        let sensitivity = CGFloat(5); // 0 to x, where 1 is normal multiplier
+        let translation = sender.translation(in: view);
+        let fingerMovement = translation.x / view.bounds.width;
+        //print("moved - \(fingerMovement)");
+        if (enableHamBurgMenu){ // exit menu
+            let rightMovement = fmaxf(Float(-fingerMovement), 0.0);
+            let rightMovementPercent = fminf(rightMovement, 1.0);
+            let progress = CGFloat(rightMovementPercent);
+            if (sender.state == .began || sender.state == .changed){
+                //print("exit pan - \(progress)");
+                if (progress == 1){
+                    closeHamBurgMenu();
+                }
+                else{
+                    UIView.animate(withDuration: 0.2){
+                        self.hamBurgMenuViewLeadingConstraint.constant = -(self.hamBurgMenuViewWidth * min(progress * sensitivity, 1.0));
+                        self.view.layoutIfNeeded();
+                    }
+                }
+            }
+            else if (sender.state == .ended){
+                //print("stop exit pan - \(progress)");
+                if (progress > percentThreshold){
+                    closeHamBurgMenu();
+                }
+                else{
+                    openHamBurgMenu();
+                }
+            }
+        }
+        else{ // open menu
+            let leftMovement = fminf(Float(fingerMovement), 1.0);
+            let leftMovementPercent = fmaxf(leftMovement, 0.0);
+            let progress = CGFloat(leftMovementPercent);
+            if (sender.state == .began || sender.state == .changed){
+                //print("start pan - \(progress)");
+                if (progress == 1){
+                    openHamBurgMenu();
+                }
+                else{
+                    UIView.animate(withDuration: 0.2){
+                        self.hamBurgMenuViewLeadingConstraint.constant = -self.hamBurgMenuViewWidth + (self.hamBurgMenuViewWidth * min(progress * sensitivity, 1.0));
+                        self.view.layoutIfNeeded();
+                    }
+                }
+            }
+            else if (sender.state == .ended){
+                //print("stop start pan - \(progress)");
+                if (progress > percentThreshold){
+                    openHamBurgMenu();
+                }
+                else{
+                    closeHamBurgMenu();
+                }
+            }
+        }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let scrollView = otherGestureRecognizer.view as? UIScrollView {
+            return scrollView.contentOffset.x == 0;
+        }
+        return false
     }
     
     @objc func applySettings(){
