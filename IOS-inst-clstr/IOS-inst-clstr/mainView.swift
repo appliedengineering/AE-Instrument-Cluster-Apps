@@ -87,6 +87,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // ham burg menu rendering stuff
         // we won't have to rerender this menu because it only takes in stuff for addresses and crap
         
+        for subview in hamBurgMenuScrollView.subviews{
+            if (subview.tag == 1){
+                subview.removeFromSuperview();
+            }
+        }
         
         var nextY = topSafeAreaInsetHeight;
         
@@ -105,6 +110,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         settingsHeader.textAlignment = .center;
         settingsHeader.font = UIFont(name: "SFProDisplay-Black", size: 25);
         settingsHeader.textColor = InverseBackgroundColor;
+        settingsHeader.tag = 1;
         
         hamBurgMenuScrollView.addSubview(settingsHeader);
         nextY += settingsHeaderFrame.height + verticalPadding;
@@ -117,6 +123,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         ipAddressLabel.textColor = InverseBackgroundColor;
         ipAddressLabel.textAlignment = .left;
         ipAddressLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        ipAddressLabel.tag = 1;
         //ipAddressLabel.backgroundColor = UIColor.blue;
         
         hamBurgMenuScrollView.addSubview(ipAddressLabel);
@@ -132,6 +139,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         ipAddressInput.keyboardType = .decimalPad; // experiment with this
         ipAddressInput.setUnderLine();
         ipAddressInput.delegate = self;
+        ipAddressInput.tag = 1;
         
         hamBurgMenuScrollView.addSubview(ipAddressInput);
         nextY += ipAddressInputFrame.height + verticalPadding;
@@ -144,6 +152,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionPortLabel.textColor = InverseBackgroundColor;
         connectionPortLabel.textAlignment = .left;
         connectionPortLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        connectionPortLabel.tag = 1;
         
         hamBurgMenuScrollView.addSubview(connectionPortLabel);
         nextY += connectionPortLabelFrame.height;
@@ -158,6 +167,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionPortInput.keyboardType = .numberPad; // experiment with this
         connectionPortInput.setUnderLine();
         connectionPortInput.delegate = self;
+        connectionPortInput.tag = 1;
         
         hamBurgMenuScrollView.addSubview(connectionPortInput);
         nextY += connectionPortInputFrame.height + verticalPadding;
@@ -170,6 +180,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionGroupLabel.textColor = InverseBackgroundColor;
         connectionGroupLabel.textAlignment = .left;
         connectionGroupLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        connectionGroupLabel.tag = 1;
         
         hamBurgMenuScrollView.addSubview(connectionGroupLabel);
         nextY += connectionGroupLabelFrame.height;
@@ -184,6 +195,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionGroupInput.keyboardType = .default; // experiment with this
         connectionGroupInput.setUnderLine();
         connectionGroupInput.delegate = self;
+        connectionGroupInput.tag = 1;
         
         hamBurgMenuScrollView.addSubview(connectionGroupInput);
         nextY += connectionGroupInputFrame.height + verticalPadding;
@@ -196,6 +208,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         recieveTimeoutLabel.textColor = InverseBackgroundColor;
         recieveTimeoutLabel.textAlignment = .left;
         recieveTimeoutLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        recieveTimeoutLabel.tag = 1;
         
         hamBurgMenuScrollView.addSubview(recieveTimeoutLabel);
         nextY += recieveTimeoutLabelFrame.height;
@@ -210,6 +223,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         recieveTimeoutInput.keyboardType = .numberPad; // experiment with this
         recieveTimeoutInput.setUnderLine();
         recieveTimeoutInput.delegate = self;
+        recieveTimeoutInput.tag = 1;
         
         hamBurgMenuScrollView.addSubview(recieveTimeoutInput);
         nextY += recieveTimeoutInputFrame.height + verticalPadding;
@@ -222,6 +236,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         reconnectTimeoutLabel.textColor = InverseBackgroundColor;
         reconnectTimeoutLabel.textAlignment = .left;
         reconnectTimeoutLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        reconnectTimeoutLabel.tag = 1;
         
         hamBurgMenuScrollView.addSubview(reconnectTimeoutLabel);
         nextY += reconnectTimeoutLabelFrame.height;
@@ -236,10 +251,57 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         reconnectTimeoutInput.keyboardType = .numberPad; // experiment with this
         reconnectTimeoutInput.setUnderLine();
         reconnectTimeoutInput.delegate = self;
+        reconnectTimeoutInput.tag = 1;
         
         hamBurgMenuScrollView.addSubview(reconnectTimeoutInput);
         nextY += reconnectTimeoutInputFrame.height + verticalPadding;
         
+        //// --- FINAL ADDRESS
+        
+        let fullAddressLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let fullAddressLabel = UILabel(frame: fullAddressLabelFrame);
+        fullAddressLabel.text = "Full Address";
+        fullAddressLabel.textColor = InverseBackgroundColor;
+        fullAddressLabel.textAlignment = .left;
+        fullAddressLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        fullAddressLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(fullAddressLabel);
+        nextY += fullAddressLabelFrame.height;
+        
+        let fullAddressFont = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        let fullAddressHeight = connectionAddress.getHeight(withConstrainedWidth: hamBurgMenuSubViewWidth, font: fullAddressFont!);
+        let fullAddressFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: fullAddressHeight);
+        let fullAddress = UITextView(frame: fullAddressFrame);
+        fullAddress.text = connectionAddress;
+        fullAddress.font = fullAddressFont;
+        fullAddress.textColor = InverseBackgroundColor;
+        fullAddress.setUnderLine();
+        fullAddress.isEditable = false;
+        fullAddress.isSelectable = false;
+        fullAddress.isUserInteractionEnabled = false;
+        fullAddress.isScrollEnabled = false;
+        fullAddress.textContainerInset = UIEdgeInsets(top: -4, left: -4, bottom: 0, right: 0);
+        fullAddress.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(fullAddress);
+        nextY += fullAddressHeight + 2*verticalPadding;
+        
+        
+        let applySettingsButtonFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: 40);
+        let applySettingsButton = UIButton(frame: applySettingsButtonFrame);
+        applySettingsButton.backgroundColor = BackgroundGray;
+        applySettingsButton.setTitle("Apply Settings", for: .normal);
+        applySettingsButton.setTitleColor(InverseBackgroundColor, for: .normal);
+        applySettingsButton.titleLabel?.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        applySettingsButton.titleLabel?.textAlignment = .center;
+        applySettingsButton.layer.cornerRadius = 4;
+        applySettingsButton.tag = 1;
+        
+        applySettingsButton.addTarget(self, action: #selector(applySettings), for: .touchUpInside);
+        
+        hamBurgMenuScrollView.addSubview(applySettingsButton);
+        nextY += applySettingsButtonFrame.height + verticalPadding;
         
         // END
         
