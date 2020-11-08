@@ -37,7 +37,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     
     var topSafeAreaInsetHeight = CGFloat(0);
-    let scrollViewFadeButtonThresholdHeight = CGFloat(250);
+    let scrollViewFadeButtonThresholdHeight = CGFloat(200);
     let settingsButton = UIButton();
 
     
@@ -179,7 +179,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         var nextY = topSafeAreaInsetHeight;
         
         let horizontalPadding = CGFloat(20);
-        let subVerticalPadding = CGFloat(10);
+        //let subVerticalPadding = CGFloat(10);
         let verticalPadding = CGFloat(10);
         
         let hamBurgMenuSubViewWidth = hamBurgMenuViewWidth - 2*horizontalPadding;
@@ -424,14 +424,18 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         renderHamBurgMenu();
         
         // set up view buttons
-        let settingsButtonPadding = CGFloat(12);
-        let settingsButtonWidth = CGFloat(20*UIScreen.main.scale);
-        let settingsButtonFrame = CGRect(x: settingsButtonPadding, y: settingsButtonPadding + topSafeAreaInsetHeight, width: settingsButtonWidth, height: settingsButtonWidth);
+        //let settingsButtonPadding = CGFloat(12);
+        let settingsButtonHeight = CGFloat(20*UIScreen.main.scale);
+        let settingsButtonFrame = CGRect(x: 0, y: topSafeAreaInsetHeight + 2*settingsButtonHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
         settingsButton.frame = settingsButtonFrame;
-        settingsButton.backgroundColor = UIColor.gray;
+        settingsButton.backgroundColor = BackgroundColor;
+        settingsButton.roundCorners(corners: [.topRight, .bottomRight], radius: settingsButtonHeight/6);
         
         settingsButton.clipsToBounds = true;
-        settingsButton.layer.cornerRadius = settingsButtonWidth/2;
+        settingsButton.setImage(UIImage(systemName: "chevron.right"), for: .normal);
+        settingsButton.imageView?.contentMode = .scaleToFill;
+        settingsButton.imageView?.tintColor = InverseBackgroundColor;
+        //settingsButton.layer.cornerRadius = settingsButtonWidth/2;
         
         settingsButton.addTarget(self, action: #selector(toggleHamBurgMenu), for: .touchUpInside);
         
