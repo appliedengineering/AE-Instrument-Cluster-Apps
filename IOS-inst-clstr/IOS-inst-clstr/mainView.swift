@@ -37,7 +37,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     
     var topSafeAreaInsetHeight = CGFloat(0);
-    let scrollViewFadeButtonThresholdHeight = CGFloat(200);
+    let scrollViewFadeButtonThresholdHeight = CGFloat(150);
     let settingsButton = UIButton();
 
     
@@ -50,19 +50,24 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     // end textfields
     
     func loadPreferences(){
-        connectionIPAddress = "224.0.0.1"; // defaults
-        connectionPort = "28650"; // defaults
-        recieveTimeout = 1000; // defaults
-        connectionGroup = "telemetry"; // defaults
-        reconnectTimeout = 3; // defaults
+        //connectionIPAddress = "224.0.0.1"; // defaults
+        //connectionPort = "28650"; // defaults
+        //connectionGroup = "telemetry"; // defaults
+        //recieveTimeout = 1000; // defaults
+        //reconnectTimeout = 3; // defaults
         // load user pref
         
+        connectionIPAddress = UserDefaults.standard.string(forKey: "connectionIPAddress") ?? "224.0.0.1";
+        connectionPort = UserDefaults.standard.string(forKey: "connectionPort") ?? "28650";
+        connectionGroup = UserDefaults.standard.string(forKey: "connectionGroup") ?? "telemetry";
+        recieveTimeout = UserDefaults.standard.integer(forKey: "recieveTimeout") == 0 ? 1000 : UserDefaults.standard.integer(forKey: "recieveTimeout");
+        reconnectTimeout = UserDefaults.standard.integer(forKey: "reconnectTimeout") == 0 ? 3 : UserDefaults.standard.integer(forKey: "reconnectTimeout");
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
     }
     
     
-    // HamBurg menu funcs and vars
+    // HamBurg menu funcs and vars ----------------------------------------------------------------------------------------------------------------------
     
     var enableHamBurgMenu = false;
     
@@ -78,6 +83,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     func openHamBurgMenu(){
+        dismissKeyboard();
         enableHamBurgMenu = true;
         //self.hamBurgMenuViewLeadingConstraint.constant = 0;
         UIView.animate(withDuration: 0.2){
@@ -87,6 +93,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     func closeHamBurgMenu(){
+        dismissKeyboard();
         enableHamBurgMenu = false;
         //self.hamBurgMenuViewLeadingConstraint.constant = -self.hamBurgMenuViewWidth;
         UIView.animate(withDuration: 0.2){
@@ -96,6 +103,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     @IBAction func handlePan(_ sender: UIPanGestureRecognizer) { // main goal is to set the hamburgmenuconstraint
+        dismissKeyboard();
         let percentThreshold: CGFloat = 0.3;
         let sensitivity = CGFloat(5); // 0 to x, where 1 is normal multiplier
         let translation = sender.translation(in: view);
@@ -163,6 +171,22 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     @objc func applySettings(){
+        UserDefaults.standard.set(ipAddressInput.text ?? "", forKey:"connectionIPAddress");
+        UserDefaults.standard.set(connectionPortInput.text ?? "", forKey:"connectionPort");
+        UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey:"connectionGroup");
+        UserDefaults.standard.set(Int(recieveTimeoutInput.text ?? "0"), forKey:"recieveTimeout");
+        UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
+        
+        loadPreferences();
+        
+        renderHamBurgMenu();
+        
+        if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+            print("FAILED TO CONNECT TO NEW ADDRESS")
+        }
+        else {
+            print("successful connection to new address")
+        }
         
     }
     
@@ -394,7 +418,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // end ham burg menu rendering
     }
     
-    // end HamBurg menu funcs and vars
+    // end HamBurg menu funcs and vars ----------------------------------------------------------------------------------------------------------------------
     
     // SFProDisplay-Regular, SFProDisplay-Semibold, SFProDisplay-Black, SFProText-Bold
     
@@ -466,7 +490,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                 if (communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
                     
                     while communication.dish != nil{
-                        //print("iteration");
+                        print("iteration");
                         
                         do{
                             
@@ -565,7 +589,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     
-    // for keyboard stuff
+    // for keyboard stuff ----------------------------------------------------------------------------------------------------------------------
     
     
     var keyboardAdjusted = false
@@ -606,7 +630,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         return keyboardSize.cgRectValue.height;
     }
     
-    //
+    // -------------------------------------------------------------------------------------------------------------------------------------------------------
     
     
     
