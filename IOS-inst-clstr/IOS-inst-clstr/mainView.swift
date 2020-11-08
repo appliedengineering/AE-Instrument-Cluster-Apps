@@ -171,23 +171,31 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     @objc func applySettings(){
-        UserDefaults.standard.set(ipAddressInput.text ?? "", forKey:"connectionIPAddress");
-        UserDefaults.standard.set(connectionPortInput.text ?? "", forKey:"connectionPort");
-        UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey:"connectionGroup");
-        UserDefaults.standard.set(Int(recieveTimeoutInput.text ?? "0"), forKey:"recieveTimeout");
-        UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
-        
-        loadPreferences();
-        
-        renderHamBurgMenu();
-        
-        if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
-            print("FAILED TO CONNECT TO NEW ADDRESS")
+        if (validateIpAddress(ipToValidate: ipAddressInput.text ?? "") && connectionPortInput.text?.count ?? 0 > 0 && connectionGroupInput.text?.count ?? 0 > 0){
+            UserDefaults.standard.set(ipAddressInput.text ?? "", forKey:"connectionIPAddress");
+            UserDefaults.standard.set(connectionPortInput.text ?? "", forKey:"connectionPort");
+            UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey:"connectionGroup");
+            UserDefaults.standard.set(Int(recieveTimeoutInput.text ?? "0"), forKey:"recieveTimeout");
+            UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
+            
+            loadPreferences();
+            
+            renderHamBurgMenu();
+            
+            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+                print("FAILED TO CONNECT TO NEW ADDRESS")
+            }
+            else {
+                print("successful connection to new address")
+                closeHamBurgMenu();
+            }
         }
-        else {
-            print("successful connection to new address")
+        else{
+            /*print("ip - \(validateIpAddress(ipToValidate: ipAddressInput.text ?? ""))")
+            print("connection port - \(connectionPortInput.text?.count)")
+            print("connection group - \(connectionGroupInput.text?.count)")*/
+            print("Invalid settings - check your settings and make sure everything is correct");
         }
-        
     }
     
     func renderHamBurgMenu(){
@@ -473,6 +481,9 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         renderViews();
         
+        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+            print("failed first connection - check settings and reconnect again")
+        }
         
         communicationThread();
     }
