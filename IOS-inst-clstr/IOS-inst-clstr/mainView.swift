@@ -487,32 +487,26 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
             while true{ // keeps on reconnecting
-                if (communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+
+                while communication.dish != nil{
+                    //print("iteration");
                     
-                    while communication.dish != nil{
-                        print("iteration");
+                    do{
                         
-                        do{
-                            
-                            let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
-                            print("recieved data - \(data)");
-                        }
-                        catch {
-                            //print("recieved catch")
-                            if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
-                                print("Communication recieve error - \(error)");
-                            }
+                        let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        print("recieved data - \(data)");
+                    }
+                    catch {
+                        //print("recieved catch")
+                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
+                            print("Communication recieve error - \(error)");
                         }
                     }
-                    
                 }
-                else{
-                    // also access lastCommunicationError for string of error
-                    print("Communication setup error - see above console output for reason.");
-                }
-                
+  
+                //print("before sleep")
                 sleep(UInt32(reconnectTimeout));
-               // print("sleep")
+                //print("after sleep")
             }
         }
     }

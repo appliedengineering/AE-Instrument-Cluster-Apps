@@ -63,7 +63,7 @@ class communicationClass{
             try dish?.setRecvTimeout(Int32(recvTimeout)); // in ms
         }
         catch{
-            print("COMMUNICATION error - \(error)");
+            print("CONNECT COMMUNICATION error - \(error)");
             lastCommunicationError = "\(error)";
             return false;
         }
@@ -77,7 +77,7 @@ class communicationClass{
             //try context?.close();
         }
         catch{
-            print("COMMUNICATION error - \(error)");
+            print("DISCONNECT COMMUNICATION error - \(error)");
             lastCommunicationError = "\(error)";
             return false;
         }
@@ -87,7 +87,7 @@ class communicationClass{
     func newconnection(connectionstr: String, connectionGroup: String, recvTimeout: Int)->Bool{ // when changing ports or address
         
         if (!disconnect()){
-            return false;
+            print("Failed disconnect but not severe error");
         }
         
         if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvTimeout: recvTimeout)){
