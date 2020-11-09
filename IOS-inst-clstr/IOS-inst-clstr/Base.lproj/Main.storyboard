@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,33 +17,81 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IkZ-FF-8t7">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2eR-a2-D6V">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <viewLayoutGuide key="contentLayoutGuide" id="1yL-cx-r89"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="qBu-aq-qX7"/>
-                            </scrollView>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IkZ-FF-8t7">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="1yL-cx-r89"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="qBu-aq-qX7"/>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" name="BackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="IkZ-FF-8t7" firstAttribute="top" secondItem="2eR-a2-D6V" secondAttribute="top" id="4Gc-sb-A56"/>
+                                    <constraint firstAttribute="trailing" secondItem="IkZ-FF-8t7" secondAttribute="trailing" id="EhP-p5-JuA"/>
+                                    <constraint firstAttribute="width" constant="414" id="aHY-9C-FJd"/>
+                                    <constraint firstItem="IkZ-FF-8t7" firstAttribute="leading" secondItem="2eR-a2-D6V" secondAttribute="leading" id="hxZ-Pg-1gY"/>
+                                    <constraint firstAttribute="bottom" secondItem="IkZ-FF-8t7" secondAttribute="bottom" id="xtN-sW-Ukk"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="asN-Lp-afB">
+                                <rect key="frame" x="-270" y="0.0" width="270" height="896"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XV1-yf-3tp">
+                                        <rect key="frame" x="-21" y="0.0" width="291" height="896"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="Hf2-WB-bqh"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="rG7-HF-CNQ"/>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" name="BackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="XV1-yf-3tp" firstAttribute="leading" secondItem="asN-Lp-afB" secondAttribute="leading" id="GSC-4e-d8C"/>
+                                    <constraint firstItem="XV1-yf-3tp" firstAttribute="height" secondItem="asN-Lp-afB" secondAttribute="height" id="Hla-14-gGn"/>
+                                    <constraint firstAttribute="trailing" secondItem="XV1-yf-3tp" secondAttribute="trailing" id="Uja-pO-Aej"/>
+                                    <constraint firstItem="XV1-yf-3tp" firstAttribute="top" secondItem="asN-Lp-afB" secondAttribute="top" id="oOC-OL-aS6"/>
+                                    <constraint firstAttribute="width" constant="270" id="tAv-8u-IU6"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="IkZ-FF-8t7" secondAttribute="bottom" id="2ox-Wd-dd6"/>
-                            <constraint firstItem="IkZ-FF-8t7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7SL-sC-EvH"/>
-                            <constraint firstItem="IkZ-FF-8t7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Feu-GY-fkp"/>
-                            <constraint firstItem="IkZ-FF-8t7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Y8x-Hj-ufl"/>
+                            <constraint firstItem="asN-Lp-afB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="-270" id="0Nc-nu-ne0"/>
+                            <constraint firstItem="2eR-a2-D6V" firstAttribute="leading" secondItem="asN-Lp-afB" secondAttribute="trailing" id="Cpy-rO-KwE"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="aEm-mO-L7U" appends="YES" id="J41-j0-rLU"/>
+                        </connections>
                     </view>
+                    <size key="freeformSize" width="414" height="896"/>
                     <connections>
+                        <outlet property="hamBurgMenuScrollView" destination="XV1-yf-3tp" id="1qJ-R7-Th2"/>
+                        <outlet property="hamBurgMenuScrollViewHeightConstraint" destination="Hla-14-gGn" id="lJV-OH-Nyn"/>
+                        <outlet property="hamBurgMenuView" destination="asN-Lp-afB" id="Ewa-Bm-NlF"/>
+                        <outlet property="hamBurgMenuViewLeadingConstraint" destination="0Nc-nu-ne0" id="grP-8W-UeD"/>
+                        <outlet property="hamBurgMenuViewWidthConstraint" destination="tAv-8u-IU6" id="guQ-tc-wpd"/>
                         <outlet property="mainScrollView" destination="IkZ-FF-8t7" id="NBJ-bw-KrK"/>
-                        <outlet property="mainView" destination="8bC-Xf-vdC" id="ArQ-zS-KTM"/>
+                        <outlet property="mainView" destination="2eR-a2-D6V" id="UhP-uA-xHg"/>
+                        <outlet property="mainViewWidthConstraint" destination="aHY-9C-FJd" id="Ojq-uD-1fp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="aEm-mO-L7U">
+                    <connections>
+                        <action selector="handlePan:" destination="BYZ-38-t0r" id="k7K-Q5-H7v"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="140.57971014492756" y="94.419642857142847"/>
+            <point key="canvasLocation" x="140.57971014492756" y="93.750000000000014"/>
         </scene>
     </scenes>
     <resources>
+        <namedColor name="BackgroundColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
