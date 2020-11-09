@@ -8,6 +8,7 @@
 import UIKit
 import MessagePacker
 import AudioToolbox
+import Charts
 
 let protocolString = "udp";
 var connectionIPAddress = "";
@@ -19,6 +20,8 @@ var recieveTimeout = -1; // in ms
 var reconnectTimeout = -1; // in sec
 
 let communication = communicationClass();
+let buffer = dataBuffer();
+let graphs = graphManager();
 
 class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
 
@@ -48,7 +51,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     let recieveTimeoutInput = UITextField(); // in ms
     let reconnectTimeoutInput = UITextField(); // in sec
     // end textfields
-    
+
     func loadPreferences(){
         //connectionIPAddress = "224.0.0.1"; // defaults
         //connectionPort = "28650"; // defaults
@@ -67,7 +70,227 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     }
     
     
-    // HamBurg menu funcs and vars ----------------------------------------------------------------------------------------------------------------------
+    // MARK: UI FUNCTIONS
+
+    
+    // SFProDisplay-Regular, SFProDisplay-Semibold, SFProDisplay-Black, SFProText-Bold
+    
+    override func viewDidLoad() {
+        super.viewDidLoad();
+        // Do any additional setup after loading the view
+        self.hideKeyboardWhenTappedAround();
+        
+        loadPreferences();
+        //printAllFonts();
+        topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
+        
+        // set up outerview stuff
+        
+        mainViewWidthConstraint.constant = UIScreen.main.bounds.width;
+        
+        mainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
+        mainView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
+        hamBurgMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
+        hamBurgMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
+    
+        hamBurgMenuViewWidthConstraint.constant = hamBurgMenuViewWidth;
+        
+        //
+        
+        renderHamBurgMenu();
+        
+        // set up view buttons
+        //let settingsButtonPadding = CGFloat(12);
+        let settingsButtonHeight = CGFloat(20*UIScreen.main.scale);
+        let settingsButtonFrame = CGRect(x: 0, y: topSafeAreaInsetHeight + 2*settingsButtonHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
+        settingsButton.frame = settingsButtonFrame;
+        settingsButton.backgroundColor = BackgroundColor;
+        settingsButton.roundCorners(corners: [.topRight, .bottomRight], radius: settingsButtonHeight/6);
+        
+        settingsButton.clipsToBounds = true;
+        settingsButton.setImage(UIImage(systemName: "chevron.right"), for: .normal);
+        settingsButton.imageView?.contentMode = .scaleToFill;
+        settingsButton.imageView?.tintColor = InverseBackgroundColor;
+        //settingsButton.layer.cornerRadius = settingsButtonWidth/2;
+        
+        settingsButton.addTarget(self, action: #selector(toggleHamBurgMenu), for: .touchUpInside);
+        
+        mainView.addSubview(settingsButton);
+   
+        mainScrollView.tag = -1;
+        //mainScrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 1).isActive = true;
+        mainScrollView.delegate = self;
+        mainScrollView.showsVerticalScrollIndicator = false;
+        mainScrollView.showsHorizontalScrollIndicator = false;
+        
+        renderViews();
+        
+        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+            print("failed first connection - check settings and reconnect again")
+        }
+        
+        communicationThread();
+    }
+    
+    
+    
+    func renderViews(){
+        
+        for view in mainScrollView.subviews{
+            if (view.tag == 1){
+                view.removeFromSuperview();
+            }
+        }
+        let screenWidth = UIScreen.main.bounds.width;
+        let verticalPadding = CGFloat(20);
+        var nextY = CGFloat(0);
+    
+        let headerViewHeight = CGFloat(50);
+        let headerViewFrame = CGRect(x: 0, y: nextY, width: UIScreen.main.bounds.width, height: headerViewHeight);
+        let headerView = UIView(frame: headerViewFrame);
+        
+        headerView.backgroundColor = BackgroundColor;
+        
+        let appIconViewVerticalPadding = CGFloat(5);
+        let appIconViewSide = CGFloat(headerViewHeight - 2*appIconViewVerticalPadding);
+        let appIconViewFrame = CGRect(x: (headerViewFrame.size.width / 2) - (appIconViewSide / 2), y: appIconViewVerticalPadding, width: appIconViewSide, height: appIconViewSide);
+        let appIconView = UIImageView(frame: appIconViewFrame);
+        appIconView.image = UIImage(named: "AELogo");
+        appIconView.contentMode = .scaleAspectFill;
+        
+        headerView.addSubview(appIconView);
+        nextY += headerViewHeight;
+        mainScrollView.addSubview(headerView);
+    
+        
+        //let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
+        let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
+        for i in 0...graphs.numOfGraphs-1{
+            let dataStreamViewFrame = CGRect(x: 0, y:  nextY, width: screenWidth, height: dataStreamViewHeight);
+            let dataStreamView = UIView(frame: dataStreamViewFrame);
+            /*dataStreamView.backgroundColor = UIColor.blue;
+            
+            dataStreamView.clipsToBounds = true;
+            
+            let currentTitle = graphs.graphNameArray[i];
+            let titleTextFont = UIFont(name: "SFProDisplay-Semibold", size: 18)!;
+            let innerPadding = CGFloat(20);
+            let titleTextFrame = CGRect(x: innerPadding, y: innerPadding, width: dataStreamViewFrame.width, height: currentTitle.getHeight(withConstrainedWidth: screenWidth, font: titleTextFont));
+            let titleText = UILabel(frame: titleTextFrame);
+            titleText.font = titleTextFont;
+            titleText.text = currentTitle;
+            
+            dataStreamView.addSubview(titleText);*/
+        
+            //if (i == 0){
+            let currentGraph = LineChartView(frame: CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height));
+            //currentGraph.frame = CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height);
+            currentGraph.backgroundColor = UIColor.gray;
+            
+            graphs.graphViews.append(currentGraph);
+            
+            dataStreamView.addSubview(currentGraph);
+            //}
+            
+            
+            mainScrollView.addSubview(dataStreamView);
+            
+            nextY += dataStreamViewHeight + verticalPadding;
+        }
+        
+        /*let mainInstrumentViewHeight = CGFloat(screenWidth * 1.0666666666666667);
+        let mainInstrumentViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: mainInstrumentViewHeight);
+        let mainInstrumentView = UIView(frame: mainInstrumentViewFrame);
+        mainInstrumentView.backgroundColor = rgb(r: 96,g: 125,b: 139);
+        mainInstrumentView.tag = 1;
+        
+        
+        
+        
+        nextY += mainInstrumentViewFrame.size.height;
+        mainScrollView.addSubview(mainInstrumentView);
+        
+        // there are 6 different data streams that need to be displayed
+        // one will be displayed on the main thingy at the top
+        let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
+        //let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
+        for i in 0...4{
+            let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
+            let dataStreamView = UIView(frame: dataStreamViewFrame);
+            dataStreamView.backgroundColor = dataStreamColors[i];
+            //print("ratio - \(dataStreamViewHeight / UIScreen.main.bounds.width)")
+            dataStreamView.tag = 1;
+            nextY += dataStreamViewHeight;
+            mainScrollView.addSubview(dataStreamView);
+        }
+        */
+        
+        mainScrollView.contentSize = CGSize(width: screenWidth, height: nextY);
+    }
+    
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.tag == -1){
+            let scrollContentYPercent = min(1, max(1 - ((scrollView.contentOffset.y + topSafeAreaInsetHeight) / scrollViewFadeButtonThresholdHeight), 0)); // some maths
+            //print("scroll content offset = \(scrollView.contentOffset.y) : \(scrollContentYPercent)")
+            settingsButton.alpha = scrollContentYPercent;
+        }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        // rerender homescreen
+        print("changed orientation");
+        renderViews();
+    }
+    
+    
+    // MARK: END UI FUNCS
+    
+    
+    
+    
+    // MARK: MULTITHREAD FUNC
+    
+    func communicationThread(){
+        // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
+        DispatchQueue.global(qos: .background).async{
+            while true{ // keeps on reconnecting
+
+                while communication.dish != nil{
+                    //print("iteration");
+                    
+                    do{
+                        
+                        let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        //print("recieved data - \(data)");
+                        buffer.updateWithNewData(data: data);
+                        print(graphs.graphViews.count)
+                    }
+                    catch {
+                        //print("recieved catch")
+                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
+                            print("Communication recieve error - \(error)");
+                        }
+                    }
+                }
+  
+                //print("before sleep")
+                sleep(UInt32(reconnectTimeout));
+                //print("after sleep")
+            }
+        }
+    }
+    
+    
+    
+    // MARK: MULTITHREAD FUNC END
+    
+    
+    
+    
+    // MARK: HamBurg menu funcs and vars ----------------------------------------------------------------------------------------------------------------------
     
     var enableHamBurgMenu = false;
     
@@ -426,176 +649,13 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // end ham burg menu rendering
     }
     
-    // end HamBurg menu funcs and vars ----------------------------------------------------------------------------------------------------------------------
-    
-    // SFProDisplay-Regular, SFProDisplay-Semibold, SFProDisplay-Black, SFProText-Bold
-    
-    override func viewDidLoad() {
-        super.viewDidLoad();
-        // Do any additional setup after loading the view
-        self.hideKeyboardWhenTappedAround();
-        
-        loadPreferences();
-        
-        //printAllFonts();
-        topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
-        
-        // set up outerview stuff
-        
-        mainViewWidthConstraint.constant = UIScreen.main.bounds.width;
-        
-        mainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
-        mainView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
-        hamBurgMenuView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true;
-        hamBurgMenuView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true;
-    
-        hamBurgMenuViewWidthConstraint.constant = hamBurgMenuViewWidth;
-        
-        //
-        
-        renderHamBurgMenu();
-        
-        // set up view buttons
-        //let settingsButtonPadding = CGFloat(12);
-        let settingsButtonHeight = CGFloat(20*UIScreen.main.scale);
-        let settingsButtonFrame = CGRect(x: 0, y: topSafeAreaInsetHeight + 2*settingsButtonHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
-        settingsButton.frame = settingsButtonFrame;
-        settingsButton.backgroundColor = BackgroundColor;
-        settingsButton.roundCorners(corners: [.topRight, .bottomRight], radius: settingsButtonHeight/6);
-        
-        settingsButton.clipsToBounds = true;
-        settingsButton.setImage(UIImage(systemName: "chevron.right"), for: .normal);
-        settingsButton.imageView?.contentMode = .scaleToFill;
-        settingsButton.imageView?.tintColor = InverseBackgroundColor;
-        //settingsButton.layer.cornerRadius = settingsButtonWidth/2;
-        
-        settingsButton.addTarget(self, action: #selector(toggleHamBurgMenu), for: .touchUpInside);
-        
-        mainView.addSubview(settingsButton);
-   
-        mainScrollView.tag = -1;
-        //mainScrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 1).isActive = true;
-        mainScrollView.delegate = self;
-        mainScrollView.showsVerticalScrollIndicator = false;
-        mainScrollView.showsHorizontalScrollIndicator = false;
-        
-        renderViews();
-        
-        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
-            print("failed first connection - check settings and reconnect again")
-        }
-        
-        communicationThread();
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true);
-        return false;
-    }
+    // MARK: end HamBurg menu funcs and vars
     
     
-    func communicationThread(){
-        // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
-        DispatchQueue.global(qos: .background).async{
-            while true{ // keeps on reconnecting
+    
 
-                while communication.dish != nil{
-                    //print("iteration");
-                    
-                    do{
-                        
-                        let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
-                        print("recieved data - \(data)");
-                    }
-                    catch {
-                        //print("recieved catch")
-                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
-                            print("Communication recieve error - \(error)");
-                        }
-                    }
-                }
-  
-                //print("before sleep")
-                sleep(UInt32(reconnectTimeout));
-                //print("after sleep")
-            }
-        }
-    }
     
-    func renderViews(){
-        
-        for view in mainScrollView.subviews{
-            if (view.tag == 1){
-                view.removeFromSuperview();
-            }
-        }
-        let screenWidth = UIScreen.main.bounds.width;
-        
-        var nextY = CGFloat(0);
-    
-        let headerViewHeight = CGFloat(50);
-        let headerViewFrame = CGRect(x: 0, y: nextY, width: UIScreen.main.bounds.width, height: headerViewHeight);
-        let headerView = UIView(frame: headerViewFrame);
-        
-        headerView.backgroundColor = UIColor.systemBackground;
-        
-        let appIconViewVerticalPadding = CGFloat(5);
-        let appIconViewSide = CGFloat(headerViewHeight - 2*appIconViewVerticalPadding);
-        let appIconViewFrame = CGRect(x: (headerViewFrame.size.width / 2) - (appIconViewSide / 2), y: appIconViewVerticalPadding, width: appIconViewSide, height: appIconViewSide);
-        let appIconView = UIImageView(frame: appIconViewFrame);
-        appIconView.image = UIImage(named: "AELogo");
-        appIconView.contentMode = .scaleAspectFill;
-        
-        headerView.addSubview(appIconView);
-        
-        mainScrollView.addSubview(headerView);
-        
-        nextY += headerViewHeight;
-        
-        let mainInstrumentViewHeight = CGFloat(screenWidth * 1.0666666666666667);
-        let mainInstrumentViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: mainInstrumentViewHeight);
-        let mainInstrumentView = UIView(frame: mainInstrumentViewFrame);
-        mainInstrumentView.backgroundColor = UIColor.systemPink;
-        mainInstrumentView.tag = 1;
-        
-        nextY += mainInstrumentViewFrame.size.height;
-        mainScrollView.addSubview(mainInstrumentView);
-        
-        // there are 6 different data streams that need to be displayed
-        // one will be displayed on the main thingy at the top
-        let dataStreamColors = [UIColor.green, UIColor.blue, UIColor.purple, UIColor.red, UIColor.yellow];
-        let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
-        for i in 0...4{
-            let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
-            let dataStreamView = UIView(frame: dataStreamViewFrame);
-            dataStreamView.backgroundColor = dataStreamColors[i];
-            //print("ratio - \(dataStreamViewHeight / UIScreen.main.bounds.width)")
-            dataStreamView.tag = 1;
-            nextY += dataStreamViewHeight;
-            mainScrollView.addSubview(dataStreamView);
-        }
-        
-        mainScrollView.contentSize = CGSize(width: screenWidth, height: nextY);
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView.tag == -1){
-            let scrollContentYPercent = min(1, max(1 - ((scrollView.contentOffset.y + topSafeAreaInsetHeight) / scrollViewFadeButtonThresholdHeight), 0)); // some maths
-            //print("scroll content offset = \(scrollView.contentOffset.y) : \(scrollContentYPercent)")
-            settingsButton.alpha = scrollContentYPercent;
-        }
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        // rerender homescreen
-        print("changed orientation");
-        renderViews();
-    }
-    
-    
-    // for keyboard stuff ----------------------------------------------------------------------------------------------------------------------
-    
+    // MARK: KEYBOARD stuff
     
     var keyboardAdjusted = false
     var lastKeyboardOffset: CGFloat = 0.0
@@ -635,7 +695,14 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         return keyboardSize.cgRectValue.height;
     }
     
-    // -------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true);
+        return false;
+    }
+
+    
+    // MARK: END KEYBOARD -------------------------------------------------------------------------------------------------------------------------------------------------------
     
     
     

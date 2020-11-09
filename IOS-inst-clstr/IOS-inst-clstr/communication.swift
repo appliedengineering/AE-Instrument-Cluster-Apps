@@ -11,6 +11,7 @@ import SwiftyZeroMQ5
 
 struct APiDataPack : Decodable{
     var psuMode : Int = 0;
+    // graphable data
     var RPM : Float64 = 0.0;
     var Torque : Float64 = 0.0;
     var throttlePercent : Int = 0;
@@ -21,6 +22,7 @@ struct APiDataPack : Decodable{
     var pwmCurrent : Float64 = 0.0;
     var powerChange : Float64 = 0.0;
     var voltageChange : Float64 = 0.0;
+    // graphable data
     var mddStatus : Bool = false;
     var ocpStatus : Bool = false;
     var ovpStatus : Bool = false;
