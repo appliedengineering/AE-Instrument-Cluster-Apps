@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Deque",
-        "repositoryURL": "https://github.com/attaswift/Deque.git",
-        "state": {
-          "branch": "master",
-          "revision": "0ad91ef4c8cb7e86f5bd3e8518a61080515120dc",
-          "version": null
-        }
-      },
-      {
         "package": "MessagePacker",
         "repositoryURL": "https://github.com/hirotakan/MessagePacker.git",
         "state": {

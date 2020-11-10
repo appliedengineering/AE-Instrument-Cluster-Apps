@@ -20,7 +20,7 @@ var recieveTimeout = -1; // in ms
 var reconnectTimeout = -1; // in sec
 
 let communication = communicationClass();
-let buffer = dataBuffer();
+let dataMgr = dataManager();
 let graphs = graphManager();
 
 class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
@@ -165,8 +165,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         //let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
         let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
-        for i in 0...graphs.numOfGraphs-1{
-            let dataStreamViewFrame = CGRect(x: 0, y:  nextY, width: screenWidth, height: dataStreamViewHeight);
+        for _ in 0..<numOfGraphs{
+            let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
             let dataStreamView = UIView(frame: dataStreamViewFrame);
             /*dataStreamView.backgroundColor = UIColor.blue;
             
@@ -265,8 +265,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         
                         let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
                         //print("recieved data - \(data)");
-                        buffer.updateWithNewData(data: data);
-                        print(graphs.graphViews.count)
+                        dataMgr.updateWithNewData(data: data);
+                        //print(graphs.graphViews.count)
                     }
                     catch {
                         //print("recieved catch")

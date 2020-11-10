@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import SwiftyZeroMQ5
-
+// ["RPM", "Torque", "Throttle (%)", "Duty (%)", "PWM Frequency", "Temperature (C)", "Source Voltage", "PWM Current", "Power Change (Δ)", "Voltage Change (Δ)"];
 struct APiDataPack : Decodable{
     var psuMode : Int = 0;
     // graphable data

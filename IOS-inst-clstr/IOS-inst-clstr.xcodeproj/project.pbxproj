@@ -10,12 +10,7 @@
 		25F1C185D9756B3741AAD403 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AF22F27EAA09AE92FC2483 /* Pods_IOS_inst_clstr_IOS_inst_clstrUITests.framework */; };
 		33055F9C253D085600B98CDD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 33055F9B253D085600B98CDD /* Charts */; };
 		331C55782553DEF900DEF3A3 /* extraneous.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C55772553DEF900DEF3A3 /* extraneous.swift */; };
-		332113852558C084006F34CB /* Deque in Frameworks */ = {isa = PBXBuildFile; productRef = 332113842558C084006F34CB /* Deque */; };
-		332113862558C084006F34CB /* Deque in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 332113842558C084006F34CB /* Deque */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3321138B2558CE00006F34CB /* graphManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3321138A2558CE00006F34CB /* graphManager.swift */; };
-		332113912558CE1B006F34CB /* dataBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332113902558CE1B006F34CB /* dataBuffer.swift */; };
-		332113922558CE1B006F34CB /* dataBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332113902558CE1B006F34CB /* dataBuffer.swift */; };
-		332113932558CE1B006F34CB /* dataBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332113902558CE1B006F34CB /* dataBuffer.swift */; };
 		332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332A082A253A51FF00BD3081 /* AppUtility.swift */; };
 		3367306B255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */; };
 		3367306C255521ED007C99F2 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */; };
@@ -29,6 +24,9 @@
 		33673074255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */; };
 		33673075255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */; };
 		33673076255521ED007C99F2 /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */; };
+		33ADDE18255B02E300C501F2 /* dataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ADDE17255B02E300C501F2 /* dataManager.swift */; };
+		33ADDE19255B02E300C501F2 /* dataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ADDE17255B02E300C501F2 /* dataManager.swift */; };
+		33ADDE1A255B02E300C501F2 /* dataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ADDE17255B02E300C501F2 /* dataManager.swift */; };
 		33D5498C253FE61400737F95 /* communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D5498B253FE61400737F95 /* communication.swift */; };
 		33E0625F25381B4C004F171C /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0625E25381B4C004F171C /* mainView.swift */; };
 		33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059D25357B540000FBFF /* AppDelegate.swift */; };
@@ -67,7 +65,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				332113862558C084006F34CB /* Deque in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,12 +75,12 @@
 		273280052F0B6B845FA7CB89 /* Pods-IOS-inst-clstrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOS-inst-clstrTests.release.xcconfig"; path = "Target Support Files/Pods-IOS-inst-clstrTests/Pods-IOS-inst-clstrTests.release.xcconfig"; sourceTree = "<group>"; };
 		331C55772553DEF900DEF3A3 /* extraneous.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extraneous.swift; sourceTree = "<group>"; };
 		3321138A2558CE00006F34CB /* graphManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphManager.swift; sourceTree = "<group>"; };
-		332113902558CE1B006F34CB /* dataBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dataBuffer.swift; sourceTree = "<group>"; };
 		332A082A253A51FF00BD3081 /* AppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtility.swift; sourceTree = "<group>"; };
 		33673067255521ED007C99F2 /* SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Regular.ttf"; path = "Assets/SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		33673068255521ED007C99F2 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "Assets/SFProText-Bold.ttf"; sourceTree = "<group>"; };
 		33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Black.ttf"; path = "Assets/SFProDisplay-Black.ttf"; sourceTree = "<group>"; };
 		3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Semibold.ttf"; path = "Assets/SFProDisplay-Semibold.ttf"; sourceTree = "<group>"; };
+		33ADDE17255B02E300C501F2 /* dataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dataManager.swift; sourceTree = "<group>"; };
 		33D5498B253FE61400737F95 /* communication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = communication.swift; sourceTree = "<group>"; };
 		33E0625E25381B4C004F171C /* mainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
 		33EC059A25357B540000FBFF /* IOS-inst-clstr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS-inst-clstr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,7 +112,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				33FF0C67254FD0A700F81124 /* MessagePacker in Frameworks */,
-				332113852558C084006F34CB /* Deque in Frameworks */,
 				33055F9C253D085600B98CDD /* Charts in Frameworks */,
 				72F39EA5D2E9F38B65669FCB /* Pods_IOS_inst_clstr.framework in Frameworks */,
 			);
@@ -169,8 +165,8 @@
 				332A082A253A51FF00BD3081 /* AppUtility.swift */,
 				33EC059F25357B540000FBFF /* SceneDelegate.swift */,
 				33D5498B253FE61400737F95 /* communication.swift */,
-				332113902558CE1B006F34CB /* dataBuffer.swift */,
 				3321138A2558CE00006F34CB /* graphManager.swift */,
+				33ADDE17255B02E300C501F2 /* dataManager.swift */,
 				33E0625E25381B4C004F171C /* mainView.swift */,
 				331C55772553DEF900DEF3A3 /* extraneous.swift */,
 				33EC05A325357B540000FBFF /* Main.storyboard */,
@@ -248,7 +244,6 @@
 			packageProductDependencies = (
 				33055F9B253D085600B98CDD /* Charts */,
 				33FF0C66254FD0A700F81124 /* MessagePacker */,
-				332113842558C084006F34CB /* Deque */,
 			);
 			productName = "IOS-inst-clstr";
 			productReference = 33EC059A25357B540000FBFF /* IOS-inst-clstr.app */;
@@ -327,7 +322,6 @@
 			packageReferences = (
 				33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */,
 				33FF0C65254FD0A700F81124 /* XCRemoteSwiftPackageReference "MessagePacker" */,
-				332113832558C084006F34CB /* XCRemoteSwiftPackageReference "Deque" */,
 			);
 			productRefGroup = 33EC059B25357B540000FBFF /* Products */;
 			projectDirPath = "";
@@ -488,13 +482,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */,
+				33ADDE18255B02E300C501F2 /* dataManager.swift in Sources */,
 				331C55782553DEF900DEF3A3 /* extraneous.swift in Sources */,
 				3321138B2558CE00006F34CB /* graphManager.swift in Sources */,
 				33E0625F25381B4C004F171C /* mainView.swift in Sources */,
 				33D5498C253FE61400737F95 /* communication.swift in Sources */,
 				33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */,
 				33EC05A025357B540000FBFF /* SceneDelegate.swift in Sources */,
-				332113912558CE1B006F34CB /* dataBuffer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,7 +497,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				33EC05B525357B550000FBFF /* IOS_inst_clstrTests.swift in Sources */,
-				332113922558CE1B006F34CB /* dataBuffer.swift in Sources */,
+				33ADDE19255B02E300C501F2 /* dataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,7 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				33EC05C025357B550000FBFF /* IOS_inst_clstrUITests.swift in Sources */,
-				332113932558CE1B006F34CB /* dataBuffer.swift in Sources */,
+				33ADDE1A255B02E300C501F2 /* dataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -845,14 +839,6 @@
 				minimumVersion = 3.6.0;
 			};
 		};
-		332113832558C084006F34CB /* XCRemoteSwiftPackageReference "Deque" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/attaswift/Deque.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		33FF0C65254FD0A700F81124 /* XCRemoteSwiftPackageReference "MessagePacker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hirotakan/MessagePacker.git";
@@ -868,11 +854,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 33055F9A253D085600B98CDD /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = Charts;
-		};
-		332113842558C084006F34CB /* Deque */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 332113832558C084006F34CB /* XCRemoteSwiftPackageReference "Deque" */;
-			productName = Deque;
 		};
 		33FF0C66254FD0A700F81124 /* MessagePacker */ = {
 			isa = XCSwiftPackageProductDependency;
