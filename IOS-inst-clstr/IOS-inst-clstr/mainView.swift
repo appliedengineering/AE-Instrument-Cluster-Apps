@@ -185,13 +185,23 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             //if (i == 0){
             let currentGraph = LineChartView(frame: CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height));
             //currentGraph.frame = CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height);
-            currentGraph.backgroundColor = UIColor.gray;
             
-            let line = LineChartDataSet(entries: [ChartDataEntry(x: 0, y: 0)], label: graphs.graphNameArray[i]);
+            currentGraph.backgroundColor = UIColor.gray;
+            currentGraph.isUserInteractionEnabled = false;
+            currentGraph.xAxis.drawGridLinesEnabled = false;
+            currentGraph.leftAxis.drawAxisLineEnabled = false;
+            //currentGraph.rightAxis.drawAxisLineEnabled = false;
+            //currentGraph.legend.enabled = false;
+            currentGraph.rightAxis.enabled = false;
+            //currentGraph.leftAxis.enabled = false;
+            currentGraph.xAxis.enabled = false;
+            
+            let line = LineChartDataSet(entries: [ChartDataEntry](), label: graphs.graphNameArray[i]);
             
             // set line attributes here
             
-            
+            line.drawCirclesEnabled = false;
+            line.drawValuesEnabled = false;
             
             // end line attributes
             
@@ -281,7 +291,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         //print("recieved data - \(data)");
                         dataMgr.updateWithNewData(data: data);
                         //print(graphs.graphViews.count)
-                    }
+                        usleep(useconds_t(700)); // ms
+                     }
                     catch {
                         //print("recieved catch")
                         if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao

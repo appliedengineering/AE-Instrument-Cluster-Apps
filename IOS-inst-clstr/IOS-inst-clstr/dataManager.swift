@@ -25,7 +25,7 @@ class dataManager{
         //buffer.append(convertRawData(data: data, currentUnixEpoch: currentUnixEpoch));
         // call func to update ui
         let currentData = convertRawData(data: data, currentUnixEpoch: currentUnixEpoch);
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             for i in 0..<numOfGraphs{
                // print("calling - \(i) - data - \(currentData[i])")
                 if (!graphs.updateGraph(with: i, point: currentData[i])){
@@ -34,9 +34,7 @@ class dataManager{
             }
             // TODO: call extra func here to mainview to update data that doesn't need a graph
             
-            
-            
-        }
+       }
     }
   
     func convertRawData(data: APiDataPack, currentUnixEpoch: Int64)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
