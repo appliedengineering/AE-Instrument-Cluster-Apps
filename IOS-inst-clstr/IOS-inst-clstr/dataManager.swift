@@ -11,8 +11,6 @@ import Charts
 
 class dataManager{
     var startUnixEpoch : Int64 = -1;
-    var buffer = [[ChartDataEntry]](repeating: [ChartDataEntry](), count: numOfGraphs); // ChartDataEntry will include (x: time diff, y: data point)
-    let maxSize = 100;
     
     init(){
         startUnixEpoch = Int64(Date().timeIntervalSince1970);
@@ -25,29 +23,32 @@ class dataManager{
         //print("data recieved at - \(currentUnixEpoch)");
         
         //buffer.append(convertRawData(data: data, currentUnixEpoch: currentUnixEpoch));
-        convertRawData(data: data, currentUnixEpoch: currentUnixEpoch);
-        if (buffer.count > maxSize){ // to keep array size to not exceed max size
-            for i in 0..<numOfGraphs{
-                buffer[i].removeFirst();
-            }
-        }
-        
         // call func to update ui
+        let currentData = convertRawData(data: data, currentUnixEpoch: currentUnixEpoch);
         DispatchQueue.main.sync {
-            graphs.updateAll(data: buffer);
+            for i in 0..<numOfGraphs{
+               // print("calling - \(i) - data - \(currentData[i])")
+                if (!graphs.updateGraph(with: i, point: currentData[i])){
+                    print("Failed to add data point at graph with index \(i) : Timestamp = \(currentUnixEpoch)");
+                }
+            }
+            // TODO: call extra func here to mainview to update data that doesn't need a graph
             
-            // call extra func here to mainview to update data that doesn't need a graph
+            
+            
         }
     }
   
-    func convertRawData(data: APiDataPack, currentUnixEpoch: Int64){ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
+    func convertRawData(data: APiDataPack, currentUnixEpoch: Int64)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
         let timeDiff = Int64(currentUnixEpoch - startUnixEpoch);
+        var output = Array(repeating: ChartDataEntry(), count: numOfGraphs);
         
         for i in 0..<numOfGraphs{
-            buffer[i].append(ChartDataEntry(x: Double(timeDiff), y: specificDataAttribute(with: i, data: data)));
+            output[i] = ChartDataEntry(x: Double(timeDiff), y: specificDataAttribute(with: i, data: data));
         }
         
+        return output;
     }
     
     // ["RPM", "Torque", "Throttle (%)", "Duty (%)", "PWM Frequency", "Temperature (C)", "Source Voltage", "PWM Current", "Power Change (Δ)", "Voltage Change (Δ)"];
@@ -80,8 +81,7 @@ class dataManager{
     }
     
     func clearData(){
-        buffer.removeAll();
+        //buffer.removeAll();
     }
-    
     
 }

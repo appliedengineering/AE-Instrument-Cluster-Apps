@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-IOS-inst-clstr/Pods-IOS-inst-clstr-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Charts/Charts.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyZeroMQ5/SwiftyZeroMQ5.framework

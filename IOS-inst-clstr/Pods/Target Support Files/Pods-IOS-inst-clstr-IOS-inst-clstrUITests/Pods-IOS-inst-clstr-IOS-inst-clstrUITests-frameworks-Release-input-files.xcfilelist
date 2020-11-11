@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-IOS-inst-clstr-IOS-inst-clstrUITests/Pods-IOS-inst-clstr-IOS-inst-clstrUITests-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Charts/Charts.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyZeroMQ5/SwiftyZeroMQ5.framework

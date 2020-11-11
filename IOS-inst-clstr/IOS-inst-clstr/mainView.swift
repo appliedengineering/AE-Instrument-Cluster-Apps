@@ -165,7 +165,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         //let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
         let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
-        for _ in 0..<numOfGraphs{
+        for i in 0..<numOfGraphs{
             let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
             let dataStreamView = UIView(frame: dataStreamViewFrame);
             /*dataStreamView.backgroundColor = UIColor.blue;
@@ -186,6 +186,20 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             let currentGraph = LineChartView(frame: CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height));
             //currentGraph.frame = CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height);
             currentGraph.backgroundColor = UIColor.gray;
+            
+            let line = LineChartDataSet(entries: [ChartDataEntry(x: 0, y: 0)], label: graphs.graphNameArray[i]);
+            
+            // set line attributes here
+            
+            
+            
+            // end line attributes
+            
+            let lineData = LineChartData();
+            
+            lineData.addDataSet(line);
+            
+            currentGraph.data = lineData;
             
             graphs.graphViews.append(currentGraph);
             
@@ -254,7 +268,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     // MARK: MULTITHREAD FUNC
     
     func communicationThread(){
-        // use multithreading to get the actual data from communication.swift and msgpack.swift then use main thread to set ui elements
+        // use multithreading to get the actual data from communication.swift then use main thread to set ui elements
         DispatchQueue.global(qos: .background).async{
             while true{ // keeps on reconnecting
 

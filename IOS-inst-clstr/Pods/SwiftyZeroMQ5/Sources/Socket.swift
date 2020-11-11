@@ -188,8 +188,7 @@ extension SwiftyZeroMQ {
             if bufferSize == -1 {
                 throw ZeroMQError.last
             }
-            
-            
+           
             return Data(bytes: buffer, count: Int(bufferSize))
         }
         
@@ -604,7 +603,6 @@ extension SwiftyZeroMQ {
             }
         }
         
-        
         // DRAFT SOCKET METHODS ---------
         
         public func joinGroup(_ group: String) throws{
@@ -620,6 +618,7 @@ extension SwiftyZeroMQ {
                 throw ZeroMQError.last;
             }
         }
+        
     }
     
 }
