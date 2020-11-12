@@ -53,7 +53,7 @@ class communicationClass{
         print("SwiftyZeroMQ version is \(SwiftyZeroMQ.frameworkVersion)");
     }
     
-    func connect(connectionstr: String, connectionGroup: String, recvTimeout: Int)->Bool{
+    func connect(connectionstr: String, connectionGroup: String, recvReconnect: Int)->Bool{
         
         connectionString = connectionstr;
         group = connectionGroup;
@@ -64,7 +64,7 @@ class communicationClass{
             try dish?.bind(connectionString);
             //try dish?.setSubscribe("telemetry");
             try dish?.joinGroup(group);
-            try dish?.setRecvTimeout(Int32(recvTimeout)); // in ms
+            try dish?.setRecvTimeout(Int32(recvReconnect)); // in ms
         }
         catch{
             print("CONNECT COMMUNICATION error - \(error)");
@@ -88,13 +88,13 @@ class communicationClass{
         return true;
     }
     
-    func newconnection(connectionstr: String, connectionGroup: String, recvTimeout: Int)->Bool{ // when changing ports or address
+    func newconnection(connectionstr: String, connectionGroup: String, recvReconnect: Int)->Bool{ // when changing ports or address
         
         if (!disconnect()){
             print("Failed disconnect but not severe error");
         }
         
-        if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvTimeout: recvTimeout)){
+        if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvReconnect: recvReconnect)){
             return false;
         }
         

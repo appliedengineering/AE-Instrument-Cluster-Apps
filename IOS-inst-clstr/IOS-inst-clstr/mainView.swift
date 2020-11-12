@@ -15,9 +15,11 @@ var connectionIPAddress = "";
 var connectionPort = "";
 var connectionAddress = "";
 var connectionGroup = "";
-var recieveTimeout = -1; // in ms
+var receiveReconnect = -1; // in ms
+var receiveTimeout = -1; // in ms
 
 var reconnectTimeout = -1; // in sec
+
 
 let communication = communicationClass();
 let dataMgr = dataManager();
@@ -40,7 +42,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     
     var topSafeAreaInsetHeight = CGFloat(0);
-    let scrollViewFadeButtonThresholdHeight = CGFloat(150);
+    let scrollViewFadeButtonThresholdHeight = CGFloat(100);
     let settingsButton = UIButton();
 
     
@@ -48,7 +50,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     let ipAddressInput = UITextField();
     let connectionPortInput = UITextField();
     let connectionGroupInput = UITextField();
-    let recieveTimeoutInput = UITextField(); // in ms
+    let receiveReconnectInput = UITextField(); // in ms
+    let receiveTimeoutInput = UITextField(); // in ms
     let reconnectTimeoutInput = UITextField(); // in sec
     // end textfields
 
@@ -63,7 +66,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionIPAddress = UserDefaults.standard.string(forKey: "connectionIPAddress") ?? "224.0.0.1";
         connectionPort = UserDefaults.standard.string(forKey: "connectionPort") ?? "28650";
         connectionGroup = UserDefaults.standard.string(forKey: "connectionGroup") ?? "telemetry";
-        recieveTimeout = UserDefaults.standard.integer(forKey: "recieveTimeout") == 0 ? 1000 : UserDefaults.standard.integer(forKey: "recieveTimeout");
+        receiveReconnect = UserDefaults.standard.integer(forKey: "receiveReconnect") == 0 ? 1000 : UserDefaults.standard.integer(forKey: "receiveReconnect");
+        receiveTimeout = UserDefaults.standard.integer(forKey: "receiveTimeout") == 0 ? 100 : UserDefaults.standard.integer(forKey: "receiveTimeout");
         reconnectTimeout = UserDefaults.standard.integer(forKey: "reconnectTimeout") == 0 ? 3 : UserDefaults.standard.integer(forKey: "reconnectTimeout");
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
@@ -102,7 +106,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // set up view buttons
         //let settingsButtonPadding = CGFloat(12);
         let settingsButtonHeight = CGFloat(20*UIScreen.main.scale);
-        let settingsButtonFrame = CGRect(x: 0, y: topSafeAreaInsetHeight + 2*settingsButtonHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
+        let settingsButtonFrame = CGRect(x: 0, y: topSafeAreaInsetHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
         settingsButton.frame = settingsButtonFrame;
         settingsButton.backgroundColor = BackgroundColor;
         settingsButton.roundCorners(corners: [.topRight, .bottomRight], radius: settingsButtonHeight/6);
@@ -111,6 +115,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         settingsButton.setImage(UIImage(systemName: "chevron.right"), for: .normal);
         settingsButton.imageView?.contentMode = .scaleToFill;
         settingsButton.imageView?.tintColor = InverseBackgroundColor;
+        //settingsButton.layer.borderWidth = 1;
+        //settingsButton.layer.borderColor = InverseBackgroundColor.cgColor;
         //settingsButton.layer.cornerRadius = settingsButtonWidth/2;
         
         settingsButton.addTarget(self, action: #selector(toggleHamBurgMenu), for: .touchUpInside);
@@ -125,7 +131,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         renderViews();
         
-        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
             print("failed first connection - check settings and reconnect again")
         }
         
@@ -186,22 +192,30 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             let currentGraph = LineChartView(frame: CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height));
             //currentGraph.frame = CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height);
             
-            currentGraph.backgroundColor = UIColor.gray;
+            currentGraph.backgroundColor = UIColor.clear;
             currentGraph.isUserInteractionEnabled = false;
             currentGraph.xAxis.drawGridLinesEnabled = false;
             currentGraph.leftAxis.drawAxisLineEnabled = false;
-            //currentGraph.rightAxis.drawAxisLineEnabled = false;
-            //currentGraph.legend.enabled = false;
+            currentGraph.leftAxis.drawGridLinesEnabled = false;
+            //currentGraph.leftAxis.axisLineColor = UIColor.clear;
+            currentGraph.rightAxis.drawAxisLineEnabled = false;
+            currentGraph.legend.enabled = false;
             currentGraph.rightAxis.enabled = false;
             //currentGraph.leftAxis.enabled = false;
             currentGraph.xAxis.enabled = false;
+            currentGraph.drawGridBackgroundEnabled = false;
             
             let line = LineChartDataSet(entries: [ChartDataEntry](), label: graphs.graphNameArray[i]);
             
             // set line attributes here
             
+            line.fill = Fill.fillWithLinearGradient(CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [AccentColor.cgColor, UIColor.clear.cgColor] as CFArray, locations: [1.0, 0.0])!, angle: 90.0);
+            line.drawFilledEnabled = true;
             line.drawCirclesEnabled = false;
             line.drawValuesEnabled = false;
+            line.colors = [AccentColor];
+            //line.valueFont = UIFont(name: "SFProDisplay-Regular", size: 10)!;
+            line.mode = .cubicBezier;
             
             // end line attributes
             
@@ -291,7 +305,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         //print("recieved data - \(data)");
                         dataMgr.updateWithNewData(data: data);
                         //print(graphs.graphViews.count)
-                        usleep(useconds_t(700)); // ms
+                        usleep(useconds_t(receiveTimeout)); // ms
                      }
                     catch {
                         //print("recieved catch")
@@ -423,14 +437,17 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             UserDefaults.standard.set(ipAddressInput.text ?? "", forKey:"connectionIPAddress");
             UserDefaults.standard.set(connectionPortInput.text ?? "", forKey:"connectionPort");
             UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey:"connectionGroup");
-            UserDefaults.standard.set(Int(recieveTimeoutInput.text ?? "0"), forKey:"recieveTimeout");
+            UserDefaults.standard.set(Int(receiveTimeoutInput.text ?? "0"), forKey:"receiveTimeout");
+            UserDefaults.standard.set(Int(receiveReconnectInput.text ?? "0"), forKey:"receiveReconnect");
             UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
             
             loadPreferences();
             
             renderHamBurgMenu();
             
-            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+            //hamBurgMenuScrollView.setContentOffset(.zero, animated: true);
+            
+            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
                 print("FAILED TO CONNECT TO NEW ADDRESS")
             }
             else {
@@ -563,33 +580,62 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         hamBurgMenuScrollView.addSubview(connectionGroupInput);
         nextY += connectionGroupInputFrame.height + verticalPadding;
         
+        /// ----------- RECIEVE RECONNECT
+        
+        let receiveReconnectLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let receiveReconnectLabel = UILabel(frame: receiveReconnectLabelFrame);
+        receiveReconnectLabel.text = "Receive Reconnect (ms)";
+        receiveReconnectLabel.textColor = InverseBackgroundColor;
+        receiveReconnectLabel.textAlignment = .left;
+        receiveReconnectLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        receiveReconnectLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(receiveReconnectLabel);
+        nextY += receiveReconnectLabelFrame.height;
+        
+        let receiveReconnectInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        receiveReconnectInput.frame = receiveReconnectInputFrame; // already declared above
+        receiveReconnectInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        receiveReconnectInput.text = String(receiveReconnect);
+        receiveReconnectInput.allowsEditingTextAttributes = false;
+        receiveReconnectInput.autocorrectionType = .no;
+        receiveReconnectInput.spellCheckingType = .no;
+        receiveReconnectInput.keyboardType = .numberPad; // experiment with this
+        receiveReconnectInput.setUnderLine();
+        receiveReconnectInput.delegate = self;
+        receiveReconnectInput.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(receiveReconnectInput);
+        nextY += receiveReconnectInputFrame.height + verticalPadding;
+        
         /// ----------- RECIEVE TIMEOUT
         
-        let recieveTimeoutLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
-        let recieveTimeoutLabel = UILabel(frame: recieveTimeoutLabelFrame);
-        recieveTimeoutLabel.text = "Recieve Timeout (ms)";
-        recieveTimeoutLabel.textColor = InverseBackgroundColor;
-        recieveTimeoutLabel.textAlignment = .left;
-        recieveTimeoutLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
-        recieveTimeoutLabel.tag = 1;
+        let receiveTimeoutLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let receiveTimeoutLabel = UILabel(frame: receiveTimeoutLabelFrame);
+        receiveTimeoutLabel.text = "Receive Timeout (ms)";
+        receiveTimeoutLabel.textColor = InverseBackgroundColor;
+        receiveTimeoutLabel.textAlignment = .left;
+        receiveTimeoutLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        receiveTimeoutLabel.tag = 1;
         
-        hamBurgMenuScrollView.addSubview(recieveTimeoutLabel);
-        nextY += recieveTimeoutLabelFrame.height;
+        hamBurgMenuScrollView.addSubview(receiveTimeoutLabel);
+        nextY += receiveTimeoutLabelFrame.height;
         
-        let recieveTimeoutInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
-        recieveTimeoutInput.frame = recieveTimeoutInputFrame; // already declared above
-        recieveTimeoutInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
-        recieveTimeoutInput.text = String(recieveTimeout);
-        recieveTimeoutInput.allowsEditingTextAttributes = false;
-        recieveTimeoutInput.autocorrectionType = .no;
-        recieveTimeoutInput.spellCheckingType = .no;
-        recieveTimeoutInput.keyboardType = .numberPad; // experiment with this
-        recieveTimeoutInput.setUnderLine();
-        recieveTimeoutInput.delegate = self;
-        recieveTimeoutInput.tag = 1;
+        let receiveTimeoutInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        receiveTimeoutInput.frame = receiveTimeoutInputFrame; // already declared above
+        receiveTimeoutInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        receiveTimeoutInput.text = String(receiveTimeout);
+        receiveTimeoutInput.allowsEditingTextAttributes = false;
+        receiveTimeoutInput.autocorrectionType = .no;
+        receiveTimeoutInput.spellCheckingType = .no;
+        receiveTimeoutInput.keyboardType = .numberPad; // experiment with this
+        receiveTimeoutInput.setUnderLine();
+        receiveTimeoutInput.delegate = self;
+        receiveTimeoutInput.tag = 1;
         
-        hamBurgMenuScrollView.addSubview(recieveTimeoutInput);
-        nextY += recieveTimeoutInputFrame.height + verticalPadding;
+        hamBurgMenuScrollView.addSubview(receiveTimeoutInput);
+        nextY += receiveTimeoutInputFrame.height + verticalPadding;
+        
         
         /// ----------- RECONNECT TIMEOUT
         
@@ -669,6 +715,9 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // END
         
         hamBurgMenuScrollView.contentSize = CGSize(width: hamBurgMenuViewWidth, height: nextY);
+        
+        hamBurgMenuScrollView.setContentOffset(.zero, animated: true);
+        
         hamBurgMenuScrollView.delegate = self;
         
         // end ham burg menu rendering

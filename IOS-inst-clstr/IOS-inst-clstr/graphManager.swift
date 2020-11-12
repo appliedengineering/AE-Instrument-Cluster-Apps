@@ -26,7 +26,10 @@ class graphManager{ // all funcs must be called from
             // https://stackoverflow.com/questions/39227530/swift-reload-view-for-displaying-new-data-in-chart
             
             graphViews[index].data!.notifyDataChanged();
-            graphViews[index].notifyDataSetChanged();
+            
+            DispatchQueue.main.sync {
+                graphViews[index].notifyDataSetChanged();
+            }
         }
         return result;
     }
