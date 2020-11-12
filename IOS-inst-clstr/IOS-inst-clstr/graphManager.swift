@@ -25,11 +25,16 @@ class graphManager{ // all funcs must be called from
             
             // https://stackoverflow.com/questions/39227530/swift-reload-view-for-displaying-new-data-in-chart
             
+            if (graphViews[index].data!.dataSets[0].entryCount > 100){ // replace 100 with custom size
+                graphViews[index].data!.dataSets[0].removeFirst();
+            }
+            
             graphViews[index].data!.notifyDataChanged();
             
             DispatchQueue.main.sync {
                 graphViews[index].notifyDataSetChanged();
             }
+            
         }
         return result;
     }

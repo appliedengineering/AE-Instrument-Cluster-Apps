@@ -32,7 +32,7 @@ class dataManager{
             }
         }
         // TODO: call extra func here to mainview to update data that doesn't need a graph
-        
+        //print("new size of array after this iteration : \(graphs.graphViews[0].data!.dataSets[0].entryCount)")
         
     }
   
