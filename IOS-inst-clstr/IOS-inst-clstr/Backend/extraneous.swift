@@ -106,3 +106,7 @@ extension UIView {
 func rgb(r: Int, g: Int, b: Int) -> UIColor{
     return UIColor(red: CGFloat(r)/255, green: CGFloat(g)/255, blue: CGFloat(b)/255, alpha: 1);
 }
+
+class GraphUIButton: UIButton{
+    var graphIndex = -1;
+}

@@ -25,7 +25,7 @@ let communication = communicationClass();
 let dataMgr = dataManager();
 let graphs = graphManager();
 
-class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
+class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
 
     //@IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var mainScrollView: UIScrollView!
@@ -173,7 +173,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
         for i in 0..<numOfGraphs{
             let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
-            let dataStreamView = UIView(frame: dataStreamViewFrame);
+            let dataStreamView = GraphUIButton(frame: dataStreamViewFrame);
             /*dataStreamView.backgroundColor = UIColor.blue;
             
             dataStreamView.clipsToBounds = true;
@@ -228,7 +228,20 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             graphs.graphViews.append(currentGraph);
             
             dataStreamView.addSubview(currentGraph);
+            
+            let graphTitleFont = UIFont(name: "SFProDisplay-Semibold", size: 18)!;
+            let graphTitleHeight = currentGraph.frame.height / 8;
+            let graphTitleWidth = graphs.graphNameArray[i].getWidth(withConstrainedHeight: graphTitleHeight, font: graphTitleFont);
+            let graphTitleFrame = CGRect(x: currentGraph.frame.width - graphTitleWidth - (currentGraph.frame.width / 25), y: 0, width: graphTitleWidth, height: graphTitleHeight);
+            let graphTitle = UILabel(frame: graphTitleFrame);
+            graphTitle.text = graphs.graphNameArray[i];
+            graphTitle.font = graphTitleFont;
+            graphTitle.textColor = InverseBackgroundColor;
+            
+            dataStreamView.addSubview(graphTitle);
             //}
+            
+            dataStreamView.addTarget(self, action: #selector(openGraphView), for: .touchUpInside);
             
             
             mainScrollView.addSubview(dataStreamView);
@@ -236,37 +249,13 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             nextY += dataStreamViewHeight + verticalPadding;
         }
         
-        /*let mainInstrumentViewHeight = CGFloat(screenWidth * 1.0666666666666667);
-        let mainInstrumentViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: mainInstrumentViewHeight);
-        let mainInstrumentView = UIView(frame: mainInstrumentViewFrame);
-        mainInstrumentView.backgroundColor = rgb(r: 96,g: 125,b: 139);
-        mainInstrumentView.tag = 1;
-        
-        
-        
-        
-        nextY += mainInstrumentViewFrame.size.height;
-        mainScrollView.addSubview(mainInstrumentView);
-        
-        // there are 6 different data streams that need to be displayed
-        // one will be displayed on the main thingy at the top
-        let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
-        //let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
-        for i in 0...4{
-            let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
-            let dataStreamView = UIView(frame: dataStreamViewFrame);
-            dataStreamView.backgroundColor = dataStreamColors[i];
-            //print("ratio - \(dataStreamViewHeight / UIScreen.main.bounds.width)")
-            dataStreamView.tag = 1;
-            nextY += dataStreamViewHeight;
-            mainScrollView.addSubview(dataStreamView);
-        }
-        */
-        
         mainScrollView.contentSize = CGSize(width: screenWidth, height: nextY);
     }
     
-    
+    @objc func openGraphView(button: GraphUIButton){
+        UIImpactFeedbackGenerator(style: .light).impactOccurred();
+        performSegue(withIdentifier: "mainViewTographViewSegue", sender: nil);
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (scrollView.tag == -1){
@@ -308,7 +297,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         usleep(useconds_t(receiveTimeout)); // ms
                      }
                     catch {
-                        //print("recieved catch")
+                        //print("recieved catch - \(error)") // -- toggling this print func allows the recieve to work and not work for some reason
                         if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
                             print("Communication recieve error - \(error)");
                         }
@@ -452,6 +441,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             }
             else {
                 print("successful connection to new address")
+                UIImpactFeedbackGenerator(style: .light).impactOccurred();
                 closeHamBurgMenu();
             }
         }
