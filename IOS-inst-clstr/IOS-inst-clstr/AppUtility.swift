@@ -10,6 +10,9 @@ import UIKit
 
 struct AppUtility {
 
+    static let originalWidth = UIScreen.main.bounds.width;
+    static let originalHeight = UIScreen.main.bounds.height;
+    
     static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
     
         if let delegate = UIApplication.shared.delegate as? AppDelegate {

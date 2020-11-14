@@ -12,7 +12,9 @@ import Charts
 class dataManager{
     var startUnixEpoch : Int64 = -1;
     
-    init(){
+    static let obj = dataManager();
+    
+    private init(){
         startUnixEpoch = Int64(Date().timeIntervalSince1970);
         print("Current UNIX EPOCH = \(startUnixEpoch)");
     }
@@ -25,7 +27,7 @@ class dataManager{
         //buffer.append(convertRawData(data: data, currentUnixEpoch: currentUnixEpoch));
         // call func to update ui
         let currentData = convertRawData(data: data, currentUnixEpoch: currentUnixEpoch);
-        for i in 0..<numOfGraphs{
+        for i in 0..<graphs.numOfGraphs{
             // print("calling - \(i) - data - \(currentData[i])")
             if (!graphs.updateGraph(with: i, point: currentData[i])){
                 print("Failed to add data point at graph with index \(i) : Timestamp = \(currentUnixEpoch)");
@@ -36,12 +38,12 @@ class dataManager{
         
     }
   
-    func convertRawData(data: APiDataPack, currentUnixEpoch: Int64)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
+    private func convertRawData(data: APiDataPack, currentUnixEpoch: Int64)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
         let timeDiff = Int64(currentUnixEpoch - startUnixEpoch);
-        var output = Array(repeating: ChartDataEntry(), count: numOfGraphs);
+        var output = Array(repeating: ChartDataEntry(), count: graphs.numOfGraphs);
         
-        for i in 0..<numOfGraphs{
+        for i in 0..<graphs.numOfGraphs{
             output[i] = ChartDataEntry(x: Double(timeDiff), y: specificDataAttribute(with: i, data: data));
         }
         
@@ -50,7 +52,7 @@ class dataManager{
     
     // ["RPM", "Torque", "Throttle (%)", "Duty (%)", "PWM Frequency", "Temperature (C)", "Source Voltage", "PWM Current", "Power Change (Δ)", "Voltage Change (Δ)"];
     
-    func specificDataAttribute(with index: Int, data: APiDataPack) -> Float64{ // will convert ints to floats as well
+    public func specificDataAttribute(with index: Int, data: APiDataPack) -> Float64{ // will convert ints to floats as well
         switch index{
         case 0:
             return data.RPM;

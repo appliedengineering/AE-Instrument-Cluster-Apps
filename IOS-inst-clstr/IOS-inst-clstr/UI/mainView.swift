@@ -21,9 +21,9 @@ var receiveTimeout = -1; // in ms
 var reconnectTimeout = -1; // in sec
 
 
-let communication = communicationClass();
-let dataMgr = dataManager();
-let graphs = graphManager();
+let communication = communicationClass.obj;
+let dataMgr = dataManager.obj;
+let graphs = graphManager.obj;
 
 class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
 
@@ -171,7 +171,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         //let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
         let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
-        for i in 0..<numOfGraphs{
+        for i in 0..<graphs.numOfGraphs{
             let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
             let dataStreamView = GraphUIButton(frame: dataStreamViewFrame);
             /*dataStreamView.backgroundColor = UIColor.blue;
@@ -208,12 +208,12 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             let line = LineChartDataSet(entries: [ChartDataEntry](), label: graphs.graphNameArray[i]);
             
             // set line attributes here
-            
-            line.fill = Fill.fillWithLinearGradient(CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [AccentColor.cgColor, UIColor.clear.cgColor] as CFArray, locations: [1.0, 0.0])!, angle: 90.0);
+            //print("color - \(graphs.graphColorArray[i])")
+            line.fill = Fill.fillWithLinearGradient(CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [graphs.graphColorArray[i].cgColor, UIColor.clear.cgColor] as CFArray, locations: [1.0, 0.0])!, angle: 90.0);
             line.drawFilledEnabled = true;
             line.drawCirclesEnabled = false;
             line.drawValuesEnabled = false;
-            line.colors = [AccentColor];
+            line.colors = [graphs.graphColorArray[i]];
             //line.valueFont = UIFont(name: "SFProDisplay-Regular", size: 10)!;
             line.mode = .cubicBezier;
             
@@ -242,7 +242,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             //}
             
             dataStreamView.addTarget(self, action: #selector(openGraphView), for: .touchUpInside);
-            
+            dataStreamView.graphIndex = i;
             
             mainScrollView.addSubview(dataStreamView);
             
@@ -252,9 +252,17 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         mainScrollView.contentSize = CGSize(width: screenWidth, height: nextY);
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "mainViewTographViewSegue"){
+            let vc = segue.destination as! graphViewClass;
+            vc.graphIndex = sender as! Int;
+        }
+    }
+    
     @objc func openGraphView(button: GraphUIButton){
         UIImpactFeedbackGenerator(style: .light).impactOccurred();
-        performSegue(withIdentifier: "mainViewTographViewSegue", sender: nil);
+        //print("open graph view - \(button.graphIndex)")
+        performSegue(withIdentifier: "mainViewTographViewSegue", sender: button.graphIndex);
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -265,13 +273,12 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         }
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    /*override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         // rerender homescreen
         print("changed orientation");
         renderViews();
-    }
-    
+    }*/
     
     // MARK: END UI FUNCS
     

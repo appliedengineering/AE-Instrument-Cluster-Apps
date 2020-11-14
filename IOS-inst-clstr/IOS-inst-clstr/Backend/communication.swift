@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftyZeroMQ5
 // ["RPM", "Torque", "Throttle (%)", "Duty (%)", "PWM Frequency", "Temperature (C)", "Source Voltage", "PWM Current", "Power Change (Δ)", "Voltage Change (Δ)"];
-struct APiDataPack : Decodable{
+public struct APiDataPack : Decodable{
     var psuMode : Int = 0;
     // graphable data
     var RPM : Float64 = 0.0;
@@ -28,15 +28,17 @@ struct APiDataPack : Decodable{
     var ovpStatus : Bool = false;
 };
 
-var lastCommunicationError = "";
 
 class communicationClass{
+    var lastCommunicationError = "";
     var connectionString = "";
     var group = "";
     var context : SwiftyZeroMQ.Context?;
     var dish : SwiftyZeroMQ.Socket?;
     
-    init(){
+    static let obj = communicationClass(); // singleton pattern
+
+    private init(){ // singleton pattern
         printVersion();
         do{
             context = try SwiftyZeroMQ.Context();
