@@ -18,6 +18,8 @@ var connectionGroup = "";
 var receiveReconnect = -1; // in ms
 var receiveTimeout = -1; // in ms
 
+// bufferSize is defined as graphs.bufferSize
+
 var reconnectTimeout = -1; // in sec
 
 
@@ -52,6 +54,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     let receiveReconnectInput = UITextField(); // in ms
     let receiveTimeoutInput = UITextField(); // in ms
     let reconnectTimeoutInput = UITextField(); // in sec
+    let bufferSizeInput = UITextField(); // in units of data points
     // end textfields
 
     func loadPreferences(){
@@ -68,6 +71,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         receiveReconnect = UserDefaults.standard.integer(forKey: "receiveReconnect") == 0 ? 1000 : UserDefaults.standard.integer(forKey: "receiveReconnect");
         receiveTimeout = UserDefaults.standard.integer(forKey: "receiveTimeout") == 0 ? 100 : UserDefaults.standard.integer(forKey: "receiveTimeout");
         reconnectTimeout = UserDefaults.standard.integer(forKey: "reconnectTimeout") == 0 ? 3 : UserDefaults.standard.integer(forKey: "reconnectTimeout");
+        graphs.bufferSize = UserDefaults.standard.integer(forKey: "bufferSize") == 0 ? 100 : UserDefaults.standard.integer(forKey: "bufferSize");
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
     }
@@ -296,6 +300,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                     do{
                         
                         let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        //print("test")
                         //print("recieved data - \(data)");
                         dataMgr.updateWithNewData(data: data);
                         //print(graphs.graphViews[0].data!.dataSets[0].entryCount)
@@ -309,6 +314,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                             print("Communication recieve error - \(error)");
                         }
                     }
+                    
+                    
                 }
   
                 //print("before sleep")
@@ -436,6 +443,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             UserDefaults.standard.set(Int(receiveTimeoutInput.text ?? "0"), forKey:"receiveTimeout");
             UserDefaults.standard.set(Int(receiveReconnectInput.text ?? "0"), forKey:"receiveReconnect");
             UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
+            UserDefaults.standard.set(Int(bufferSizeInput.text ?? "0"), forKey:"bufferSize");
             
             loadPreferences();
             
@@ -661,6 +669,34 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         hamBurgMenuScrollView.addSubview(reconnectTimeoutInput);
         nextY += reconnectTimeoutInputFrame.height + verticalPadding;
+        
+        /// ----------- BUFFER SIZE
+        
+        let bufferSizeLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let bufferSizeLabel = UILabel(frame: bufferSizeLabelFrame);
+        bufferSizeLabel.text = "Data Buffer Size";
+        bufferSizeLabel.textColor = InverseBackgroundColor;
+        bufferSizeLabel.textAlignment = .left;
+        bufferSizeLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        bufferSizeLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(bufferSizeLabel);
+        nextY += bufferSizeLabelFrame.height;
+        
+        let bufferSizeInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        bufferSizeInput.frame = bufferSizeInputFrame; // already declared above
+        bufferSizeInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        bufferSizeInput.text = String(graphs.bufferSize);
+        bufferSizeInput.allowsEditingTextAttributes = false;
+        bufferSizeInput.autocorrectionType = .no;
+        bufferSizeInput.spellCheckingType = .no;
+        bufferSizeInput.keyboardType = .numberPad; // experiment with this
+        bufferSizeInput.setUnderLine();
+        bufferSizeInput.delegate = self;
+        bufferSizeInput.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(bufferSizeInput);
+        nextY += bufferSizeInputFrame.height + verticalPadding;
         
         //// --- FINAL ADDRESS
         
