@@ -48,7 +48,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //print("foreground")
         
         if (hasGoneToInactiveFromActive && connectionAddress != "" && connectionGroup != ""){
-            if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvTimeout: recieveTimeout)){
+            if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
                 print("FAILED TO RECONNECT - entering foreground in scenedelegate");
             }
             hasGoneToInactiveFromActive = false;

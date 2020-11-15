@@ -1,8 +1,16 @@
 PODS:
+  - Charts (3.6.0):
+    - Charts/Core (= 3.6.0)
+  - Charts/Core (3.6.0)
   - SwiftyZeroMQ5 (1.3.0)
 
 DEPENDENCIES:
+  - Charts
   - SwiftyZeroMQ5 (from `https://github.com/appliedengineering/SwiftyZeroMQ5.git`, branch `master`)
+
+SPEC REPOS:
+  trunk:
+    - Charts
 
 EXTERNAL SOURCES:
   SwiftyZeroMQ5:
@@ -11,12 +19,13 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SwiftyZeroMQ5:
-    :commit: 03bec2a770d63234aea4bc28d31cdd7911d7884e
+    :commit: cae7dae3b4b355ec0d8eddd6e10291745f39b3f8
     :git: https://github.com/appliedengineering/SwiftyZeroMQ5.git
 
 SPEC CHECKSUMS:
+  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   SwiftyZeroMQ5: 2eef9b705384a9a94c50484ad01b503e7cce0d24
 
-PODFILE CHECKSUM: fb1143618bed85fdc8081a3d0d13e75478eed5a3
+PODFILE CHECKSUM: 3b27c7adf5253079ee37fc66b959767b793c17d7
 
 COCOAPODS: 1.9.3
