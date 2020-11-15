@@ -299,7 +299,9 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         //print("recieved data - \(data)");
                         dataMgr.updateWithNewData(data: data);
                         //print(graphs.graphViews[0].data!.dataSets[0].entryCount)
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateGraph"), object: nil);
                         usleep(useconds_t(receiveTimeout * 1000)); // ms
+                        
                      }
                     catch {
                         //print("recieved catch - \(error)") // -- toggling this print func allows the recieve to work and not work for some reason

@@ -13,12 +13,15 @@ import Charts
 class graphViewClass: UIViewController, UIScrollViewDelegate{
     var graphIndex = -1;
     
+    var currentGraph : LineChartView = LineChartView();
+    
     override func viewDidLoad() {
         super.viewDidLoad();
-
+        
         AppUtility.lockOrientation(.all);
             
         renderPage(isLandscape: false);
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateGraph), name:NSNotification.Name(rawValue: "updateGraph"), object: nil);
     }
     
     @objc func dismissPage(sender: UIButton){
@@ -28,7 +31,10 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
     }
     
     @objc func updateGraph(){
-        
+        //currentGraph.data!.dataSets[0].addEntry(graphs.graphViews[graphIndex].data!.dataSets[0].)
+        DispatchQueue.main.sync {
+            currentGraph.data = graphs.graphViews[graphIndex].data;
+        }
     }
     
     func renderPage(isLandscape: Bool){
@@ -94,6 +100,8 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         print("data size - \(line.entries.count) compared to \(graphs.graphViews[graphIndex].data!.dataSets[0].entryCount)")*/
         graphView.data = graphs.graphViews[graphIndex].lineData;
         
+        currentGraph = graphView;
+        
         self.view.addSubview(graphView);
         
     }
@@ -106,6 +114,7 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated);
         //print("removed view")
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updateGraph"), object: nil);
         AppUtility.lockOrientation(.portrait);
     }
     
