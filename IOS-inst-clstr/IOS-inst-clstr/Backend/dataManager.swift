@@ -10,18 +10,19 @@ import UIKit
 import Charts
 
 class dataManager{
-    var startUnixEpoch : Int64 = -1;
+    var startUnixEpoch : Double = -1;
     
     static let obj = dataManager();
     
+    let unixEpochPrecision : Double = 1000;
+    
     private init(){
-        startUnixEpoch = Int64(Date().timeIntervalSince1970);
+        startUnixEpoch = Date().timeIntervalSince1970;
         print("Current UNIX EPOCH = \(startUnixEpoch)");
     }
     
     func updateWithNewData(data: APiDataPack){
-        
-        let currentUnixEpoch = Int64(Date().timeIntervalSince1970);
+        let currentUnixEpoch = Date().timeIntervalSince1970;
         //print("data recieved at - \(currentUnixEpoch)");
         
         //buffer.append(convertRawData(data: data, currentUnixEpoch: currentUnixEpoch));
@@ -38,9 +39,9 @@ class dataManager{
         
     }
   
-    private func convertRawData(data: APiDataPack, currentUnixEpoch: Int64)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
+    private func convertRawData(data: APiDataPack, currentUnixEpoch: Double)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
-        let timeDiff = Int64(currentUnixEpoch - startUnixEpoch);
+        let timeDiff = Int64((currentUnixEpoch * unixEpochPrecision) - (startUnixEpoch * unixEpochPrecision));
         var output = Array(repeating: ChartDataEntry(), count: graphs.numOfGraphs);
         
         for i in 0..<graphs.numOfGraphs{

@@ -40,8 +40,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     let hamBurgMenuViewWidth = CGFloat(270);
     
-    
-    var topSafeAreaInsetHeight = CGFloat(0);
+
     let scrollViewFadeButtonThresholdHeight = CGFloat(100);
     let settingsButton = UIButton();
 
@@ -86,7 +85,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         loadPreferences();
         //printAllFonts();
-        topSafeAreaInsetHeight = UIApplication.shared.windows[0].safeAreaInsets.top;
+        
         
         // set up outerview stuff
         
@@ -106,7 +105,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         // set up view buttons
         //let settingsButtonPadding = CGFloat(12);
         let settingsButtonHeight = CGFloat(20*UIScreen.main.scale);
-        let settingsButtonFrame = CGRect(x: 0, y: topSafeAreaInsetHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
+        let settingsButtonFrame = CGRect(x: 0, y: AppUtility.topSafeAreaInsetHeight, width: settingsButtonHeight/3, height: settingsButtonHeight);
         settingsButton.frame = settingsButtonFrame;
         settingsButton.backgroundColor = BackgroundColor;
         settingsButton.roundCorners(corners: [.topRight, .bottomRight], radius: settingsButtonHeight/6);
@@ -187,8 +186,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             titleText.text = currentTitle;
             
             dataStreamView.addSubview(titleText);*/
-        
-            //if (i == 0){
+    
             let currentGraph = LineChartView(frame: CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height));
             //currentGraph.frame = CGRect(x: 0, y: 0, width: dataStreamViewFrame.width, height: dataStreamViewFrame.height);
             
@@ -215,7 +213,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             line.drawValuesEnabled = false;
             line.colors = [graphs.graphColorArray[i]];
             //line.valueFont = UIFont(name: "SFProDisplay-Regular", size: 10)!;
-            line.mode = .cubicBezier;
+            //line.mode = .cubicBezier;
             
             // end line attributes
             
@@ -267,7 +265,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (scrollView.tag == -1){
-            let scrollContentYPercent = min(1, max(1 - ((scrollView.contentOffset.y + topSafeAreaInsetHeight) / scrollViewFadeButtonThresholdHeight), 0)); // some maths
+            let scrollContentYPercent = min(1, max(1 - ((scrollView.contentOffset.y + AppUtility.topSafeAreaInsetHeight) / scrollViewFadeButtonThresholdHeight), 0)); // some maths
             //print("scroll content offset = \(scrollView.contentOffset.y) : \(scrollContentYPercent)")
             settingsButton.alpha = scrollContentYPercent;
         }
@@ -300,8 +298,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
                         //print("recieved data - \(data)");
                         dataMgr.updateWithNewData(data: data);
-                        //print(graphs.graphViews.count)
-                        usleep(useconds_t(receiveTimeout)); // ms
+                        //print(graphs.graphViews[0].data!.dataSets[0].entryCount)
+                        usleep(useconds_t(receiveTimeout * 1000)); // ms
                      }
                     catch {
                         //print("recieved catch - \(error)") // -- toggling this print func allows the recieve to work and not work for some reason
@@ -470,7 +468,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             }
         }
         
-        var nextY = topSafeAreaInsetHeight;
+        var nextY = AppUtility.topSafeAreaInsetHeight;
         
         let horizontalPadding = CGFloat(20);
         //let subVerticalPadding = CGFloat(10);

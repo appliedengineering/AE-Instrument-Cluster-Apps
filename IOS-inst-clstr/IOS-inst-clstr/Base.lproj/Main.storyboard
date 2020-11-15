@@ -76,7 +76,7 @@
                         <outlet property="mainScrollView" destination="IkZ-FF-8t7" id="NBJ-bw-KrK"/>
                         <outlet property="mainView" destination="2eR-a2-D6V" id="UhP-uA-xHg"/>
                         <outlet property="mainViewWidthConstraint" destination="aHY-9C-FJd" id="Ojq-uD-1fp"/>
-                        <segue destination="iDR-i1-Dbs" kind="presentation" identifier="mainViewTographViewSegue" id="vbX-Ac-Bkx"/>
+                        <segue destination="iDR-i1-Dbs" kind="showDetail" identifier="mainViewTographViewSegue" id="vbX-Ac-Bkx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -91,9 +91,9 @@
         <!--Graph View Class-->
         <scene sceneID="AoC-b0-hwO">
             <objects>
-                <viewController id="iDR-i1-Dbs" customClass="graphViewClass" customModule="IOS_inst_clstr" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="iDR-i1-Dbs" customClass="graphViewClass" customModule="IOS_inst_clstr" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DTu-OV-QSG">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="rCe-hq-KP7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

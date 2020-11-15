@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import AudioToolbox
+import Charts
 
 class graphViewClass: UIViewController, UIScrollViewDelegate{
     var graphIndex = -1;
@@ -26,6 +27,10 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         dismiss(animated: true);
     }
     
+    @objc func updateGraph(){
+        
+    }
+    
     func renderPage(isLandscape: Bool){
         
         for subview in self.view.subviews{
@@ -33,7 +38,9 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         }
         let containerSize = CGSize(width: (isLandscape ? AppUtility.originalHeight : AppUtility.originalWidth), height: (isLandscape ? AppUtility.originalWidth : AppUtility.originalHeight));
         
-        let topViewFrame = CGRect(x: 0, y: 0, width: containerSize.width, height: containerSize.height / (isLandscape ? 10 : 15));
+        var nextY = CGFloat((!isLandscape ? AppUtility.topSafeAreaInsetHeight : 0));
+        
+        let topViewFrame = CGRect(x: 0, y: nextY, width: containerSize.width, height: containerSize.height / (isLandscape ? 10 : 15));
         let topView = UIButton(frame: topViewFrame);
         topView.backgroundColor = graphs.graphColorArray[graphIndex];
         
@@ -50,7 +57,44 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         
         topView.addSubview(topLabel);
         
+        nextY += topViewFrame.height;
+        
+        if (!isLandscape){
+            topView.roundCorners(corners: [.topLeft, .topRight], radius: 12);
+        }
+        
         self.view.addSubview(topView);
+        
+        let graphViewFrame = CGRect(x: 0, y: nextY, width: containerSize.width, height: containerSize.height - nextY - 10);
+        let graphView = LineChartView(frame: graphViewFrame);
+        
+        graphView.backgroundColor = UIColor.clear;
+        graphView.legend.enabled = false;
+        graphView.rightAxis.enabled = false;
+        graphView.leftAxis.drawAxisLineEnabled = false;
+        graphView.leftAxis.drawGridLinesEnabled = false;
+        graphView.xAxis.drawAxisLineEnabled = false;
+        graphView.xAxis.drawGridLinesEnabled = false;
+        graphView.drawGridBackgroundEnabled = false;
+        /*let line = LineChartDataSet(entries: [ChartDataEntry]());
+        
+        line.fill = Fill.fillWithLinearGradient(CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [graphs.graphColorArray[graphIndex].cgColor, UIColor.clear.cgColor] as CFArray, locations: [1.0, 0.0])!, angle: 90.0);
+        line.drawFilledEnabled = true;
+        line.drawCirclesEnabled = false;
+        line.drawValuesEnabled = false;
+        line.colors = [graphs.graphColorArray[graphIndex]];
+        line.mode = .cubicBezier;
+        
+        //graphs.graphViews[graphIndex].data!.dataSets[0];
+        
+        let lineData = LineChartData();
+        
+        lineData.addDataSet(line);
+        
+        print("data size - \(line.entries.count) compared to \(graphs.graphViews[graphIndex].data!.dataSets[0].entryCount)")*/
+        graphView.data = graphs.graphViews[graphIndex].lineData;
+        
+        self.view.addSubview(graphView);
         
     }
     
