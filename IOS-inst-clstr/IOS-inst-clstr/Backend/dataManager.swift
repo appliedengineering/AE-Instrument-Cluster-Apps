@@ -32,6 +32,7 @@ class dataManager{
             // print("calling - \(i) - data - \(currentData[i])")
             if (!graphs.updateGraph(with: i, point: currentData[i])){
                 print("Failed to add data point at graph with index \(i) : Timestamp = \(currentUnixEpoch)");
+                errors.addErrorToBuffer(error: errorData(description: "Failed to add data point at graph with index \(i) : Timestamp = \(currentUnixEpoch)", timeStamp: errors.createTimestampStruct()));
             }
         }
         // TODO: call extra func here to mainview to update data that doesn't need a graph

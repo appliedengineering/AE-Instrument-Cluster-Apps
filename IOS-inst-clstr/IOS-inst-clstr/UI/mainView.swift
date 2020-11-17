@@ -69,10 +69,10 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionIPAddress = UserDefaults.standard.string(forKey: "connectionIPAddress") ?? "224.0.0.1";
         connectionPort = UserDefaults.standard.string(forKey: "connectionPort") ?? "28650";
         connectionGroup = UserDefaults.standard.string(forKey: "connectionGroup") ?? "telemetry";
-        receiveReconnect = UserDefaults.standard.integer(forKey: "receiveReconnect") == 0 ? 1000 : UserDefaults.standard.integer(forKey: "receiveReconnect");
+        receiveReconnect = UserDefaults.standard.integer(forKey: "receiveReconnect") == 0 ? 3000 : UserDefaults.standard.integer(forKey: "receiveReconnect");
         receiveTimeout = UserDefaults.standard.integer(forKey: "receiveTimeout") == 0 ? 100 : UserDefaults.standard.integer(forKey: "receiveTimeout");
         reconnectTimeout = UserDefaults.standard.integer(forKey: "reconnectTimeout") == 0 ? 3 : UserDefaults.standard.integer(forKey: "reconnectTimeout");
-        graphs.bufferSize = UserDefaults.standard.integer(forKey: "bufferSize") == 0 ? 100 : UserDefaults.standard.integer(forKey: "bufferSize");
+        graphs.bufferSize = UserDefaults.standard.integer(forKey: "bufferSize") == 0 ? 60 : UserDefaults.standard.integer(forKey: "bufferSize");
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
     }
@@ -137,6 +137,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
             print("failed first connection - check settings and reconnect again")
+            errors.addErrorToBuffer(error: errorData(description: "failed first connection - check settings and reconnect again", timeStamp: errors.createTimestampStruct()));
         }
         
         communicationThread();
@@ -455,6 +456,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
                 print("FAILED TO CONNECT TO NEW ADDRESS")
+                errors.addImportantErrorToBuffer(error: errorData(description: "FAILED TO CONNECT TO NEW ADDRESS", timeStamp: errors.createTimestampStruct()));
+                // TODO:importantError
             }
             else {
                 print("successful connection to new address")
@@ -467,6 +470,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             print("connection port - \(connectionPortInput.text?.count)")
             print("connection group - \(connectionGroupInput.text?.count)")*/
             print("Invalid settings - check your settings and make sure everything is correct");
+            errors.addImportantErrorToBuffer(error: errorData(description: "Invalid settings - check your settings and make sure everything is correct", timeStamp: errors.createTimestampStruct()));
+            // TODO:importantError
         }
     }
     

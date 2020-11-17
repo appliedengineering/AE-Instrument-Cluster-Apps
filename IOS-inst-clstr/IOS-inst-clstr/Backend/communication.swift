@@ -30,7 +30,7 @@ public struct APiDataPack : Decodable{
 
 
 class communicationClass{
-    var lastCommunicationError = "";
+    //var lastCommunicationError = "";
     var connectionString = "";
     var group = "";
     var context : SwiftyZeroMQ.Context?;
@@ -45,7 +45,8 @@ class communicationClass{
         }
         catch{
             print("COMMUNICATION ERROR : CONTEXT CREATION - \(error)");
-            lastCommunicationError = "Socket: " + "\(error)";
+            errors.addErrorToBuffer(error: errorData(description: "COMMUNICATION ERROR : CONTEXT CREATION - \(error)", timeStamp: errors.createTimestampStruct()));
+            //lastCommunicationError = "Socket: " + "\(error)";
         }
     }
     
@@ -70,7 +71,8 @@ class communicationClass{
         }
         catch{
             print("CONNECT COMMUNICATION error - \(error)");
-            lastCommunicationError = "\(error)";
+            //lastCommunicationError = "\(error)";
+            errors.addErrorToBuffer(error: errorData(description: "CONNECT COMMUNICATION error - \(error)", timeStamp: errors.createTimestampStruct()));
             return false;
         }
         return true;
@@ -84,7 +86,8 @@ class communicationClass{
         }
         catch{
             print("DISCONNECT COMMUNICATION error - \(error)");
-            lastCommunicationError = "\(error)";
+            //lastCommunicationError = "\(error)";
+            errors.addErrorToBuffer(error: errorData(description: "DISCONNECT COMMUNICATION error - \(error)", timeStamp: errors.createTimestampStruct()));
             return false;
         }
         return true;
@@ -94,6 +97,7 @@ class communicationClass{
         
         if (!disconnect()){
             print("Failed disconnect but not severe error");
+            errors.addErrorToBuffer(error: errorData(description: "Failed disconnect but not severe error", timeStamp: errors.createTimestampStruct()));
         }
         
         if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvReconnect: recvReconnect)){

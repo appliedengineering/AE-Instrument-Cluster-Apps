@@ -22,6 +22,8 @@ class errorManager{
     public func addImportantErrorToBuffer(error: errorData) -> UIAlertController{
         addErrorToBuffer(error: error);
         
+        // you should look for "TODO:importantError" in the code where it calls this function
+        
         // create uialertcontroller so that it can be presented
         
         return UIAlertController();
