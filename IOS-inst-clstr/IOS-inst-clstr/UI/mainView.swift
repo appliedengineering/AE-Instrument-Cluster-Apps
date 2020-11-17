@@ -26,6 +26,7 @@ var reconnectTimeout = -1; // in sec
 let communication = communicationClass.obj;
 let dataMgr = dataManager.obj;
 let graphs = graphManager.obj;
+let errors = errorManager.obj;
 
 class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
 
@@ -313,6 +314,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
                             print("Communication recieve error - \(error)");
                         }
+                        errors.addErrorToBuffer(error: errorData(description: "\(error)", timeStamp: errors.createTimestampStruct()));
                     }
                     
                     
@@ -466,6 +468,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             print("connection group - \(connectionGroupInput.text?.count)")*/
             print("Invalid settings - check your settings and make sure everything is correct");
         }
+    }
+    
+    @objc func openErrorLog(){
+        UIImpactFeedbackGenerator(style: .light).impactOccurred();
+        performSegue(withIdentifier: "mainViewToerrorViewSegue", sender: nil);
     }
     
     func renderHamBurgMenu(){
@@ -744,6 +751,22 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         hamBurgMenuScrollView.addSubview(applySettingsButton);
         nextY += applySettingsButtonFrame.height + verticalPadding;
+        
+        
+        let openErrorLogButtonFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: 40);
+        let openErrorLogButton = UIButton(frame: openErrorLogButtonFrame);
+        openErrorLogButton.backgroundColor = BackgroundGray;
+        openErrorLogButton.setTitle("Open Error Log", for: .normal);
+        openErrorLogButton.setTitleColor(InverseBackgroundColor, for: .normal);
+        openErrorLogButton.titleLabel?.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        openErrorLogButton.titleLabel?.textAlignment = .center;
+        openErrorLogButton.layer.cornerRadius = 4;
+        openErrorLogButton.tag = 1;
+        
+        openErrorLogButton.addTarget(self, action: #selector(openErrorLog), for: .touchUpInside);
+        
+        hamBurgMenuScrollView.addSubview(openErrorLogButton);
+        nextY += openErrorLogButtonFrame.height + verticalPadding;
         
         // END
         
