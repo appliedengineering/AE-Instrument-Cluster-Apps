@@ -456,7 +456,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
                 print("FAILED TO CONNECT TO NEW ADDRESS")
-                errors.addImportantErrorToBuffer(error: errorData(description: "FAILED TO CONNECT TO NEW ADDRESS", timeStamp: errors.createTimestampStruct()));
+                present(errors.addImportantErrorToBuffer(error: errorData(description: "FAILED TO CONNECT TO NEW ADDRESS", timeStamp: errors.createTimestampStruct())), animated: true);
                 // TODO:importantError
             }
             else {
@@ -470,7 +470,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             print("connection port - \(connectionPortInput.text?.count)")
             print("connection group - \(connectionGroupInput.text?.count)")*/
             print("Invalid settings - check your settings and make sure everything is correct");
-            errors.addImportantErrorToBuffer(error: errorData(description: "Invalid settings - check your settings and make sure everything is correct", timeStamp: errors.createTimestampStruct()));
+            present(errors.addImportantErrorToBuffer(error: errorData(description: "Invalid settings - check your settings and make sure everything is correct", timeStamp: errors.createTimestampStruct())), animated: true);
             // TODO:importantError
         }
     }

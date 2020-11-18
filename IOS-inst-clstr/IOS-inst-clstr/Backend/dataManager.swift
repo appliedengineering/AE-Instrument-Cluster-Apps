@@ -57,9 +57,9 @@ class dataManager{
     public func specificDataAttribute(with index: Int, data: APiDataPack) -> Float64{ // will convert ints to floats as well
         switch index{
         case 0:
-            return data.RPM;
+            return data.rpm;
         case 1:
-            return data.Torque;
+            return data.torque;
         case 2:
             return Float64(data.throttlePercent);
         case 3:

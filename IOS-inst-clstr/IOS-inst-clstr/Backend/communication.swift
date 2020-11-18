@@ -12,8 +12,8 @@ import SwiftyZeroMQ5
 public struct APiDataPack : Decodable{
     var psuMode : Int = 0;
     // graphable data
-    var RPM : Float64 = 0.0;
-    var Torque : Float64 = 0.0;
+    var rpm : Float64 = 0.0;
+    var torque : Float64 = 0.0;
     var throttlePercent : Int = 0;
     var dutyPercent : Int = 0;
     var pwmFrequency : Int = 0;

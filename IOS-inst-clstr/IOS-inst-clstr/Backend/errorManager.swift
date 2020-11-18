@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AudioToolbox
 
 class errorManager{
     
@@ -23,10 +24,14 @@ class errorManager{
         addErrorToBuffer(error: error);
         
         // you should look for "TODO:importantError" in the code where it calls this function
-        
+        UIImpactFeedbackGenerator(style: .light).impactOccurred();
         // create uialertcontroller so that it can be presented
+        let errorPopup = UIAlertController(title: "Critical Error", message: error.description, preferredStyle: UIAlertController.Style.actionSheet);
+        errorPopup.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: {(action: UIAlertAction!) in
+            // add custom actions here
+        }));
         
-        return UIAlertController();
+        return errorPopup;
     }
     
     public func createTimestampStruct() -> errorTimestampStruct{
