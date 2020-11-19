@@ -25,11 +25,12 @@ struct errorData {
 
 class errorClass: UIViewController, UIScrollViewDelegate{
     
-    static var errorBuffer = [errorData]();
+    static public var errorBuffer = [errorData]();
     
     private var nextY = CGFloat(0);
     private var scrollView = UIScrollView();
-    private let errorScrollViewPadding = CGFloat(0);
+    private let errorScrollViewPadding = CGFloat(5);
+    private let contentSizeBottomPadding = CGFloat(50);
     
     @objc func dismissView(){
         UIImpactFeedbackGenerator(style: .light).impactOccurred();
@@ -60,9 +61,11 @@ class errorClass: UIViewController, UIScrollViewDelegate{
         let errorViewBackgroundColor = error.isImportant ? UIColor.red : BackgroundColor;
         //let errorViewBackgroundColor = UIColor.white;
         
+        let scale = UIScreen.main.scale;
+        
         let errorLabelText = error.description;
         let errorLabelWidth = 2 * errorViewWidth / 3;
-        let errorLabelFont = UIFont(name: "SFProDisplay-Semibold", size: 15)!;
+        let errorLabelFont = UIFont(name: "SFProDisplay-Semibold", size: 5*scale)!;
         let errorLabelHeight = errorLabelText.getHeight(withConstrainedWidth: errorLabelWidth, font: errorLabelFont);
         let errorLabelFrame = CGRect(x: 0, y: 0, width: errorLabelWidth, height: errorLabelHeight);
         let errorLabel = UILabel(frame: errorLabelFrame);
@@ -75,7 +78,7 @@ class errorClass: UIViewController, UIScrollViewDelegate{
         
         let errorTimestampLabelText = getTimestampStringFromData(error: error);
         let errorTimestampWidth = errorViewWidth/3;
-        let errorTimestampFont = UIFont(name: "SFProDisplay-Semibold", size: 18)!;
+        let errorTimestampFont = UIFont(name: "SFProDisplay-Semibold", size: 6*scale)!;
         let errorTimestampHeight = errorTimestampLabelText.getHeight(withConstrainedWidth: errorTimestampWidth, font: errorTimestampFont);
         let errorTimestampFrame = CGRect(x: errorLabelWidth, y: 0, width: errorTimestampWidth, height: errorTimestampHeight);
         let errorTimestamp = UILabel(frame: errorTimestampFrame);
@@ -88,7 +91,7 @@ class errorClass: UIViewController, UIScrollViewDelegate{
         //errorTimestamp.backgroundColor = UIColor.blue;
         
         //print("max height = \(max(errorLabel.frame.height, errorTimestamp.frame.height))")
-        let errorViewFrame = CGRect(x: 0, y: nextY, width: errorViewWidth, height: max(errorLabel.frame.height, errorTimestamp.frame.height));
+        let errorViewFrame = CGRect(x: errorScrollViewPadding, y: nextY, width: errorViewWidth, height: max(errorLabel.frame.height, errorTimestamp.frame.height));
         let errorView = UIView(frame: errorViewFrame);
         errorView.backgroundColor = errorViewBackgroundColor;
         errorView.addSubview(errorLabel);
@@ -113,9 +116,11 @@ class errorClass: UIViewController, UIScrollViewDelegate{
         let topViewFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height/15);
         let topView = UIButton(frame: topViewFrame);
         topView.backgroundColor = BackgroundGray;
+    
+        let scale = UIScreen.main.scale;
         
         let topLabelText = "Error Log";
-        let topLabelFont = UIFont(name: "SFProDisplay-Semibold", size: 18)!;
+        let topLabelFont = UIFont(name: "SFProDisplay-Semibold", size: 6*scale)!;
         let topLabelWidth = topLabelText.getWidth(withConstrainedHeight: topViewFrame.height, font: topLabelFont);
         let topLabelFrame = CGRect(x: (topViewFrame.width / 2) - (topLabelWidth/2), y: 0, width: topLabelWidth, height: topViewFrame.height);
         let topLabel = UILabel(frame: topLabelFrame);
@@ -133,7 +138,7 @@ class errorClass: UIViewController, UIScrollViewDelegate{
         clearBufferButton.backgroundColor = BackgroundColor;
         clearBufferButton.setTitle("Clear Logs", for: .normal);
         clearBufferButton.setTitleColor(InverseBackgroundColor, for: .normal);
-        clearBufferButton.titleLabel?.font = UIFont(name: "SFProDisplay-Semibold", size: 12);
+        clearBufferButton.titleLabel?.font = UIFont(name: "SFProDisplay-Semibold", size: 4*scale);
         clearBufferButton.titleLabel?.textAlignment = .center;
         clearBufferButton.layer.cornerRadius = 5;
         
@@ -157,7 +162,7 @@ class errorClass: UIViewController, UIScrollViewDelegate{
         }
         
         scrollView = mainScrollView;
-        mainScrollView.contentSize = CGSize(width: self.view.frame.width, height: nextY + 30);
+        mainScrollView.contentSize = CGSize(width: self.view.frame.width, height: nextY + contentSizeBottomPadding);
         
         self.view.addSubview(mainScrollView);
         
@@ -173,7 +178,7 @@ class errorClass: UIViewController, UIScrollViewDelegate{
             scrollView.addSubview(currentView);
             nextY += currentView.frame.height;
             
-            scrollView.contentSize = CGSize(width: self.view.frame.width, height: nextY + 30);
+            scrollView.contentSize = CGSize(width: self.view.frame.width, height: nextY + contentSizeBottomPadding);
             
         }
     }

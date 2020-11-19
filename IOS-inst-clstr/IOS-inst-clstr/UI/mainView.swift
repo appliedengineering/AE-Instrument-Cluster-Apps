@@ -9,6 +9,7 @@ import UIKit
 import MessagePacker
 import AudioToolbox
 import Charts
+import SwiftyZeroMQ5
 
 let protocolString = "udp";
 var connectionIPAddress = "";
@@ -91,6 +92,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         loadPreferences();
         //printAllFonts();
         
+        //print("scale - \(UIScreen.main.scale)")
         
         // set up outerview stuff
         
@@ -229,6 +231,21 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             currentGraph.data = lineData;
             
+            // views that overlay the view
+            let noDataLabelWidth = CGFloat(100);
+            let noDataLabelHeight = CGFloat(50);
+            let noDataLabelFrame = CGRect(x: (currentGraph.frame.width/2) - (noDataLabelWidth/2), y: (currentGraph.frame.height/2)-(noDataLabelHeight), width: noDataLabelWidth, height: noDataLabelHeight);
+            let noDataLabel = UILabel(frame: noDataLabelFrame);
+            noDataLabel.text = "No Data.";
+            noDataLabel.font = UIFont(name: "SFProText-Bold", size: 5*UIScreen.main.scale);
+            noDataLabel.textColor = InverseBackgroundColor;
+            noDataLabel.textAlignment = .center;
+            noDataLabel.tag = -1;
+            
+            currentGraph.addSubview(noDataLabel);
+            
+            currentGraph.tag = 1;
+            
             graphs.graphViews.append(currentGraph);
             
             dataStreamView.addSubview(currentGraph);
@@ -311,11 +328,17 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         
                      }
                     catch {
-                        //print("recieved catch - \(error)") // -- toggling this print func allows the recieve to work and not work for some reason
-                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
-                            print("Communication recieve error - \(error)");
+                        
+                        if (errno == EAGAIN){
+                            errors.addErrorToBuffer(error: errorData(description: "\(error) with errno \(errno) - no msg to receive", timeStamp: errors.createTimestampStruct()));
+                            //errors.addErrorToBuffer(error: errorData(description: "\(errno) = \(communication.convertErrno(errorn: errno))", timeStamp: errors.createTimestampStruct()));
                         }
-                        errors.addErrorToBuffer(error: errorData(description: "\(error)", timeStamp: errors.createTimestampStruct()));
+                        else{
+                            print("Communication recieve error - \(error)");
+                            var error = errorData(description: "\(error) with errno \(errno) = \(communication.convertErrno(errorn: errno))", timeStamp: errors.createTimestampStruct());
+                            error.isImportant = true;
+                            errors.addErrorToBuffer(error: error);
+                        }
                     }
                     
                     
@@ -741,6 +764,36 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         hamBurgMenuScrollView.addSubview(fullAddress);
         nextY += fullAddressHeight + 2*verticalPadding;
         
+        //// --- Version Num
+        
+        let versionNumLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let versionNumLabel = UILabel(frame: versionNumLabelFrame);
+        versionNumLabel.text = "App Version";
+        versionNumLabel.textColor = InverseBackgroundColor;
+        versionNumLabel.textAlignment = .left;
+        versionNumLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        versionNumLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(versionNumLabel);
+        nextY += versionNumLabelFrame.height;
+        
+        let versionNumFont = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        let versionNumHeight = connectionAddress.getHeight(withConstrainedWidth: hamBurgMenuSubViewWidth, font: versionNumFont!);
+        let versionNumFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: versionNumHeight);
+        let versionNum = UITextView(frame: versionNumFrame);
+        versionNum.text = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String;
+        versionNum.font = fullAddressFont;
+        versionNum.textColor = InverseBackgroundColor;
+        versionNum.setUnderLine();
+        versionNum.isEditable = false;
+        versionNum.isSelectable = false;
+        versionNum.isUserInteractionEnabled = false;
+        versionNum.isScrollEnabled = false;
+        versionNum.textContainerInset = UIEdgeInsets(top: -4, left: -4, bottom: 0, right: 0);
+        versionNum.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(versionNum);
+        nextY += versionNumHeight + 2*verticalPadding;
         
         let applySettingsButtonFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: 40);
         let applySettingsButton = UIButton(frame: applySettingsButtonFrame);

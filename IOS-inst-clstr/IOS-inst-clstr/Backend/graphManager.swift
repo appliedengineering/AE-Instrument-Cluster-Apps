@@ -26,6 +26,8 @@ class graphManager{ // all funcs must be called from
     public func updateGraph(with index: Int, point: ChartDataEntry) -> Bool{
         //print(type(of: graphViews[index].data!.dataSets[0]))
         //print("add point - \(point)")
+        
+        
         let result = graphViews[index].data!.dataSets[0].addEntry(point);
         if (result){
             
@@ -39,7 +41,16 @@ class graphManager{ // all funcs must be called from
             
             DispatchQueue.main.sync {
                 graphViews[index].notifyDataSetChanged();
+                if (graphViews[index].tag == 1){ // graph tag is 1 if not added
+                    for subviews in graphViews[index].subviews{ // remove no data overlay views
+                        if (subviews.tag == -1){
+                            subviews.removeFromSuperview();
+                        }
+                    }
+                }
             }
+        
+            //graphViews[index].isUserInteractionEnabled = true;
             
         }
         return result;
