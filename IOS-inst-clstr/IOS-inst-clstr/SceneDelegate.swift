@@ -48,8 +48,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //print("foreground")
         
         if (hasGoneToInactiveFromActive && connectionAddress != "" && connectionGroup != ""){
-            if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
+            if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect, recvBuffer: receiveBuffer)){
                 print("FAILED TO RECONNECT - entering foreground in scenedelegate");
+                errors.addErrorToBuffer(error: errorData(description: "FAILED TO RECONNECT - entering foreground in scenedelegate", timeStamp: errors.createTimestampStruct()));
             }
             hasGoneToInactiveFromActive = false;
         }
@@ -65,6 +66,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if (!communication.disconnect()){
             print("FAILED TO DISCONNECT - going inactive in scenedelegate");
+            errors.addErrorToBuffer(error: errorData(description: "FAILED TO RECONNECT - entering foreground in scenedelegate", timeStamp: errors.createTimestampStruct()));
         }
         hasGoneToInactiveFromActive = true;
     }

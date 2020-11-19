@@ -9,6 +9,7 @@ import UIKit
 import MessagePacker
 import AudioToolbox
 import Charts
+import SwiftyZeroMQ5
 
 let protocolString = "udp";
 var connectionIPAddress = "";
@@ -18,12 +19,16 @@ var connectionGroup = "";
 var receiveReconnect = -1; // in ms
 var receiveTimeout = -1; // in ms
 
+// bufferSize is defined as graphs.bufferSize
+
 var reconnectTimeout = -1; // in sec
 
+var receiveBuffer = 60;
 
 let communication = communicationClass.obj;
 let dataMgr = dataManager.obj;
 let graphs = graphManager.obj;
+let errors = errorManager.obj;
 
 class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
 
@@ -52,6 +57,8 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     let receiveReconnectInput = UITextField(); // in ms
     let receiveTimeoutInput = UITextField(); // in ms
     let reconnectTimeoutInput = UITextField(); // in sec
+    let bufferSizeInput = UITextField(); // in units of data points
+    let receiveBufferInput = UITextField();
     // end textfields
 
     func loadPreferences(){
@@ -65,9 +72,11 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         connectionIPAddress = UserDefaults.standard.string(forKey: "connectionIPAddress") ?? "224.0.0.1";
         connectionPort = UserDefaults.standard.string(forKey: "connectionPort") ?? "28650";
         connectionGroup = UserDefaults.standard.string(forKey: "connectionGroup") ?? "telemetry";
-        receiveReconnect = UserDefaults.standard.integer(forKey: "receiveReconnect") == 0 ? 1000 : UserDefaults.standard.integer(forKey: "receiveReconnect");
+        receiveReconnect = UserDefaults.standard.integer(forKey: "receiveReconnect") == 0 ? 3000 : UserDefaults.standard.integer(forKey: "receiveReconnect");
         receiveTimeout = UserDefaults.standard.integer(forKey: "receiveTimeout") == 0 ? 100 : UserDefaults.standard.integer(forKey: "receiveTimeout");
         reconnectTimeout = UserDefaults.standard.integer(forKey: "reconnectTimeout") == 0 ? 3 : UserDefaults.standard.integer(forKey: "reconnectTimeout");
+        graphs.bufferSize = UserDefaults.standard.integer(forKey: "bufferSize") == 0 ? 60 : UserDefaults.standard.integer(forKey: "bufferSize");
+        receiveBuffer = UserDefaults.standard.integer(forKey: "receiveBuffer") == 0 ? 10 : UserDefaults.standard.integer(forKey: "receiveBuffer");
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
     }
@@ -86,6 +95,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         loadPreferences();
         //printAllFonts();
         
+        //print("scale - \(UIScreen.main.scale)")
         
         // set up outerview stuff
         
@@ -130,8 +140,9 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         renderViews();
         
-        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
+        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect, recvBuffer: receiveBuffer)){
             print("failed first connection - check settings and reconnect again")
+            errors.addErrorToBuffer(error: errorData(description: "failed first connection - check settings and reconnect again", timeStamp: errors.createTimestampStruct()));
         }
         
         communicationThread();
@@ -223,6 +234,21 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             currentGraph.data = lineData;
             
+            // views that overlay the view
+            let noDataLabelWidth = CGFloat(100);
+            let noDataLabelHeight = CGFloat(50);
+            let noDataLabelFrame = CGRect(x: (currentGraph.frame.width/2) - (noDataLabelWidth/2), y: (currentGraph.frame.height/2)-(noDataLabelHeight), width: noDataLabelWidth, height: noDataLabelHeight);
+            let noDataLabel = UILabel(frame: noDataLabelFrame);
+            noDataLabel.text = "No Data.";
+            noDataLabel.font = UIFont(name: "SFProText-Bold", size: 5*UIScreen.main.scale);
+            noDataLabel.textColor = InverseBackgroundColor;
+            noDataLabel.textAlignment = .center;
+            noDataLabel.tag = -1;
+            
+            currentGraph.addSubview(noDataLabel);
+            
+            currentGraph.tag = 1;
+            
             graphs.graphViews.append(currentGraph);
             
             dataStreamView.addSubview(currentGraph);
@@ -296,6 +322,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                     do{
                         
                         let data = try MessagePackDecoder().decode(APiDataPack.self, from: try communication.dish?.recv(options: .none) ?? Data());
+                        //print("test")
                         //print("recieved data - \(data)");
                         dataMgr.updateWithNewData(data: data);
                         //print(graphs.graphViews[0].data!.dataSets[0].entryCount)
@@ -304,11 +331,20 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
                         
                      }
                     catch {
-                        //print("recieved catch - \(error)") // -- toggling this print func allows the recieve to work and not work for some reason
-                        if ("\(error)" != "Resource temporarily unavailable"){ // super hacky but it works lmao
+                        
+                        if (errno == EAGAIN){
+                            errors.addErrorToBuffer(error: errorData(description: "\(error) with errno \(errno) - no msg to receive", timeStamp: errors.createTimestampStruct()));
+                            //errors.addErrorToBuffer(error: errorData(description: "\(errno) = \(communication.convertErrno(errorn: errno))", timeStamp: errors.createTimestampStruct()));
+                        }
+                        else{
                             print("Communication recieve error - \(error)");
+                            var error = errorData(description: "\(error) with errno \(errno) = \(communication.convertErrno(errorn: errno))", timeStamp: errors.createTimestampStruct());
+                            error.isImportant = true;
+                            errors.addErrorToBuffer(error: error);
                         }
                     }
+                    
+                    
                 }
   
                 //print("before sleep")
@@ -430,12 +466,14 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     @objc func applySettings(){
         if (validateIpAddress(ipToValidate: ipAddressInput.text ?? "") && connectionPortInput.text?.count ?? 0 > 0 && connectionGroupInput.text?.count ?? 0 > 0){
-            UserDefaults.standard.set(ipAddressInput.text ?? "", forKey:"connectionIPAddress");
-            UserDefaults.standard.set(connectionPortInput.text ?? "", forKey:"connectionPort");
-            UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey:"connectionGroup");
-            UserDefaults.standard.set(Int(receiveTimeoutInput.text ?? "0"), forKey:"receiveTimeout");
-            UserDefaults.standard.set(Int(receiveReconnectInput.text ?? "0"), forKey:"receiveReconnect");
-            UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
+            UserDefaults.standard.set(ipAddressInput.text ?? "", forKey: "connectionIPAddress");
+            UserDefaults.standard.set(connectionPortInput.text ?? "", forKey: "connectionPort");
+            UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey: "connectionGroup");
+            UserDefaults.standard.set(Int(receiveTimeoutInput.text ?? "0"), forKey: "receiveTimeout");
+            UserDefaults.standard.set(Int(receiveReconnectInput.text ?? "0"), forKey: "receiveReconnect");
+            UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey: "reconnectTimeout");
+            UserDefaults.standard.set(Int(bufferSizeInput.text ?? "0"), forKey: "bufferSize");
+            UserDefaults.standard.set(Int(receiveBufferInput.text ?? "0"), forKey: "receiveBuffer");
             
             loadPreferences();
             
@@ -443,8 +481,10 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             //hamBurgMenuScrollView.setContentOffset(.zero, animated: true);
             
-            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
+            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect, recvBuffer: receiveBuffer)){
                 print("FAILED TO CONNECT TO NEW ADDRESS")
+                present(errors.addImportantErrorToBuffer(error: errorData(description: "FAILED TO CONNECT TO NEW ADDRESS", timeStamp: errors.createTimestampStruct())), animated: true);
+                // TODO:importantError
             }
             else {
                 print("successful connection to new address")
@@ -457,7 +497,14 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             print("connection port - \(connectionPortInput.text?.count)")
             print("connection group - \(connectionGroupInput.text?.count)")*/
             print("Invalid settings - check your settings and make sure everything is correct");
+            present(errors.addImportantErrorToBuffer(error: errorData(description: "Invalid settings - check your settings and make sure everything is correct", timeStamp: errors.createTimestampStruct())), animated: true);
+            // TODO:importantError
         }
+    }
+    
+    @objc func openErrorLog(){
+        UIImpactFeedbackGenerator(style: .light).impactOccurred();
+        performSegue(withIdentifier: "mainViewToerrorViewSegue", sender: nil);
     }
     
     func renderHamBurgMenu(){
@@ -662,6 +709,62 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         hamBurgMenuScrollView.addSubview(reconnectTimeoutInput);
         nextY += reconnectTimeoutInputFrame.height + verticalPadding;
         
+        /// ----------- BUFFER SIZE
+        
+        let bufferSizeLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let bufferSizeLabel = UILabel(frame: bufferSizeLabelFrame);
+        bufferSizeLabel.text = "Cache Buffer Size";
+        bufferSizeLabel.textColor = InverseBackgroundColor;
+        bufferSizeLabel.textAlignment = .left;
+        bufferSizeLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        bufferSizeLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(bufferSizeLabel);
+        nextY += bufferSizeLabelFrame.height;
+        
+        let bufferSizeInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        bufferSizeInput.frame = bufferSizeInputFrame; // already declared above
+        bufferSizeInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        bufferSizeInput.text = String(graphs.bufferSize);
+        bufferSizeInput.allowsEditingTextAttributes = false;
+        bufferSizeInput.autocorrectionType = .no;
+        bufferSizeInput.spellCheckingType = .no;
+        bufferSizeInput.keyboardType = .numberPad; // experiment with this
+        bufferSizeInput.setUnderLine();
+        bufferSizeInput.delegate = self;
+        bufferSizeInput.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(bufferSizeInput);
+        nextY += bufferSizeInputFrame.height + verticalPadding;
+        
+        /// ----------- RECEIVE BUFFER
+        
+        let receiveBufferLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let receiveBufferLabel = UILabel(frame: receiveBufferLabelFrame);
+        receiveBufferLabel.text = "ZMQ Buffer Size";
+        receiveBufferLabel.textColor = InverseBackgroundColor;
+        receiveBufferLabel.textAlignment = .left;
+        receiveBufferLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        receiveBufferLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(receiveBufferLabel);
+        nextY += receiveBufferLabelFrame.height;
+        
+        let receiveBufferInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        receiveBufferInput.frame = receiveBufferInputFrame; // already declared above
+        receiveBufferInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        receiveBufferInput.text = String(receiveBuffer);
+        receiveBufferInput.allowsEditingTextAttributes = false;
+        receiveBufferInput.autocorrectionType = .no;
+        receiveBufferInput.spellCheckingType = .no;
+        receiveBufferInput.keyboardType = .numberPad; // experiment with this
+        receiveBufferInput.setUnderLine();
+        receiveBufferInput.delegate = self;
+        receiveBufferInput.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(receiveBufferInput);
+        nextY += receiveBufferInputFrame.height + verticalPadding;
+        
         //// --- FINAL ADDRESS
         
         let fullAddressLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
@@ -693,6 +796,36 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         hamBurgMenuScrollView.addSubview(fullAddress);
         nextY += fullAddressHeight + 2*verticalPadding;
         
+        //// --- Version Num
+        
+        let versionNumLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let versionNumLabel = UILabel(frame: versionNumLabelFrame);
+        versionNumLabel.text = "App Version";
+        versionNumLabel.textColor = InverseBackgroundColor;
+        versionNumLabel.textAlignment = .left;
+        versionNumLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        versionNumLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(versionNumLabel);
+        nextY += versionNumLabelFrame.height;
+        
+        let versionNumFont = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        let versionNumHeight = connectionAddress.getHeight(withConstrainedWidth: hamBurgMenuSubViewWidth, font: versionNumFont!);
+        let versionNumFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: versionNumHeight);
+        let versionNum = UITextView(frame: versionNumFrame);
+        versionNum.text = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String;
+        versionNum.font = fullAddressFont;
+        versionNum.textColor = InverseBackgroundColor;
+        versionNum.setUnderLine();
+        versionNum.isEditable = false;
+        versionNum.isSelectable = false;
+        versionNum.isUserInteractionEnabled = false;
+        versionNum.isScrollEnabled = false;
+        versionNum.textContainerInset = UIEdgeInsets(top: -4, left: -4, bottom: 0, right: 0);
+        versionNum.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(versionNum);
+        nextY += versionNumHeight + 2*verticalPadding;
         
         let applySettingsButtonFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: 40);
         let applySettingsButton = UIButton(frame: applySettingsButtonFrame);
@@ -708,6 +841,22 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         hamBurgMenuScrollView.addSubview(applySettingsButton);
         nextY += applySettingsButtonFrame.height + verticalPadding;
+        
+        
+        let openErrorLogButtonFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: 40);
+        let openErrorLogButton = UIButton(frame: openErrorLogButtonFrame);
+        openErrorLogButton.backgroundColor = BackgroundGray;
+        openErrorLogButton.setTitle("Open Error Log", for: .normal);
+        openErrorLogButton.setTitleColor(InverseBackgroundColor, for: .normal);
+        openErrorLogButton.titleLabel?.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        openErrorLogButton.titleLabel?.textAlignment = .center;
+        openErrorLogButton.layer.cornerRadius = 4;
+        openErrorLogButton.tag = 1;
+        
+        openErrorLogButton.addTarget(self, action: #selector(openErrorLog), for: .touchUpInside);
+        
+        hamBurgMenuScrollView.addSubview(openErrorLogButton);
+        nextY += openErrorLogButtonFrame.height + verticalPadding;
         
         // END
         

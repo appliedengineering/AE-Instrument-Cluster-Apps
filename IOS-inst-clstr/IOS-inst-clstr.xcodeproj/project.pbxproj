@@ -26,6 +26,8 @@
 		33ADDE18255B02E300C501F2 /* dataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ADDE17255B02E300C501F2 /* dataManager.swift */; };
 		33ADDE19255B02E300C501F2 /* dataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ADDE17255B02E300C501F2 /* dataManager.swift */; };
 		33ADDE1A255B02E300C501F2 /* dataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ADDE17255B02E300C501F2 /* dataManager.swift */; };
+		33D0C0282561FEA60000C9A6 /* errorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D0C0272561FEA60000C9A6 /* errorView.swift */; };
+		33D0C02C2561FF7A0000C9A6 /* errorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D0C02B2561FF7A0000C9A6 /* errorManager.swift */; };
 		33D5498C253FE61400737F95 /* communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D5498B253FE61400737F95 /* communication.swift */; };
 		33E0625F25381B4C004F171C /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0625E25381B4C004F171C /* mainView.swift */; };
 		33EC059E25357B540000FBFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EC059D25357B540000FBFF /* AppDelegate.swift */; };
@@ -81,6 +83,8 @@
 		33673069255521ED007C99F2 /* SFProDisplay-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Black.ttf"; path = "Assets/SFProDisplay-Black.ttf"; sourceTree = "<group>"; };
 		3367306A255521ED007C99F2 /* SFProDisplay-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProDisplay-Semibold.ttf"; path = "Assets/SFProDisplay-Semibold.ttf"; sourceTree = "<group>"; };
 		33ADDE17255B02E300C501F2 /* dataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dataManager.swift; sourceTree = "<group>"; };
+		33D0C0272561FEA60000C9A6 /* errorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = errorView.swift; sourceTree = "<group>"; };
+		33D0C02B2561FF7A0000C9A6 /* errorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = errorManager.swift; sourceTree = "<group>"; };
 		33D5498B253FE61400737F95 /* communication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = communication.swift; sourceTree = "<group>"; };
 		33E0625E25381B4C004F171C /* mainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
 		33EC059A25357B540000FBFF /* IOS-inst-clstr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS-inst-clstr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +205,7 @@
 			children = (
 				33E0625E25381B4C004F171C /* mainView.swift */,
 				33F9E486255E68DD00C44AFD /* graphView.swift */,
+				33D0C0272561FEA60000C9A6 /* errorView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				33D5498B253FE61400737F95 /* communication.swift */,
 				3321138A2558CE00006F34CB /* graphManager.swift */,
 				33ADDE17255B02E300C501F2 /* dataManager.swift */,
+				33D0C02B2561FF7A0000C9A6 /* errorManager.swift */,
 				331C55772553DEF900DEF3A3 /* extraneous.swift */,
 			);
 			path = Backend;
@@ -499,7 +505,9 @@
 				332A082B253A51FF00BD3081 /* AppUtility.swift in Sources */,
 				33ADDE18255B02E300C501F2 /* dataManager.swift in Sources */,
 				331C55782553DEF900DEF3A3 /* extraneous.swift in Sources */,
+				33D0C0282561FEA60000C9A6 /* errorView.swift in Sources */,
 				33F9E487255E68DD00C44AFD /* graphView.swift in Sources */,
+				33D0C02C2561FF7A0000C9A6 /* errorManager.swift in Sources */,
 				3321138B2558CE00006F34CB /* graphManager.swift in Sources */,
 				33E0625F25381B4C004F171C /* mainView.swift in Sources */,
 				33D5498C253FE61400737F95 /* communication.swift in Sources */,
@@ -612,7 +620,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -667,7 +675,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -684,13 +692,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P5E4JP96ES;
 				INFOPLIST_FILE = "IOS-inst-clstr/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "applied-engineering.IOS-inst-clstr";
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "AE.IOS-inst-clstr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -704,13 +714,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P5E4JP96ES;
 				INFOPLIST_FILE = "IOS-inst-clstr/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "applied-engineering.IOS-inst-clstr";
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "AE.IOS-inst-clstr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

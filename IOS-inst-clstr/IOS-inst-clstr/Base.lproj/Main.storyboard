@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -77,6 +78,7 @@
                         <outlet property="mainView" destination="2eR-a2-D6V" id="UhP-uA-xHg"/>
                         <outlet property="mainViewWidthConstraint" destination="aHY-9C-FJd" id="Ojq-uD-1fp"/>
                         <segue destination="iDR-i1-Dbs" kind="showDetail" identifier="mainViewTographViewSegue" id="vbX-Ac-Bkx"/>
+                        <segue destination="ptH-Me-SSI" kind="showDetail" identifier="mainViewToerrorViewSegue" id="8U2-cs-Tgs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -102,7 +104,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yNH-ne-uHG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1354" y="94"/>
+            <point key="canvasLocation" x="1313" y="-317"/>
+        </scene>
+        <!--Error Class-->
+        <scene sceneID="4jf-UW-GfO">
+            <objects>
+                <viewController id="ptH-Me-SSI" customClass="errorClass" customModule="IOS_inst_clstr" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yKm-nr-ltv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="lsZ-GC-hJ5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dea-DN-pop" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1312" y="593"/>
         </scene>
     </scenes>
     <resources>

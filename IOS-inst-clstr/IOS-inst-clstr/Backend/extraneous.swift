@@ -129,3 +129,5 @@ func rgb(r: Int, g: Int, b: Int) -> UIColor{
 class GraphUIButton: UIButton{
     var graphIndex = -1;
 }
+
+

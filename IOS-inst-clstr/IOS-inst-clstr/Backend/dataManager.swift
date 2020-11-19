@@ -32,6 +32,7 @@ class dataManager{
             // print("calling - \(i) - data - \(currentData[i])")
             if (!graphs.updateGraph(with: i, point: currentData[i])){
                 print("Failed to add data point at graph with index \(i) : Timestamp = \(currentUnixEpoch)");
+                errors.addErrorToBuffer(error: errorData(description: "Failed to add data point at graph with index \(i) : Timestamp = \(currentUnixEpoch)", timeStamp: errors.createTimestampStruct()));
             }
         }
         // TODO: call extra func here to mainview to update data that doesn't need a graph
@@ -41,11 +42,11 @@ class dataManager{
   
     private func convertRawData(data: APiDataPack, currentUnixEpoch: Double)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
-        let timeDiff = Int64((currentUnixEpoch * unixEpochPrecision) - (startUnixEpoch * unixEpochPrecision));
+        let timeDiff = Float64(((currentUnixEpoch * unixEpochPrecision) - (startUnixEpoch * unixEpochPrecision))/unixEpochPrecision);
         var output = Array(repeating: ChartDataEntry(), count: graphs.numOfGraphs);
         
         for i in 0..<graphs.numOfGraphs{
-            output[i] = ChartDataEntry(x: Double(timeDiff), y: specificDataAttribute(with: i, data: data));
+            output[i] = ChartDataEntry(x: timeDiff, y: specificDataAttribute(with: i, data: data));
         }
         
         return output;
@@ -56,9 +57,9 @@ class dataManager{
     public func specificDataAttribute(with index: Int, data: APiDataPack) -> Float64{ // will convert ints to floats as well
         switch index{
         case 0:
-            return data.RPM;
+            return data.rpm;
         case 1:
-            return data.Torque;
+            return data.torque;
         case 2:
             return Float64(data.throttlePercent);
         case 3:
