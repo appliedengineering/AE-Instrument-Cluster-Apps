@@ -63,7 +63,7 @@ class communicationClass{
         permissionObj.triggerDialog();
     }
     
-    public func connect(connectionstr: String, connectionGroup: String, recvReconnect: Int)->Bool{
+    public func connect(connectionstr: String, connectionGroup: String, recvReconnect: Int, recvBuffer: Int)->Bool{
         
         connectionString = connectionstr;
         group = connectionGroup;
@@ -75,6 +75,7 @@ class communicationClass{
             //try dish?.setSubscribe("telemetry");
             try dish?.joinGroup(group);
             try dish?.setRecvTimeout(Int32(recvReconnect)); // in ms
+            try dish?.setRecvBufferSize(Int32(recvBuffer));
         }
         catch{
             print("CONNECT COMMUNICATION error - \(error)");
@@ -100,14 +101,14 @@ class communicationClass{
         return true;
     }
     
-    public func newconnection(connectionstr: String, connectionGroup: String, recvReconnect: Int)->Bool{ // when changing ports or address
+    public func newconnection(connectionstr: String, connectionGroup: String, recvReconnect: Int, recvBuffer: Int)->Bool{ // when changing ports or address
         
         if (!disconnect()){
             print("Failed disconnect but not severe error");
             errors.addErrorToBuffer(error: errorData(description: "Failed disconnect but not severe error", timeStamp: errors.createTimestampStruct()));
         }
         
-        if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvReconnect: recvReconnect)){
+        if (!connect(connectionstr: connectionstr, connectionGroup: connectionGroup, recvReconnect: recvReconnect, recvBuffer: recvBuffer)){
             return false;
         }
         
@@ -138,7 +139,7 @@ class communicationClass{
     public func convertErrno(errorn: Int32) -> String{
         switch errorn {
         case EAGAIN:
-            return "EAGAIN - Non-blocking mode was requested and no messages are available at the moment."
+            return "EAGAIN - Non-blocking mode was requested and no messages are available at the moment.";
         case ENOTSUP:
             return "ENOTSUP - The zmq_recv() operation is not supported by this socket type.";
         case EFSM:

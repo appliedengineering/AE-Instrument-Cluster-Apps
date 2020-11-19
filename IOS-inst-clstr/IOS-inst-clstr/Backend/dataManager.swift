@@ -42,11 +42,11 @@ class dataManager{
   
     private func convertRawData(data: APiDataPack, currentUnixEpoch: Double)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
-        let timeDiff = Int64((currentUnixEpoch * unixEpochPrecision) - (startUnixEpoch * unixEpochPrecision));
+        let timeDiff = Float64(((currentUnixEpoch * unixEpochPrecision) - (startUnixEpoch * unixEpochPrecision))/unixEpochPrecision);
         var output = Array(repeating: ChartDataEntry(), count: graphs.numOfGraphs);
         
         for i in 0..<graphs.numOfGraphs{
-            output[i] = ChartDataEntry(x: Double(timeDiff), y: specificDataAttribute(with: i, data: data));
+            output[i] = ChartDataEntry(x: timeDiff, y: specificDataAttribute(with: i, data: data));
         }
         
         return output;

@@ -23,6 +23,7 @@ var receiveTimeout = -1; // in ms
 
 var reconnectTimeout = -1; // in sec
 
+var receiveBuffer = 60;
 
 let communication = communicationClass.obj;
 let dataMgr = dataManager.obj;
@@ -57,6 +58,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     let receiveTimeoutInput = UITextField(); // in ms
     let reconnectTimeoutInput = UITextField(); // in sec
     let bufferSizeInput = UITextField(); // in units of data points
+    let receiveBufferInput = UITextField();
     // end textfields
 
     func loadPreferences(){
@@ -74,6 +76,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         receiveTimeout = UserDefaults.standard.integer(forKey: "receiveTimeout") == 0 ? 100 : UserDefaults.standard.integer(forKey: "receiveTimeout");
         reconnectTimeout = UserDefaults.standard.integer(forKey: "reconnectTimeout") == 0 ? 3 : UserDefaults.standard.integer(forKey: "reconnectTimeout");
         graphs.bufferSize = UserDefaults.standard.integer(forKey: "bufferSize") == 0 ? 60 : UserDefaults.standard.integer(forKey: "bufferSize");
+        receiveBuffer = UserDefaults.standard.integer(forKey: "receiveBuffer") == 0 ? 10 : UserDefaults.standard.integer(forKey: "receiveBuffer");
         
         connectionAddress = protocolString + "://" + connectionIPAddress + ":" + connectionPort;
     }
@@ -137,7 +140,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         renderViews();
         
-        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
+        if (!communication.connect(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect, recvBuffer: receiveBuffer)){
             print("failed first connection - check settings and reconnect again")
             errors.addErrorToBuffer(error: errorData(description: "failed first connection - check settings and reconnect again", timeStamp: errors.createTimestampStruct()));
         }
@@ -463,13 +466,14 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     
     @objc func applySettings(){
         if (validateIpAddress(ipToValidate: ipAddressInput.text ?? "") && connectionPortInput.text?.count ?? 0 > 0 && connectionGroupInput.text?.count ?? 0 > 0){
-            UserDefaults.standard.set(ipAddressInput.text ?? "", forKey:"connectionIPAddress");
-            UserDefaults.standard.set(connectionPortInput.text ?? "", forKey:"connectionPort");
-            UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey:"connectionGroup");
-            UserDefaults.standard.set(Int(receiveTimeoutInput.text ?? "0"), forKey:"receiveTimeout");
-            UserDefaults.standard.set(Int(receiveReconnectInput.text ?? "0"), forKey:"receiveReconnect");
-            UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey:"reconnectTimeout");
-            UserDefaults.standard.set(Int(bufferSizeInput.text ?? "0"), forKey:"bufferSize");
+            UserDefaults.standard.set(ipAddressInput.text ?? "", forKey: "connectionIPAddress");
+            UserDefaults.standard.set(connectionPortInput.text ?? "", forKey: "connectionPort");
+            UserDefaults.standard.set(connectionGroupInput.text ?? "", forKey: "connectionGroup");
+            UserDefaults.standard.set(Int(receiveTimeoutInput.text ?? "0"), forKey: "receiveTimeout");
+            UserDefaults.standard.set(Int(receiveReconnectInput.text ?? "0"), forKey: "receiveReconnect");
+            UserDefaults.standard.set(Int(reconnectTimeoutInput.text ?? "0"), forKey: "reconnectTimeout");
+            UserDefaults.standard.set(Int(bufferSizeInput.text ?? "0"), forKey: "bufferSize");
+            UserDefaults.standard.set(Int(receiveBufferInput.text ?? "0"), forKey: "receiveBuffer");
             
             loadPreferences();
             
@@ -477,7 +481,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             //hamBurgMenuScrollView.setContentOffset(.zero, animated: true);
             
-            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect)){
+            if (!communication.newconnection(connectionstr: connectionAddress, connectionGroup: connectionGroup, recvReconnect: receiveReconnect, recvBuffer: receiveBuffer)){
                 print("FAILED TO CONNECT TO NEW ADDRESS")
                 present(errors.addImportantErrorToBuffer(error: errorData(description: "FAILED TO CONNECT TO NEW ADDRESS", timeStamp: errors.createTimestampStruct())), animated: true);
                 // TODO:importantError
@@ -709,7 +713,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         let bufferSizeLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
         let bufferSizeLabel = UILabel(frame: bufferSizeLabelFrame);
-        bufferSizeLabel.text = "Data Buffer Size";
+        bufferSizeLabel.text = "Cache Buffer Size";
         bufferSizeLabel.textColor = InverseBackgroundColor;
         bufferSizeLabel.textAlignment = .left;
         bufferSizeLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
@@ -732,6 +736,34 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         
         hamBurgMenuScrollView.addSubview(bufferSizeInput);
         nextY += bufferSizeInputFrame.height + verticalPadding;
+        
+        /// ----------- RECEIVE BUFFER
+        
+        let receiveBufferLabelFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuTextHeight);
+        let receiveBufferLabel = UILabel(frame: receiveBufferLabelFrame);
+        receiveBufferLabel.text = "ZMQ Buffer Size";
+        receiveBufferLabel.textColor = InverseBackgroundColor;
+        receiveBufferLabel.textAlignment = .left;
+        receiveBufferLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 20);
+        receiveBufferLabel.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(receiveBufferLabel);
+        nextY += receiveBufferLabelFrame.height;
+        
+        let receiveBufferInputFrame = CGRect(x: horizontalPadding, y: nextY, width: hamBurgMenuSubViewWidth, height: hamBurgMenuInputHeight);
+        receiveBufferInput.frame = receiveBufferInputFrame; // already declared above
+        receiveBufferInput.font = UIFont(name: "SFProDisplay-Semibold", size: 18);
+        receiveBufferInput.text = String(receiveBuffer);
+        receiveBufferInput.allowsEditingTextAttributes = false;
+        receiveBufferInput.autocorrectionType = .no;
+        receiveBufferInput.spellCheckingType = .no;
+        receiveBufferInput.keyboardType = .numberPad; // experiment with this
+        receiveBufferInput.setUnderLine();
+        receiveBufferInput.delegate = self;
+        receiveBufferInput.tag = 1;
+        
+        hamBurgMenuScrollView.addSubview(receiveBufferInput);
+        nextY += receiveBufferInputFrame.height + verticalPadding;
         
         //// --- FINAL ADDRESS
         

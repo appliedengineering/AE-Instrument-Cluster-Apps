@@ -14,6 +14,7 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
     var graphIndex = -1;
     
     var currentGraph : LineChartView = LineChartView();
+    var noDataLabel : UILabel = UILabel();
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -34,6 +35,7 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         //currentGraph.data!.dataSets[0].addEntry(graphs.graphViews[graphIndex].data!.dataSets[0].)
         DispatchQueue.main.sync {
             currentGraph.data = graphs.graphViews[graphIndex].data;
+            noDataLabel.isHidden = currentGraph.data?.dataSets[0].entryCount != 0;
         }
     }
     
@@ -99,6 +101,18 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         
         print("data size - \(line.entries.count) compared to \(graphs.graphViews[graphIndex].data!.dataSets[0].entryCount)")*/
         graphView.data = graphs.graphViews[graphIndex].lineData;
+        
+        let noDataLabelWidth = CGFloat(100);
+        let noDataLabelHeight = CGFloat(50);
+        let noDataLabelFrame = CGRect(x: (graphViewFrame.width/2) - (noDataLabelWidth/2), y: (graphViewFrame.height/2)-(noDataLabelHeight/2), width: noDataLabelWidth, height: noDataLabelHeight);
+        noDataLabel = UILabel(frame: noDataLabelFrame);
+        noDataLabel.text = "No Data.";
+        noDataLabel.textAlignment = .center;
+        noDataLabel.textColor = InverseBackgroundColor;
+        noDataLabel.font = UIFont(name: "SFProText-Bold", size: 5*UIScreen.main.scale);
+        noDataLabel.isHidden = graphView.data?.dataSets[0].entryCount != 0;
+
+        graphView.addSubview(noDataLabel);
         
         currentGraph = graphView;
         
