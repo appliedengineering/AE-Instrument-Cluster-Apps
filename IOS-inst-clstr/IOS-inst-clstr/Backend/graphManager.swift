@@ -47,6 +47,7 @@ class graphManager{ // all funcs must be called from
                             subviews.removeFromSuperview();
                         }
                     }
+                    graphViews[index].tag = 0;
                 }
             }
         
