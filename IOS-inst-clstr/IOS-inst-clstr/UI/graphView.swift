@@ -10,11 +10,12 @@ import UIKit
 import AudioToolbox
 import Charts
 
-class graphViewClass: UIViewController, UIScrollViewDelegate{
+class graphViewClass: UIViewController, UIScrollViewDelegate, ChartViewDelegate{
     var graphIndex = -1;
     
     var currentGraph : LineChartView = LineChartView();
     var noDataLabel : UILabel = UILabel();
+    var selectedPointLabel : UILabel = UILabel();
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -71,7 +72,27 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
             topView.roundCorners(corners: [.topLeft, .topRight], radius: 12);
         }
         
+        //let selectedPointHorizontalPadding = CGFloat(10);
+        //let selectedPointVerticalPadding = CGFloat(10);
+        
         self.view.addSubview(topView);
+        
+        let selectedPointHeight = CGFloat(6*UIScreen.main.scale);
+        let selectedPointHorizontalPadding = CGFloat(10);
+        let selectedPointFrame = CGRect(x: selectedPointHorizontalPadding, y: nextY, width: containerSize.width - 2*selectedPointHorizontalPadding, height: selectedPointHeight); // scale is 3
+        let selectedPoint = UILabel(frame: selectedPointFrame);
+        selectedPoint.text = "Selected Point: (x: nil, y: nil)";
+        selectedPoint.font = UIFont(name: "SFProDisplay-Semibold", size: 4*UIScreen.main.scale);
+        //selectedPoint.backgroundColor = BackgroundGray;
+        selectedPoint.textAlignment = .left;
+        selectedPoint.textColor = InverseBackgroundColor;
+        selectedPoint.isHidden = true;
+        
+        selectedPointLabel = selectedPoint;
+        
+        self.view.addSubview(selectedPoint);
+        
+        nextY += selectedPointFrame.height;
         
         let graphViewFrame = CGRect(x: 0, y: nextY, width: containerSize.width, height: containerSize.height - nextY - 10);
         let graphView = LineChartView(frame: graphViewFrame);
@@ -101,6 +122,7 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         
         print("data size - \(line.entries.count) compared to \(graphs.graphViews[graphIndex].data!.dataSets[0].entryCount)")*/
         graphView.data = graphs.graphViews[graphIndex].lineData;
+        graphView.delegate = self;
         
         let noDataLabelWidth = CGFloat(100);
         let noDataLabelHeight = CGFloat(50);
@@ -118,6 +140,11 @@ class graphViewClass: UIViewController, UIScrollViewDelegate{
         
         self.view.addSubview(graphView);
         
+    }
+    
+    public func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        selectedPointLabel.isHidden = false;
+        selectedPointLabel.text = "Selected Point: (x: \(Float64(round(1000*entry.x)/1000)), y: \(entry.y))";
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

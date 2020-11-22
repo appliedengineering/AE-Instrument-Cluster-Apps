@@ -46,7 +46,7 @@ class dataManager{
         var output = Array(repeating: ChartDataEntry(), count: graphs.numOfGraphs);
         
         for i in 0..<graphs.numOfGraphs{
-            output[i] = ChartDataEntry(x: timeDiff, y: specificDataAttribute(with: i, data: data));
+            output[i] = ChartDataEntry(x: timeDiff, y: Double(specificDataAttribute(with: i, data: data)));
         }
         
         return output;
@@ -54,20 +54,20 @@ class dataManager{
     
     // ["RPM", "Torque", "Throttle (%)", "Duty (%)", "PWM Frequency", "Temperature (C)", "Source Voltage", "PWM Current", "Power Change (Δ)", "Voltage Change (Δ)"];
     
-    public func specificDataAttribute(with index: Int, data: APiDataPack) -> Float64{ // will convert ints to floats as well
+    public func specificDataAttribute(with index: Int, data: APiDataPack) -> Float32{ // will convert ints to floats as well
         switch index{
         case 0:
             return data.rpm;
         case 1:
             return data.torque;
         case 2:
-            return Float64(data.throttlePercent);
+            return Float32(data.throttlePercent);
         case 3:
-            return Float64(data.dutyPercent);
+            return Float32(data.dutyPercent);
         case 4:
-            return Float64(data.pwmFrequency);
+            return Float32(data.pwmFrequency);
         case 5:
-            return Float64(data.tempC);
+            return Float32(data.tempC);
         case 6:
             return data.sourceVoltage;
         case 7:

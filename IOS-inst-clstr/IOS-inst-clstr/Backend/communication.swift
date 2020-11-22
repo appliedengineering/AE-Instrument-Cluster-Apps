@@ -13,16 +13,16 @@ import Network
 public struct APiDataPack : Decodable{
     var psuMode : Int = 0;
     // graphable data
-    var rpm : Float64 = 0.0;
-    var torque : Float64 = 0.0;
     var throttlePercent : Int = 0;
     var dutyPercent : Int = 0;
     var pwmFrequency : Int = 0;
-    var tempC : Int = 0;
-    var sourceVoltage : Float64 = 0.0;
-    var pwmCurrent : Float64 = 0.0;
-    var powerChange : Float64 = 0.0;
-    var voltageChange : Float64 = 0.0;
+    var rpm : Float32 = 0.0;
+    var torque : Float32 = 0.0;
+    var tempC : Float32 = 0.0;
+    var sourceVoltage : Float32 = 0.0;
+    var pwmCurrent : Float32 = 0.0;
+    var powerChange : Float32 = 0.0;
+    var voltageChange : Float32 = 0.0;
     // graphable data
     var mddStatus : Bool = false;
     var ocpStatus : Bool = false;
