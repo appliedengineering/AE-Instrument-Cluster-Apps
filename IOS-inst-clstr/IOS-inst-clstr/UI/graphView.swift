@@ -77,12 +77,12 @@ class graphViewClass: UIViewController, UIScrollViewDelegate, ChartViewDelegate{
         
         self.view.addSubview(topView);
         
-        let selectedPointHeight = CGFloat(30);
+        let selectedPointHeight = CGFloat(6*UIScreen.main.scale);
         let selectedPointHorizontalPadding = CGFloat(10);
         let selectedPointFrame = CGRect(x: selectedPointHorizontalPadding, y: nextY, width: containerSize.width - 2*selectedPointHorizontalPadding, height: selectedPointHeight); // scale is 3
         let selectedPoint = UILabel(frame: selectedPointFrame);
         selectedPoint.text = "Selected Point: (x: nil, y: nil)";
-        selectedPoint.font = UIFont(name: "SFProDisplay-Semibold", size: 5*UIScreen.main.scale);
+        selectedPoint.font = UIFont(name: "SFProDisplay-Semibold", size: 4*UIScreen.main.scale);
         //selectedPoint.backgroundColor = BackgroundGray;
         selectedPoint.textAlignment = .left;
         selectedPoint.textColor = InverseBackgroundColor;
@@ -144,7 +144,7 @@ class graphViewClass: UIViewController, UIScrollViewDelegate, ChartViewDelegate{
     
     public func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         selectedPointLabel.isHidden = false;
-        selectedPointLabel.text = "Selected Point: (x: \(Float64(round(1000*entry.x)/1000)), y: \(entry.y)";
+        selectedPointLabel.text = "Selected Point: (x: \(Float64(round(1000*entry.x)/1000)), y: \(entry.y))";
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
