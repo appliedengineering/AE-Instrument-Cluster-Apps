@@ -40,7 +40,7 @@ class dataManager{
             let currentData = getMiscData(from: i, data: data);
             DispatchQueue.main.sync {
                 if (i == 3){
-                    mainViewClass.miscStatusLabels[i].text = "\(currentData)";
+                    mainViewClass.miscStatusLabels[i].text = currentData == 1 ? "Batteries" : "Solar Panels";
                     mainViewClass.miscStatusLabels[i].textColor = InverseBackgroundColor;
                 }
                 else{
@@ -68,6 +68,7 @@ class dataManager{
         }
     }
   
+    
     private func convertRawData(data: APiDataPack, currentUnixEpoch: Double)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
         let timeDiff = (Float64(Int(data.timeStamp * 1000)) / 1000);
