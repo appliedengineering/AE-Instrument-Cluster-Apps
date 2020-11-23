@@ -11,7 +11,7 @@ import SwiftyZeroMQ5
 import Network
 // ["RPM", "Torque", "Throttle (%)", "Duty (%)", "PWM Frequency", "Temperature (C)", "Source Voltage", "PWM Current", "Power Change (Δ)", "Voltage Change (Δ)"];
 public struct APiDataPack : Decodable{
-    var psuMode : Int = 0;
+    var psuMode : Int = 0; // power supply mode - 3
     // graphable data
     var throttlePercent : Int = 0;
     var dutyPercent : Int = 0;
@@ -24,9 +24,10 @@ public struct APiDataPack : Decodable{
     var powerChange : Float32 = 0.0;
     var voltageChange : Float32 = 0.0;
     // graphable data
-    var mddStatus : Bool = false;
-    var ocpStatus : Bool = false;
-    var ovpStatus : Bool = false;
+    var mddStatus : Bool = false; // minimum duty detection - 0
+    var ocpStatus : Bool = false; // over current protection - 1
+    var ovpStatus : Bool = false; // over voltage prevention - 2
+    var timeStamp : Float64 = 0.0;
 };
 
 

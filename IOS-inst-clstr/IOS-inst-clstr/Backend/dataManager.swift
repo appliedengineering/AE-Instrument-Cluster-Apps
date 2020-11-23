@@ -10,15 +10,15 @@ import UIKit
 import Charts
 
 class dataManager{
-    var startUnixEpoch : Double = -1;
+    //var startUnixEpoch : Double = -1;
     
     static let obj = dataManager();
     
     let unixEpochPrecision : Double = 1000;
     
     private init(){
-        startUnixEpoch = Date().timeIntervalSince1970;
-        print("Current UNIX EPOCH = \(startUnixEpoch)");
+        //startUnixEpoch = Date().timeIntervalSince1970;
+        //print("Current UNIX EPOCH = \(startUnixEpoch)");
     }
     
     func updateWithNewData(data: APiDataPack){
@@ -36,13 +36,41 @@ class dataManager{
             }
         }
         // TODO: call extra func here to mainview to update data that doesn't need a graph
-        //print("new size of array after this iteration : \(graphs.graphViews[0].data!.dataSets[0].entryCount)")
+        for i in 0..<mainViewClass.miscStatusLabels.count{
+            let currentData = getMiscData(from: i, data: data);
+            DispatchQueue.main.sync {
+                if (i == 3){
+                    mainViewClass.miscStatusLabels[i].text = "\(currentData)";
+                    mainViewClass.miscStatusLabels[i].textColor = InverseBackgroundColor;
+                }
+                else{
+                    let isOn = currentData == 1;
+                    mainViewClass.miscStatusLabels[i].text = (isOn ? "ON" : "OFF");
+                    mainViewClass.miscStatusLabels[i].textColor = (isOn ? UIColor.green : UIColor.red);
+                }
+            }
+        }
         
+    }
+    
+    private func getMiscData(from index: Int, data: APiDataPack) -> Int{
+        switch index {
+        case 0:
+            return data.mddStatus ? 1 : 0;
+        case 1:
+            return data.ocpStatus ? 1 : 0;
+        case 2:
+            return data.ovpStatus ? 1 : 0;
+        case 3:
+            return data.psuMode;
+        default:
+            return -1;
+        }
     }
   
     private func convertRawData(data: APiDataPack, currentUnixEpoch: Double)->[ChartDataEntry]{ // one [ChartDataEntry] is one recieved APiDataPack with (x: time, y: data point)
         // data point order is determined by graphName in graphManager
-        let timeDiff = Float64(((currentUnixEpoch * unixEpochPrecision) - (startUnixEpoch * unixEpochPrecision))/unixEpochPrecision);
+        let timeDiff = (Float64(Int(data.timeStamp * 1000)) / 1000);
         var output = Array(repeating: ChartDataEntry(), count: graphs.numOfGraphs);
         
         for i in 0..<graphs.numOfGraphs{

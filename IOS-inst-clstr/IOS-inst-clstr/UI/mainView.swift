@@ -61,6 +61,9 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
     let receiveBufferInput = UITextField();
     // end textfields
 
+    static var miscStatusLabels = [UILabel]();
+    //static var psuModeStatusLabel = UILabel();
+    
     func loadPreferences(){
         //connectionIPAddress = "224.0.0.1"; // defaults
         //connectionPort = "28650"; // defaults
@@ -158,7 +161,7 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             }
         }
         let screenWidth = UIScreen.main.bounds.width;
-        let verticalPadding = CGFloat(20);
+        let verticalPadding = CGFloat(15);
         var nextY = CGFloat(0);
     
         let headerViewHeight = CGFloat(50);
@@ -175,11 +178,26 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
         appIconView.contentMode = .scaleAspectFill;
         
         headerView.addSubview(appIconView);
-        nextY += headerViewHeight;
+        nextY += headerViewHeight + 5;
         mainScrollView.addSubview(headerView);
     
         
         //let dataStreamColors = [rgb(r: 216,g: 67,b: 21), rgb(r: 33,g: 150,b: 243), rgb(r: 76,g: 175,b: 80), rgb(r: 255,g: 152,b: 0), rgb(r: 244,g: 67,b: 54)];
+        
+        let scrollViewHorizontalPadding = UIScreen.main.bounds.width / 25;
+        
+        let graphLabelFrame = CGRect(x: scrollViewHorizontalPadding, y: nextY, width: UIScreen.main.bounds.width - 2*scrollViewHorizontalPadding, height: 40/3*UIScreen.main.scale);
+        let graphLabel = UILabel(frame: graphLabelFrame);
+        graphLabel.text = "Graphs";
+        graphLabel.font = UIFont(name: "SFProText-Bold", size: 7*UIScreen.main.scale);
+        graphLabel.textAlignment = .left;
+        graphLabel.textColor = InverseBackgroundColor;
+        
+        nextY += graphLabelFrame.height;
+        
+        mainScrollView.addSubview(graphLabel);
+        
+        nextY += verticalPadding;
         let dataStreamViewHeight = CGFloat(screenWidth * 0.5333);
         for i in 0..<graphs.numOfGraphs{
             let dataStreamViewFrame = CGRect(x: 0, y: nextY, width: screenWidth, height: dataStreamViewHeight);
@@ -253,10 +271,10 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             dataStreamView.addSubview(currentGraph);
             
-            let graphTitleFont = UIFont(name: "SFProDisplay-Semibold", size: 18)!;
+            let graphTitleFont = UIFont(name: "SFProDisplay-Semibold", size: 6*UIScreen.main.scale)!;
             let graphTitleHeight = currentGraph.frame.height / 8;
             let graphTitleWidth = graphs.graphNameArray[i].getWidth(withConstrainedHeight: graphTitleHeight, font: graphTitleFont);
-            let graphTitleFrame = CGRect(x: currentGraph.frame.width - graphTitleWidth - (currentGraph.frame.width / 25), y: 0, width: graphTitleWidth, height: graphTitleHeight);
+            let graphTitleFrame = CGRect(x: currentGraph.frame.width - graphTitleWidth - scrollViewHorizontalPadding, y: 0, width: graphTitleWidth, height: graphTitleHeight);
             let graphTitle = UILabel(frame: graphTitleFrame);
             graphTitle.text = graphs.graphNameArray[i];
             graphTitle.font = graphTitleFont;
@@ -272,6 +290,50 @@ class mainViewClass: UIViewController, UIScrollViewDelegate, UITextFieldDelegate
             
             nextY += dataStreamViewHeight + verticalPadding;
         }
+        
+        nextY += 5;
+        
+        let miscLabelFrame = CGRect(x: scrollViewHorizontalPadding, y: nextY, width: UIScreen.main.bounds.width - 2*scrollViewHorizontalPadding, height: 40/3*UIScreen.main.scale);
+        let miscLabel = UILabel(frame: miscLabelFrame);
+        miscLabel.text = "Miscellaneous";
+        miscLabel.font = UIFont(name: "SFProText-Bold", size: 7*UIScreen.main.scale);
+        miscLabel.textAlignment = .left;
+        miscLabel.textColor = InverseBackgroundColor;
+        
+        nextY += miscLabelFrame.height + verticalPadding;
+        mainScrollView.addSubview(miscLabel);
+        
+        let statusOuterWidth = UIScreen.main.bounds.width - 2*scrollViewHorizontalPadding;
+        let statusLabelWidth = 2*statusOuterWidth/3;
+        let statusWidth = statusOuterWidth/3;
+        let statusLabelHeight = 40/3 * UIScreen.main.scale;
+        
+        let miscellaneousLabelStrings = ["Minimum Duty Detection", "Over Current Protection", "Over Voltage Prevention", "Power Supply Mode"];
+        
+        for i in 0..<miscellaneousLabelStrings.count{
+            let labelFrame = CGRect(x: scrollViewHorizontalPadding, y: nextY, width: statusLabelWidth, height: statusLabelHeight);
+            let label = UILabel(frame: labelFrame);
+            label.text = miscellaneousLabelStrings[i];
+            label.textAlignment = .left;
+            label.textColor = InverseBackgroundColor;
+            label.font = UIFont(name: "SFProDisplay-Semibold", size: 6*UIScreen.main.scale);
+            mainScrollView.addSubview(label);
+            
+            let statusFrame = CGRect(x: labelFrame.maxX, y: nextY, width: statusWidth, height: statusLabelHeight);
+            let status = UILabel(frame: statusFrame);
+            status.text = "No data";
+            status.font = UIFont(name: "SFProText-Bold", size: 6*UIScreen.main.scale);
+            status.textColor = UIColor.red;
+            status.textAlignment = .right;
+            
+            mainViewClass.miscStatusLabels.append(status);
+            
+            mainScrollView.addSubview(status);
+            
+            nextY += statusLabelHeight + verticalPadding/2;
+        }
+        
+        //let psuModeLabelFrame = CGRect(x: scrollViewHorizontalPadding, y: nextY, width: UIScreen.main.bounds.width, height: <#T##CGFloat#>)
         
         mainScrollView.contentSize = CGSize(width: screenWidth, height: nextY);
     }
