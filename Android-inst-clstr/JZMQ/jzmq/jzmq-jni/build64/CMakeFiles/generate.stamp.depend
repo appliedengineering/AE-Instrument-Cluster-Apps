@@ -1,0 +1,32 @@
+# CMake generation dependency list for this directory.
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeCInformation.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeCXXInformation.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeFindJavaCommon.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeGenericSystem.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeLanguageInformation.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeRCInformation.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CPack.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/CPackComponent.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Compiler/MSVC-C.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/FindJNI.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/FindJava.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/FindPackageMessage.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/InstallRequiredSystemLibraries.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Platform/Windows.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Modules/Platform/WindowsPaths.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.14/Templates/CPackConfig.cmake.in
+D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/CMakeLists.txt
+D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/3.14.3/CMakeCCompiler.cmake
+D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/3.14.3/CMakeCXXCompiler.cmake
+D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/3.14.3/CMakeRCCompiler.cmake
+D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/3.14.3/CMakeSystem.cmake

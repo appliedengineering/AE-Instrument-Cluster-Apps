@@ -1,0 +1,10 @@
+^D:\USERS\RICHA\DESKTOP\MISC\GITHUB REPOSITORIES\AE-INTRUMENT-CLUSTER-APPS\ANDROID-INST-CLSTR\JZMQ\JZMQ\JZMQ-JNI\BUILD64\CMAKEFILES\0378796850C7337A96F7D4527B2C17DE\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" "-SD:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni" "-BD:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/JZMQ.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
