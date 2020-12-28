@@ -3,7 +3,7 @@ Source code for Applied Engineering Instrument Cluster Apps
 
 # Android
 
-How to use JeroMQ PUB/SUB:
+How to use JeroMQ PUB/SUB (taken from [here](https://github.com/trevorbernard/jeromq-examples/blob/master/src/main/java/com/trevorbernard/PubSub.java)):
 ```java
 import org.zeromq.ZMQ;
 
