@@ -1,8 +1,0 @@
-﻿  Checking Build System
-  CMake is re-running because D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/generate.stamp is out-of-date.
-    the file 'D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/CMakeLists.txt'
-    is newer than 'D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/generate.stamp.depend'
-    result='-1'
-  -- Configuring done
-  -- Generating done
-  -- Build files have been written to: D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64

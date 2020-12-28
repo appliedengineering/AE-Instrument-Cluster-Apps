@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import org.zeromq.ZMQ;
+import org.zeromq.SocketType;
 import org.zeromq.Utils;
+import org.zeromq.ZContext;
 
 public class home extends AppCompatActivity {
 
@@ -27,6 +29,7 @@ public class home extends AppCompatActivity {
         System.out.println(" is dark mode - " + isSystemDarkMode());
 
         System.out.println(ZMQ.getVersionString());
+
     }
 
 

@@ -1,5 +1,0 @@
-D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/PACKAGE.dir
-D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/jzmq.dir
-D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/INSTALL.dir
-D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/ALL_BUILD.dir
-D:/Users/richa/Desktop/Misc/Github Repositories/AE-Intrument-Cluster-Apps/Android-inst-clstr/JZMQ/jzmq/jzmq-jni/build64/CMakeFiles/ZERO_CHECK.dir
