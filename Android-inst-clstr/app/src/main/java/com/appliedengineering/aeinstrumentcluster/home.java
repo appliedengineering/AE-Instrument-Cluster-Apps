@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import org.zeromq.ZMQ;
-import org.zeromq.SocketType;
-import org.zeromq.Utils;
-import org.zeromq.ZContext;
+
+import com.appliedengineering.aeinstrumentcluster.communication.communication;
 
 public class home extends AppCompatActivity {
 
@@ -28,7 +26,7 @@ public class home extends AppCompatActivity {
         setContentView(R.layout.home_layout);
         System.out.println(" is dark mode - " + isSystemDarkMode());
 
-        System.out.println(ZMQ.getVersionString());
+        communication.init();
 
     }
 
