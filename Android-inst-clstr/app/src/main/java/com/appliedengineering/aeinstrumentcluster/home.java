@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import com.appliedengineering.aeinstrumentcluster.communication.communication;
+import com.appliedengineering.aeinstrumentcluster.Backend.communication;
 
 public class home extends AppCompatActivity {
 
