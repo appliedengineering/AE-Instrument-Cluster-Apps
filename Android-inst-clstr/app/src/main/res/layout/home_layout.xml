@@ -9,7 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/top_header"
-        android:name="com.appliedengineering.aeinstrumentcluster.home_top_bar"
+        android:name="com.appliedengineering.aeinstrumentcluster.UI.home_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
