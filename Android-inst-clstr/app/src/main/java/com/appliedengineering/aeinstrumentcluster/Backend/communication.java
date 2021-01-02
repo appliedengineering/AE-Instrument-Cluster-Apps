@@ -46,7 +46,7 @@ public final class communication {
     public static boolean disconnect(){
         try{
             dish.leave(group);
-            dish.disconnect(connectionString);
+            dish.unbind(connectionString);
             dish.close();
             dish = null;
         }catch (Exception e){
