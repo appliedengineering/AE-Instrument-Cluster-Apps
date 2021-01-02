@@ -20,7 +20,6 @@
         android:name="com.appliedengineering.aeinstrumentcluster.UI.home_content_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_header" />
 
