@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.appliedengineering.aeinstrumentcluster">
+    <!--  Permissions   -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--  Application Manifest  -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/aelogo"
@@ -16,5 +19,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
