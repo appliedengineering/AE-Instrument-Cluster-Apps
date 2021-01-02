@@ -6,7 +6,7 @@ import org.zeromq.ZMQException;
 public final class communication {
 
     private static ZMQ.Context ctx;
-    private static ZMQ.Socket dish = null;
+    public static ZMQ.Socket dish = null;
     private static String connectionString = "";
     private static String group = "";
 
@@ -35,8 +35,9 @@ public final class communication {
             dish.join(group);
             dish.setReceiveTimeOut(recvReconnect);
             dish.setReceiveBufferSize(recvBuffer);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        }catch (ZMQException e){
+            System.out.println("Connect error V");
+            System.out.println(communication.convertErrno(e.getErrorCode()));
             return false;
         }
         return true;
