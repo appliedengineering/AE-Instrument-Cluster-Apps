@@ -1,35 +1,35 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
 import org.zeromq.ZMQ;
-import org.zeromq.SocketType;
-import org.zeromq.ZMQException;
+/*import org.zeromq.SocketType;
+import org.zeromq.ZMQException;*/
 
 public final class communication {
 
-    private static ZMQ.Context ctx;
-    public static ZMQ.Socket dish = null;
+    //private static ZMQ.Context ctx;
+    //public static ZMQ.Socket dish = null;
     private static String connectionString = "";
     private static String group = "";
 
     private communication(){} // private constructor
 
     public static void init(){
-        ctx = ZMQ.context(1); // only need 1 io thread
+        //ctx = ZMQ.context(1); // only need 1 io thread
         printVersion();
     }
 
     public static void deinit(){
-        dish.close();
-        ctx.close();
+        //dish.close();
+        //ctx.close();
     }
 
     protected static void printVersion(){
-        System.out.println(ZMQ.getFullVersion());
+        //System.out.println(ZMQ.getFullVersion());
     }
 
     public static boolean connect(String connectionStr, String connectionGroup, int recvReconnect, int recvBuffer){
         connectionString = connectionStr;
         group = connectionGroup;
-        try {
+        /*try {
             dish = ctx.socket(SocketType.DISH);
             dish.bind(connectionString);
             dish.join(group);
@@ -39,12 +39,12 @@ public final class communication {
             System.out.println("Connect error V");
             System.out.println(communication.convertErrno(e.getErrorCode()));
             return false;
-        }
+        }*/
         return true;
     }
 
     public static boolean disconnect(){
-        try{
+        /*try{
             dish.leave(group);
             dish.unbind(connectionString);
             dish.close();
@@ -52,7 +52,7 @@ public final class communication {
         }catch (Exception e){
             System.out.println(e.getMessage());
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -68,7 +68,8 @@ public final class communication {
     }
 
     public static String convertErrno(int errorn){
-        return ZMQ.Error.findByCode(errorn).getMessage();
+       // return ZMQ.Error.findByCode(errorn).getMessage();
+        return "";
     }
 
 }

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.appliedengineering.aeinstrumentcluster"
@@ -35,7 +35,7 @@ dependencies {
     // start external libs
 
     //implementation 'org.zeromq:jeromq:0.5.2'
-    implementation 'com.github.zeromq:jeromq:master-SNAPSHOT'
+    //implementation 'com.github.zeromq:jeromq:master-SNAPSHOT'
     compile 'org.msgpack:msgpack-core:0.8.22'
 
     // end external libs
