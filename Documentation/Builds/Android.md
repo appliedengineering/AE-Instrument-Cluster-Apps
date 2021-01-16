@@ -52,6 +52,13 @@ sudo make install
 ```
 if you're having issues with Java, make sure to set your `JAVA_HOME` path.
 
+if you're having issues with Java not finding include files, first, use this command: 
+`echo $(/usr/libexec/java_home)`
+to find the location of your JDK. Then, go to that location + `/include/` so, in my case, the path I needed to go to was `/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/include/`.
+
+Now, in this folder, you should also be able to see a folder named "darwin" (or whatever the name of your os is) that includes two headers. **Copy** (DO NOT MOVE) those headers into `/include/`. 
+
+Then, use this command:`export PATH=$(/usr/libexec/java_home)/bin:$PATH`.
 
 Finding the generated libs
 ---
