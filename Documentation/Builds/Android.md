@@ -11,5 +11,9 @@ Before getting started, make sure you download + install the [Java Runtime](http
 
 [MacOs Catalina and up only] Due to changes in MacOS Catalina and the outdated build script, you must follow instructions [here](https://stackoverflow.com/a/59421615/) in order to prevent confusion later on. If you decide to recompile after rebooting your mac, you must use the `sudo mount -uw /` command again.
 
+Since JZMQ is a wrapper for the C++ libzmq library, it is required to use the Android NDK to use C++ functions natively. You can find the NDK here: https://developer.android.com/ndk/downloads. For Mac, make sure you download the ZIP and not the DMG. 
+
+Once you download the NDK ZIP, create a folder named "tmp" and extract the ndk to the tmp folder. So, in my case, the NDK is called "android-ndk-r21d" so, inside /tmp/android-ndk-r21d, I have the ndk.
+
 libzmq
 ---
