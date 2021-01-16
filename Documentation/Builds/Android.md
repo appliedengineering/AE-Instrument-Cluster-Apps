@@ -44,7 +44,7 @@ NOTE: for changing the architecture, the same thing applies here as with libzmq.
 ```
 cd /tmp/
 git clone https://github.com/zeromq/jzmq.git
-cd jzmq/
+cd jzmq/jzmq-jni/
 ./autogen.sh
 ./configure --host=arm-linux-androideabi --prefix=$OUTPUT_DIR --with-zeromq=$OUTPUT_DIR CPPFLAGS="-fPIC -I$OUTPUT_DIR/include" LDFLAGS="-L$OUTPUT_DIR/lib" --disable-version
 make
