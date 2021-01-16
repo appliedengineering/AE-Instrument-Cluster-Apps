@@ -15,5 +15,9 @@ Since JZMQ is a wrapper for the C++ libzmq library, it is required to use the An
 
 Once you download the NDK ZIP, create a folder named "tmp" and extract the ndk to the tmp folder. So, in my case, the NDK is called "android-ndk-r21d" so, inside /tmp/android-ndk-r21d, I have the ndk.
 
+Open the terminal and navigate to /tmp/
+
+Run `sudo ./android-ndk-r21d/build/tools/make-standalone-toolchain.sh --install-dir=/opt/android-toolchain` then `export PATH=/opt/android-toolchain/bin:$PATH` to set up the NDK. You may replace r21d with whatever version you have.
+
 libzmq
 ---
