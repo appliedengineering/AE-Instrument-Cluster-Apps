@@ -23,7 +23,7 @@ libzmq
 ---
 Use the following commands
 
-NOTE: in the `./configure` command, you can add options for libzmq. For example, if I wanted to compile with draft methods such as Radio / Dish, you would add `--enable-drafts` right after `./configure`. You can also change which architecture to compile for by changing the `--host=` flag.
+NOTE: in the `./configure` command, you can add options for libzmq. For example, if I wanted to compile with draft methods such as Radio / Dish, you would add `--enable-drafts` right after `./configure`. You can also change which architecture to compile for by changing the `--host=` flag. For exmaple, below, it is compiling for arm but we can also compile for x86 by using `--host=i686-linux-android`
 
 ```
 cd /tmp/
@@ -32,9 +32,22 @@ cd libzmq/
 ./autogen.sh
 ./configure --enable-static --disable-shared --host=arm-linux-androideabi --prefix=$OUTPUT_DIR LDFLAGS="-L$OUTPUT_DIR/lib" CPPFLAGS="-fPIC -I$OUTPUT_DIR/include"
 make
-make install
+sudo make install
 ```
 
 jzmq
 ---
+Use the following commands
 
+NOTE: for changing the architecture, the same thing applies here as with libzmq.
+
+```
+cd /tmp/
+git clone https://github.com/zeromq/jzmq.git
+cd jzmq/
+./autogen.sh
+./configure --host=arm-linux-androideabi --prefix=$OUTPUT_DIR --with-zeromq=$OUTPUT_DIR CPPFLAGS="-fPIC -I$OUTPUT_DIR/include" LDFLAGS="-L$OUTPUT_DIR/lib" --disable-version
+make
+sudo make install
+```
+if you're having issues with Java, make sure to set your `JAVA_HOME` path.
