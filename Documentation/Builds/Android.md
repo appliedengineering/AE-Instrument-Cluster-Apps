@@ -59,6 +59,7 @@ Finding the generated libs
 You should now be able to go to Finder and find the compiled files.
 
 Here's a good diagram of what it should look like:
+```
 ├── include
 │   ├── zmq.h
 │   └── zmq_utils.h
@@ -76,6 +77,6 @@ Here's a good diagram of what it should look like:
     └── man
         ├── man3
         └── man7
-       
+```
        
 NOTE: Since we didn't assign a prefix, the folders will be on the root folder of your drive. So, the include folder will be `/include/`, lib folder will be `/lib/` and so on.
