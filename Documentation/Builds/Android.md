@@ -21,3 +21,20 @@ Run `sudo ./android-ndk-r21d/build/tools/make-standalone-toolchain.sh --install-
 
 libzmq
 ---
+Use the following commands
+
+NOTE: in the `./configure` command, you can add options for libzmq. For example, if I wanted to compile with draft methods such as Radio / Dish, you would add `--enable-drafts` right after `./configure`. You can also change which architecture to compile for by changing the `--host=` flag.
+
+```
+cd /tmp/
+git clone https://github.com/zeromq/libzmq.git
+cd libzmq/
+./autogen.sh
+./configure --enable-static --disable-shared --host=arm-linux-androideabi --prefix=$OUTPUT_DIR LDFLAGS="-L$OUTPUT_DIR/lib" CPPFLAGS="-fPIC -I$OUTPUT_DIR/include"
+make
+make install
+```
+
+jzmq
+---
+
