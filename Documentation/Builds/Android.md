@@ -87,3 +87,9 @@ Here's a good diagram of what it should look like:
 ```
        
 NOTE: Since we didn't assign a prefix, the folders will be on the root folder of your drive. So, the include folder will be `/include/`, lib folder will be `/lib/` and so on.
+
+
+NDK Library
+---
+
+If you're going to move the built libraries to a separate system without the NDK, you will need to navigate to `/android-ndk-r(ver # here)/sources/cxx-stl/llvm-libc++/libs/(architecture)/` and copy all the files there into the same jniLibs folder as libjzmq.so.
