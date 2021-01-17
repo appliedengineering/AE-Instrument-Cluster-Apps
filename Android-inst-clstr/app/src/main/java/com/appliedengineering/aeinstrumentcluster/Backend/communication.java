@@ -26,8 +26,8 @@ public final class communication {
     }
 
     protected static void printVersion(){
-        //System.out.println(ZMQ.getFullVersion());
-        System.out.println(ZMQ.getFullVersion());
+        System.out.println("printing");
+        System.out.println(ZMQ.getVersionString());
     }
 
     public static boolean connect(String connectionStr, String connectionGroup, int recvReconnect, int recvBuffer){
