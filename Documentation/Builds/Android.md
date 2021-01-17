@@ -23,14 +23,14 @@ libzmq
 ---
 Use the following commands
 
-NOTE: in the `./configure` command, you can add options for libzmq. For example, if I wanted to compile with draft methods such as Radio / Dish, you would add `--enable-drafts` right after `./configure`. You can also change which architecture to compile for by changing the `--host=` flag. For exmaple, below, it is compiling for arm but we can also compile for x86 by using `--host=i686-linux-android`
+NOTE: in the `./configure` command, you can add options for libzmq. For example, if I wanted to compile with draft methods such as Radio / Dish, you would add `--enable-drafts` right after `./configure`. You can also change which architecture to compile for by changing the `--host=` flag. For exmaple, below, it is compiling for arm but we can also compile for x86 by using `--host=i686-linux-android`. You can find the complete architecture list here: https://developer.android.com/ndk/guides/other_build_systems.
 
 ```
 cd /tmp/
 git clone https://github.com/zeromq/libzmq.git
 cd libzmq/
 ./autogen.sh
-./configure --enable-static --disable-shared --host=arm-linux-androideabi --prefix=$OUTPUT_DIR LDFLAGS="-L$OUTPUT_DIR/lib" CPPFLAGS="-fPIC -I$OUTPUT_DIR/include"
+./configure --enable-static --enable-drafts --disable-shared --host=arm-linux-androideabi --prefix=$OUTPUT_DIR LDFLAGS="-L$OUTPUT_DIR/lib" CPPFLAGS="-fPIC -I$OUTPUT_DIR/include"
 make
 sudo make install
 ```
