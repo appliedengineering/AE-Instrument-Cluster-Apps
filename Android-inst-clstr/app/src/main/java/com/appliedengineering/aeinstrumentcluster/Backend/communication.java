@@ -5,8 +5,8 @@ import org.zeromq.ZMQException;*/
 
 public final class communication {
 
-    //private static ZMQ.Context ctx;
-    //public static ZMQ.Socket dish = null;
+    private static ZMQ.Context ctx;
+    private static ZMQ.Socket dish = null;
     private static String connectionString = "";
     private static String group = "";
 
@@ -14,16 +14,20 @@ public final class communication {
 
     public static void init(){
         //ctx = ZMQ.context(1); // only need 1 io thread
+        ctx = ZMQ.context(1);
         printVersion();
     }
 
     public static void deinit(){
         //dish.close();
+        dish.close();
+        ctx.close();
         //ctx.close();
     }
 
     protected static void printVersion(){
-        //System.out.println(ZMQ.getFullVersion());
+        System.out.println("printing");
+        System.out.println(ZMQ.getVersionString());
     }
 
     public static boolean connect(String connectionStr, String connectionGroup, int recvReconnect, int recvBuffer){
