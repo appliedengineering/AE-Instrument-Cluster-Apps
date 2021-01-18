@@ -37,6 +37,15 @@ make
 sudo make install
 ```
 
+NOTE:
+Basic installation on OS X may fail in `Making all` in doc step. This
+error can be resolved by adding environment variable for shell.
+
+export XML_CATALOG_FILES=/usr/local/etc/xml/catalog 
+
+Write comamnd above in shell for instant resolve, or append command into
+shell profile file and reload for permanent resolve.
+
 jzmq
 ---
 Use the following commands
