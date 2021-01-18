@@ -13,11 +13,13 @@ Before getting started, make sure you download + install the [Java Runtime](http
 
 Since JZMQ is a wrapper for the C++ libzmq library, it is required to use the Android NDK to use C++ functions natively. You can find the NDK here: https://developer.android.com/ndk/downloads. For Mac, make sure you download the ZIP and not the DMG. 
 
-Once you download the NDK ZIP, create a folder named "tmp" and extract the ndk to the tmp folder. So, in my case, the NDK is called "android-ndk-r21d" so, inside /tmp/android-ndk-r21d, I have the ndk.
+Once you download the NDK ZIP, create a folder named "tmp" and extract the ndk to the tmp folder. So, in my case, the NDK is called "android-ndk-r21d" so, inside /tmp/android-ndk-r22, I have the ndk.
 
 Open the terminal and navigate to /tmp/
 
-Run `sudo ./android-ndk-r21d/build/tools/make-standalone-toolchain.sh --install-dir=/opt/android-toolchain` then `export PATH=/opt/android-toolchain/bin:$PATH` to set up the NDK. You may replace r21d with whatever version you have.
+Run `sudo ./android-ndk-r22/build/tools/make-standalone-toolchain.sh --install-dir=/opt/android-toolchain` then `export PATH=/opt/android-toolchain/bin:$PATH` to set up the NDK. You may replace r22 with whatever version you have.
+
+NOTE: Everytime you compile, you MUST run the above command to configure to NDK otherwise you'll get a `bad ELF magic` error.
 
 libzmq
 ---
