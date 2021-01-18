@@ -37,14 +37,14 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
     protected Void doInBackground(Void... params) {
 
         while (isRunning){
-            /*try {
-                //System.out.println(communication.dish.recv());
+            try {
+                System.out.println(communication.dish.recv());
             }
             catch (ZMQException e){
                 if (!e.equals(ZMQ.Error.EAGAIN)){
                     System.out.println("Error - " + e.getMessage());
                 }
-            }*/
+            }
             SystemClock.sleep(1000);
         }
         return null;
@@ -52,7 +52,7 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
 
     public backendDelegate(){
         communication.init();
-        communication.connect("udp://224.0.0.1:28650", "telemetry", 3000, 10);
+        System.out.println(communication.connect("udp://224.0.0.1:28650", "telemetry", 3000, 10));
     }
 
     // preferences

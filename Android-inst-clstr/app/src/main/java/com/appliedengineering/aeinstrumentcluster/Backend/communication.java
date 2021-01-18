@@ -5,7 +5,7 @@ import org.zeromq.ZMQException;
 public final class communication {
 
     private static ZMQ.Context ctx;
-    private static ZMQ.Socket dish = null;
+    public static ZMQ.Socket dish = null;
     private static String connectionString = "";
     private static String group = "";
 
@@ -25,29 +25,29 @@ public final class communication {
     }
 
     protected static void printVersion(){
-        System.out.println("printing");
-        System.out.println(ZMQ.getVersionString());
+        //System.out.println("printing");
+        System.out.println("ZMQ Version: " + ZMQ.getVersionString());
     }
 
     public static boolean connect(String connectionStr, String connectionGroup, int recvReconnect, int recvBuffer){
         connectionString = connectionStr;
         group = connectionGroup;
-        /*try {
-            dish = ctx.socket(SocketType.DISH);
+        try {
+            dish = ctx.socket(ZMQ.DISH);
             dish.bind(connectionString);
-            dish.join(group);
+            dish.join(group); // TODO: Implement join function in JZMQ
             dish.setReceiveTimeOut(recvReconnect);
             dish.setReceiveBufferSize(recvBuffer);
         }catch (ZMQException e){
             System.out.println("Connect error V");
             System.out.println(communication.convertErrno(e.getErrorCode()));
             return false;
-        }*/
+        }
         return true;
     }
 
     public static boolean disconnect(){
-        /*try{
+        try{
             dish.leave(group);
             dish.unbind(connectionString);
             dish.close();
@@ -55,7 +55,7 @@ public final class communication {
         }catch (Exception e){
             System.out.println(e.getMessage());
             return false;
-        }*/
+        }
         return true;
     }
 
