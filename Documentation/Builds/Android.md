@@ -32,7 +32,7 @@ cd /tmp/
 git clone https://github.com/zeromq/libzmq.git
 cd libzmq/
 ./autogen.sh
-./configure --enable-static --enable-drafts --disable-shared --host=arm-linux-androideabi --prefix=$OUTPUT_DIR LDFLAGS="-L$OUTPUT_DIR/lib" CPPFLAGS="-fPIC -I$OUTPUT_DIR/include"
+./configure --enable-static --enable-drafts --disable-shared --prefix=$OUTPUT_DIR LDFLAGS="-L$OUTPUT_DIR/lib" CPPFLAGS="-fPIC -I$OUTPUT_DIR/include" --host=arm-linux-androideabi
 make
 sudo make install
 ```
@@ -45,10 +45,10 @@ NOTE: for changing the architecture, the same thing applies here as with libzmq.
 
 ```
 cd /tmp/
-git clone https://github.com/zeromq/jzmq.git
+git clone https://github.com/richardwei6/jzmq.git
 cd jzmq/jzmq-jni/
 ./autogen.sh
-./configure --host=arm-linux-androideabi --prefix=$OUTPUT_DIR --with-zeromq=$OUTPUT_DIR CPPFLAGS="-fPIC -I$OUTPUT_DIR/include" LDFLAGS="-L$OUTPUT_DIR/lib" --disable-version
+./configure --prefix=$OUTPUT_DIR --with-zeromq=$OUTPUT_DIR CPPFLAGS="-fPIC -I$OUTPUT_DIR/include" LDFLAGS="-L$OUTPUT_DIR/lib" --disable-version --host=arm-linux-androideabi
 make
 sudo make install
 ```
