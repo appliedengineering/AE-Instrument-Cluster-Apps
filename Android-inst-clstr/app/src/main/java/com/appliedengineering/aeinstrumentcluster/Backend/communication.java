@@ -1,7 +1,6 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
 import org.zeromq.ZMQ;
-/*import org.zeromq.SocketType;
-import org.zeromq.ZMQException;*/
+import org.zeromq.ZMQException;
 
 public final class communication {
 
