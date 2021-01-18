@@ -13,7 +13,7 @@ Before getting started, make sure you download + install the [Java Runtime](http
 
 Since JZMQ is a wrapper for the C++ libzmq library, it is required to use the Android NDK to use C++ functions natively. You can find the NDK here: https://developer.android.com/ndk/downloads. For Mac, make sure you download the ZIP and not the DMG. 
 
-Once you download the NDK ZIP, create a folder named "tmp" and extract the ndk to the tmp folder. So, in my case, the NDK is called "android-ndk-r21d" so, inside /tmp/android-ndk-r22, I have the ndk.
+Once you download the NDK ZIP, create a folder named "tmp" and extract the ndk to the tmp folder. So, in my case, the NDK is called "android-ndk-r22" so, inside /tmp/android-ndk-r22, I have the ndk.
 
 Open the terminal and navigate to /tmp/
 
@@ -41,7 +41,7 @@ NOTE:
 Basic installation on OS X may fail in `Making all` in doc step. This
 error can be resolved by adding environment variable for shell.
 
-export XML_CATALOG_FILES=/usr/local/etc/xml/catalog 
+`export XML_CATALOG_FILES=/usr/local/etc/xml/catalog`
 
 Write comamnd above in shell for instant resolve, or append command into
 shell profile file and reload for permanent resolve.
