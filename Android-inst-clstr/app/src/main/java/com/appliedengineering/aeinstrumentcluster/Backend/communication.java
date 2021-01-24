@@ -2,10 +2,12 @@ package com.appliedengineering.aeinstrumentcluster.Backend;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
+import java.nio.ByteBuffer;
+
 public final class communication {
 
     private static ZMQ.Context ctx;
-    public static ZMQ.Socket dish = null;
+    private static ZMQ.Socket dish = null;
     private static String connectionString = "";
     private static String group = "";
 
@@ -40,7 +42,7 @@ public final class communication {
             dish.setReceiveBufferSize(recvBuffer);
         }catch (ZMQException e){
             System.out.println("Connect error V");
-            System.out.println(communication.convertErrno(e.getErrorCode()));
+            System.out.println(e.getMessage());
             return false;
         }
         return true;
@@ -52,7 +54,7 @@ public final class communication {
             dish.unbind(connectionString);
             dish.close();
             dish = null;
-        }catch (Exception e){
+        }catch (ZMQException e){
             System.out.println(e.getMessage());
             return false;
         }
@@ -68,6 +70,29 @@ public final class communication {
             return false;
         }
         return true;
+    }
+
+    public static byte[] recv() throws ZMQException{
+        /*ByteBuffer buf = ByteBuffer.allocateDirect(100);
+        int size = dish.recvZeroCopy(buf, buf.remaining(), 0);
+        buf.flip();
+        if (size >= 0) {
+            byte[] b = new byte[size];
+            buf.get(b);
+            return b;
+        }
+        else{
+            System.out.println("bytes recv less than 0 = " + size);
+        }
+        return new byte[0];*/
+        byte[] buffer = new byte[0];
+        try{
+            buffer = dish.recv();
+        }
+        catch (ZMQException e){
+            System.out.println(e.getMessage());
+        }
+        return buffer;
     }
 
     public static String convertErrno(int errorn){

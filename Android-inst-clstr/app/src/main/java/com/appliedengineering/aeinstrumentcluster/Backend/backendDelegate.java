@@ -7,6 +7,7 @@ import com.appliedengineering.aeinstrumentcluster.Backend.*;
 
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
+import org.zeromq.EmbeddedLibraryTools;
 
 // Class design found here: https://stackoverflow.com/a/36155334/
 public class backendDelegate extends AsyncTask<Void, Void, Void>{
@@ -38,15 +39,21 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
 
         while (isRunning){
             try {
-                System.out.println(communication.dish.recv());
+                System.out.println("testing recv");
+                byte[] buffer = communication.recv();
+                if (buffer != null) {
+                    System.out.println("recv: " + buffer.length);
+                }
             }
             catch (ZMQException e){
-                if (!e.equals(ZMQ.Error.EAGAIN)){
+                System.out.println("exception -" + e.getMessage());
+                if (!e.equals(ZMQ.Error.EAGAIN)) {
                     System.out.println("Error - " + e.getMessage());
                 }
             }
             SystemClock.sleep(1000);
         }
+
         return null;
     }
 
