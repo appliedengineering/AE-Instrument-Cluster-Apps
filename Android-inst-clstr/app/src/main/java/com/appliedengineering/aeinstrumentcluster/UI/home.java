@@ -2,11 +2,14 @@ package com.appliedengineering.aeinstrumentcluster.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import com.appliedengineering.aeinstrumentcluster.R;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.backendDelegate;
+import com.appliedengineering.aeinstrumentcluster.Backend.multicastLockDelegate;
 
 public class home extends AppCompatActivity {
 
@@ -29,6 +32,8 @@ public class home extends AppCompatActivity {
         setContentView(R.layout.home_layout);
         //System.out.println(" is dark mode - " + isSystemDarkMode());
 
+        multicastLockDelegate.init((WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE)); // init multicast lock
+
         backendDelegateObj = new backendDelegate();
         backendDelegateObj.execute();
 
@@ -37,8 +42,10 @@ public class home extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        assert (backendDelegateObj != null); // shouldn't be possible that the obj is ever null
-        backendDelegateObj.cancel(true);
+        if (backendDelegateObj != null) { // shouldn't be possible that the obj is ever null
+            backendDelegateObj.cancel(true);
+        }
+        multicastLockDelegate.deinit();
     }
 
 }

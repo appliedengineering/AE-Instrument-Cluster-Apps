@@ -1,4 +1,7 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
+
+import com.appliedengineering.aeinstrumentcluster.Backend.multicastLockDelegate;
+
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
@@ -7,27 +10,23 @@ import java.nio.ByteBuffer;
 public final class communication {
 
     private static ZMQ.Context ctx;
-    private static ZMQ.Socket dish = null;
+    public static ZMQ.Socket dish = null;
     private static String connectionString = "";
     private static String group = "";
 
     private communication(){} // private constructor
 
     public static void init(){
-        //ctx = ZMQ.context(1); // only need 1 io thread
-        ctx = ZMQ.context(1);
+        ctx = ZMQ.context(1); // only need 1 io thread
         printVersion();
     }
 
     public static void deinit(){
-        //dish.close();
         dish.close();
         ctx.close();
-        //ctx.close();
     }
 
     protected static void printVersion(){
-        //System.out.println("printing");
         System.out.println("ZMQ Version: " + ZMQ.getVersionString());
     }
 
