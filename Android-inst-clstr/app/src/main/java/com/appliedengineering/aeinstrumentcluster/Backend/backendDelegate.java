@@ -9,6 +9,7 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 import org.zeromq.EmbeddedLibraryTools;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 // Class design found here: https://stackoverflow.com/a/36155334/
@@ -41,7 +42,9 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
 
         while (isRunning){
             try {
-                System.out.println("testing recv - " + communication.dish.recvStr(Charset.defaultCharset()));
+                //System.out.println("testing recv - " + communication.dish.recv(ZMQ.DONTWAIT));
+                ByteBuffer buffer = ByteBuffer.allocateDirect(256);
+                System.out.println("testing recv - " + communication.dish.recvZeroCopy(buffer, buffer.remaining(), ZMQ.DONTWAIT) + " : " + buffer.asCharBuffer().toString());
                 /*byte[] buffer = communication.recv();
                 if (buffer != null) {
                     System.out.println("recv: " + buffer.length);

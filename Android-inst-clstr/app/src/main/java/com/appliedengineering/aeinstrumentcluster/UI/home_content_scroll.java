@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 
 import com.appliedengineering.aeinstrumentcluster.R;
 
+import com.github.mikephil.charting.*;
+
 public class home_content_scroll extends Fragment{
     public home_content_scroll(){
         super(R.layout.home_content_scroll_layout);
@@ -30,6 +32,7 @@ public class home_content_scroll extends Fragment{
 
         for (int i = 0; i < 20; i++){
             Button graphView = new Button(getActivity());
+
 
             graphView.setBackgroundColor(Color.parseColor("#32a852"));
             graphView.setMinimumHeight(500);

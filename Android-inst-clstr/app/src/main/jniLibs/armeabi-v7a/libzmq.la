@@ -25,7 +25,7 @@ weak_library_names=''
 # Version information for libzmq.
 current=7
 age=2
-revision=5
+revision=3
 
 # Is this an already installed library?
 installed=yes
