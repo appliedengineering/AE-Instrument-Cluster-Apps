@@ -37,8 +37,8 @@ public final class communication {
             dish = ctx.socket(ZMQ.DISH);
             dish.bind(connectionString);
             dish.join(group); // TODO: Implement join function in JZMQ
-            dish.setReceiveTimeOut(recvReconnect);
-            dish.setReceiveBufferSize(recvBuffer);
+           // dish.setReceiveTimeOut(recvReconnect);
+           // dish.setReceiveBufferSize(recvBuffer);
         }catch (ZMQException e){
             System.out.println("Connect error V");
             System.out.println(e.getMessage());
