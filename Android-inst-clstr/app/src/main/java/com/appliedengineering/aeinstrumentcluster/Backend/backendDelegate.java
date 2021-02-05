@@ -40,20 +40,21 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... params) {
 
+        loadPreferences();
+
         while (isRunning){
             try {
-                //System.out.println("testing recv - " + communication.dish.recv(ZMQ.DONTWAIT));
-                ByteBuffer buffer = ByteBuffer.allocateDirect(256);
-                System.out.println("testing recv - " + communication.dish.recvZeroCopy(buffer, buffer.remaining(), ZMQ.DONTWAIT) + " : " + buffer.asCharBuffer().toString());
-                /*byte[] buffer = communication.recv();
-                if (buffer != null) {
-                    System.out.println("recv: " + buffer.length);
-                }*/
+                byte[] data = communication.recv();
+                if (data != null) {
+                    log.add("Received data: " + new String(data));
+                }
+                else{
+                    log.add("No msg to be received");
+                }
             }
             catch (ZMQException e){
-                System.out.println("exception -" + e.getMessage());
                 if (!e.equals(ZMQ.Error.EAGAIN)) {
-                    System.out.println("Error - " + e.getMessage());
+                    log.addc("Error - " + e.getMessage());
                 }
             }
             SystemClock.sleep(1000);
@@ -64,7 +65,7 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
 
     public backendDelegate(){
         communication.init();
-        System.out.println(communication.connect("udp://224.0.0.1:28650", "telemetry", 3000, 10));
+        log.add("Communication setup: " + communication.connect("tcp://192.168.1.8:1234"));
     }
 
     // preferences
