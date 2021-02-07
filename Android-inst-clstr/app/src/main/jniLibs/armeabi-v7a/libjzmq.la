@@ -17,7 +17,7 @@ old_library='libjzmq.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/lib -L/usr/local/Cellar/zeromq/4.3.3_1/lib'
+dependency_libs=' -L/lib -L/usr/local/Cellar/zeromq/HEAD-53104ec/lib'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''

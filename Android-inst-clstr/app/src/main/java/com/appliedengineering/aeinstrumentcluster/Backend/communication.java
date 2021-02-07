@@ -1,79 +1,76 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
+
 import org.zeromq.ZMQ;
-/*import org.zeromq.SocketType;
-import org.zeromq.ZMQException;*/
+import org.zeromq.ZMQException;
+import com.appliedengineering.aeinstrumentcluster.Backend.*;
 
 public final class communication {
 
     private static ZMQ.Context ctx;
-    private static ZMQ.Socket dish = null;
+    public static ZMQ.Socket sub = null;
     private static String connectionString = "";
-    private static String group = "";
 
     private communication(){} // private constructor
 
     public static void init(){
-        //ctx = ZMQ.context(1); // only need 1 io thread
-        ctx = ZMQ.context(1);
+        ctx = ZMQ.context(1); // only need 1 io thread
         printVersion();
     }
 
     public static void deinit(){
-        //dish.close();
-        dish.close();
+        sub.close();
         ctx.close();
-        //ctx.close();
     }
 
     protected static void printVersion(){
-        System.out.println("printing");
-        System.out.println(ZMQ.getVersionString());
+        log.add("ZMQ Version: " + ZMQ.getVersionString());
     }
 
-    public static boolean connect(String connectionStr, String connectionGroup, int recvReconnect, int recvBuffer){
+    public static boolean connect(String connectionStr){
         connectionString = connectionStr;
-        group = connectionGroup;
-        /*try {
-            dish = ctx.socket(SocketType.DISH);
-            dish.bind(connectionString);
-            dish.join(group);
-            dish.setReceiveTimeOut(recvReconnect);
-            dish.setReceiveBufferSize(recvBuffer);
+        try {
+            sub = ctx.socket(ZMQ.SUB);
+            sub.connect(connectionString);
+            sub.subscribe("".getBytes());
         }catch (ZMQException e){
-            System.out.println("Connect error V");
-            System.out.println(communication.convertErrno(e.getErrorCode()));
+            log.addc("Connect error: " + e.getMessage());
             return false;
-        }*/
+        }
         return true;
     }
 
     public static boolean disconnect(){
-        /*try{
-            dish.leave(group);
-            dish.unbind(connectionString);
-            dish.close();
-            dish = null;
-        }catch (Exception e){
+        try{
+            sub.disconnect(connectionString);
+            sub.close();
+            sub = null;
+        }catch (ZMQException e){
             System.out.println(e.getMessage());
             return false;
-        }*/
+        }
         return true;
     }
 
-    public static boolean newConnection(String connectionStr, String connectionGroup, int recvReconnect, int recvBuffer){
+    public static boolean newConnection(String connectionStr){
         if (!disconnect()){
-            System.out.println("Failed disconnect but not severe error");
+            log.add("Failed disconnect but not severe error");
         }
 
-        if (!connect(connectionStr, connectionGroup, recvReconnect, recvBuffer)){
+        if (!connect(connectionStr)){
             return false;
         }
         return true;
     }
 
-    public static String convertErrno(int errorn){
-       // return ZMQ.Error.findByCode(errorn).getMessage();
-        return "";
+    public static byte[] recv() throws ZMQException{
+        byte[] buffer = null;
+        try{
+            buffer = sub.recv(ZMQ.NOBLOCK);
+        }
+        catch (ZMQException e){
+            log.add( "Recv Error: " + e.getMessage());
+        }
+        return buffer;
     }
 
 }

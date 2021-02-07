@@ -36,6 +36,7 @@ dependencies {
 
     //implementation 'org.zeromq:jeromq:0.5.2'
     //implementation 'com.github.zeromq:jeromq:master-SNAPSHOT'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     compile 'org.msgpack:msgpack-core:0.8.22'
 
     // end external libs

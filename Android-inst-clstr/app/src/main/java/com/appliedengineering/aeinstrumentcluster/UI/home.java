@@ -2,7 +2,10 @@ package com.appliedengineering.aeinstrumentcluster.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import com.appliedengineering.aeinstrumentcluster.R;
 
@@ -37,8 +40,9 @@ public class home extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        assert (backendDelegateObj != null); // shouldn't be possible that the obj is ever null
-        backendDelegateObj.cancel(true);
+        if (backendDelegateObj != null) { // shouldn't be possible that the obj is ever null
+            backendDelegateObj.cancel(true);
+        }
     }
 
 }

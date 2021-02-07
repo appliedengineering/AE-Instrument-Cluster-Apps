@@ -7,6 +7,10 @@ import com.appliedengineering.aeinstrumentcluster.Backend.*;
 
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
+import org.zeromq.EmbeddedLibraryTools;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 // Class design found here: https://stackoverflow.com/a/36155334/
 public class backendDelegate extends AsyncTask<Void, Void, Void>{
@@ -36,23 +40,32 @@ public class backendDelegate extends AsyncTask<Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... params) {
 
+        loadPreferences();
+
         while (isRunning){
-            /*try {
-                //System.out.println(communication.dish.recv());
+            try {
+                byte[] data = communication.recv();
+                if (data != null) {
+                    log.add("Received data: " + new String(data));
+                }
+                else{
+                    log.add("No msg to be received");
+                }
             }
             catch (ZMQException e){
-                if (!e.equals(ZMQ.Error.EAGAIN)){
-                    System.out.println("Error - " + e.getMessage());
+                if (!e.equals(ZMQ.Error.EAGAIN)) {
+                    log.addc("Error - " + e.getMessage());
                 }
-            }*/
+            }
             SystemClock.sleep(1000);
         }
+
         return null;
     }
 
     public backendDelegate(){
         communication.init();
-        communication.connect("udp://224.0.0.1:28650", "telemetry", 3000, 10);
+        log.add("Communication setup: " + communication.connect("tcp://192.168.1.8:1234"));
     }
 
     // preferences
