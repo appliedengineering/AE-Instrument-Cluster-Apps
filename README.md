@@ -1,6 +1,9 @@
 # AE-Instrument-Cluster-Apps
 Source code for Applied Engineering Instrument Cluster Apps
 
+**PLEASE NOTE: THIS PROJECT IS NOW DEPRECATED.**
+You can find the successor to this project [here](https://github.com/appliedengineering/iOS-Applied-Engineering-App) and [here](https://github.com/appliedengineering/Android-Applied-Engineering-App).
+
 # Android
 
 How to use JeroMQ PUB/SUB (taken from [here](https://github.com/trevorbernard/jeromq-examples/blob/master/src/main/java/com/trevorbernard/PubSub.java)):
