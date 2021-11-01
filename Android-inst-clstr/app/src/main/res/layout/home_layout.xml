@@ -9,7 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/top_header"
-        android:name="com.appliedengineering.aeinstrumentcluster.UI.home_top_bar"
+        android:name="com.appliedengineering.aeinstrumentcluster.UI.HomeTopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/content_scroll"
@@ -17,7 +17,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/content_scroll"
-        android:name="com.appliedengineering.aeinstrumentcluster.UI.home_content_scroll"
+        android:name="com.appliedengineering.aeinstrumentcluster.UI.HomeContentScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -15,7 +15,7 @@
         android:roundIcon="@drawable/aelogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.home">
+        <activity android:name=".UI.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
