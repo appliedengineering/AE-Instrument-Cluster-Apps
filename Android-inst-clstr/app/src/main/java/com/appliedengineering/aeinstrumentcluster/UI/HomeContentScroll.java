@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,15 @@ import com.appliedengineering.aeinstrumentcluster.R;
 
 import com.github.mikephil.charting.*;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeContentScroll extends Fragment{
     public HomeContentScroll(){
@@ -37,15 +45,25 @@ public class HomeContentScroll extends Fragment{
 
         for (int i = 0; i < 20; i++){
             LineChart graphView = new LineChart(getActivity());
-
+            List<Entry> entries = new ArrayList<>();
+            LineDataSet lineDataSet = new LineDataSet(entries, "DEFAULT_LABEL");
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(lineDataSet);
+            graphView.setData(new LineData(dataSets));
             // Generate some random data
-            LinearDataGroup linearDataGroup = new LinearDataGroup();
-            LinearData linearData = new LinearData();
-            for (int x = 0; x < 30; x++) {
-                linearData.addDataPoint(x*Math.random());
-            }
-            linearDataGroup.addNewDataSetToGroup(linearData);
-            graphView.setData(linearDataGroup.getLineData());
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                float x = 0;
+
+                @Override
+                public void run() {
+                    graphView.getData().addEntry(new Entry(x, (float) (30*Math.random())), 0);
+                    graphView.notifyDataSetChanged();
+                    x++;
+                    graphView.invalidate();
+
+                }
+            }, 1000, 1000);
 
             graphView.setBackgroundColor(Color.parseColor("#32a852"));
             graphView.setMinimumHeight(500);
