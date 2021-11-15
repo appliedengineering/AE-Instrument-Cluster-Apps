@@ -3,8 +3,15 @@ package com.appliedengineering.aeinstrumentcluster.Backend;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
+import org.msgpack.core.MessagePack;
+import org.msgpack.core.MessageUnpacker;
+import org.msgpack.value.MapValue;
+import org.msgpack.value.Value;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
+
+import java.io.IOException;
+import java.util.Map;
 //import org.zeromq.EmbeddedLibraryTools;
 
 
@@ -43,6 +50,16 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
                 byte[] data = Communication.recv();
                 if (data != null) {
                     LogUtil.add("Received data: " + new String(data));
+                    MessageUnpacker messageUnpacker = MessagePack.newDefaultUnpacker(data);
+                    MapValue mv = (MapValue) messageUnpacker.unpackValue();
+
+                    Map<Value, Value> map = mv.map();
+
+                    for (Map.Entry<Value, Value> entry : map.entrySet()) {
+                        Value key = entry.getKey();
+                        Value value = entry.getValue();
+                        LogUtil.add(String.format("%s : %s", key.toString(), value.toString()));
+                    }
                 }
                 else{
                     LogUtil.add("No msg to be received");
@@ -52,6 +69,8 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
                 if (!e.equals(ZMQ.Error.EAGAIN)) {
                     LogUtil.addc("Error - " + e.getMessage());
                 }
+            } catch (IOException e) {
+                LogUtil.addc(e.getStackTrace().toString());
             }
             SystemClock.sleep(1000);
         }
@@ -62,7 +81,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     public BackendDelegate(){
 
         Communication.init();
-        LogUtil.add("Communication setup: " + Communication.connect("tcp://192.168.0.117:5556"));
+        LogUtil.add("Communication setup: " + Communication.connect("tcp://169.254.200.250:5556"));
     }
 
     // preferences

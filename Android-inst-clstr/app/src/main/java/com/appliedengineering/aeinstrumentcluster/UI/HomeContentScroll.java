@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,6 +35,8 @@ public class HomeContentScroll extends Fragment{
     public HomeContentScroll(){
         super(R.layout.home_content_scroll_layout);
     }
+
+    public HashMap<String, LineChart> graphsMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -45,6 +48,8 @@ public class HomeContentScroll extends Fragment{
 
         for (int i = 0; i < 20; i++){
             LineChart graphView = new LineChart(getActivity());
+            // Add the graph view to the right place in the indexed map
+            // The string key
             List<Entry> entries = new ArrayList<>();
             LineDataSet lineDataSet = new LineDataSet(entries, "DEFAULT_LABEL");
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
