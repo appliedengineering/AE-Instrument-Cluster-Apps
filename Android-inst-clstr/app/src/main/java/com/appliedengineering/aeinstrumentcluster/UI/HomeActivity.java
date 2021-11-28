@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Create backend objects
         dataManager = new DataManager();
-        backendDelegateObj = new BackendDelegate(dataManager, homeTopBarFragment);
+        backendDelegateObj = new BackendDelegate(dataManager, homeTopBarFragment, this);
 
         // Add the fragments programmatically
         getSupportFragmentManager()

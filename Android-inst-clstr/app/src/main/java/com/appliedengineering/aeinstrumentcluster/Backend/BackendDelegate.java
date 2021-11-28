@@ -1,5 +1,7 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.widget.TextView;
@@ -28,7 +30,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     private final HomeTopBar homeTopBar;
     private volatile boolean isRunning = true;
 
-    private volatile int noMessageCount = 0;
+    private volatile int noMessageCount = NO_MESSAGE_COUNT_THRESHOLD;
 
     // options
 
@@ -47,11 +49,15 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     // end options
 
 
-    public BackendDelegate(DataManager dataManager, HomeTopBar homeTopBar) {
+    public BackendDelegate(DataManager dataManager, HomeTopBar homeTopBar, Activity activity) {
         this.dataManager = dataManager;
         this.homeTopBar = homeTopBar;
         Communication.init();
-        LogUtil.add("Communication setup: " + Communication.connect("tcp://192.168.137.1:5556"));
+
+        SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
+        String ipAddress = settings.getString("ipAddress", "192.168.137.1");
+
+        LogUtil.add("Communication setup: " + Communication.connect("tcp://"+ipAddress+":5556"));
     }
 
     @Override
@@ -94,7 +100,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     private void updateHomeTopBar() {
         // show connected indicator
         String textToDisplay;
-        if(noMessageCount > NO_MESSAGE_COUNT_THRESHOLD) {
+        if(noMessageCount >= NO_MESSAGE_COUNT_THRESHOLD) {
             // offline
             textToDisplay = "Status: offline";
         } else {
