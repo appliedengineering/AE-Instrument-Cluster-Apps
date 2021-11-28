@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     tools:context=".UI.HomeTopBar"
-    >
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:background="#EAEAEA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/settings_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="@dimen/paddingHalf"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/home_top_bar_imageView"
+        app:tint="@color/black" />
+
         <ImageView
             android:id="@+id/home_top_bar_imageView"
-            android:layout_width="match_parent"
+            android:layout_width="40dp"
             android:layout_height="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp"
             app:srcCompat="@drawable/aelogo" />
+
+    <TextView
+        android:id="@+id/status_indicator_text"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="Status: offline"
+        android:paddingHorizontal="@dimen/padding"
+        android:gravity="center"
+        android:fontFamily="@font/sfprodisplaysemibold"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/home_top_bar_imageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>

@@ -5,22 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="false">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/top_header"
-        android:name="com.appliedengineering.aeinstrumentcluster.UI.HomeTopBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/content_scroll"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/content_scroll"
-        android:name="com.appliedengineering.aeinstrumentcluster.UI.HomeContentScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_header" />
+        app:layout_constraintTop_toBottomOf="@+id/top_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
