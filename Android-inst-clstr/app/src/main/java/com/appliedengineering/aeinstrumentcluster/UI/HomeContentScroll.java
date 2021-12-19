@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeContentScroll extends Fragment {
+public class HomeContentScroll extends Fragment implements View.OnClickListener {
 
     private final DataManager dataManager;
 
@@ -66,6 +66,10 @@ public class HomeContentScroll extends Fragment {
         GraphDataHolder graphDataHolder = dataManager.registerForDataManager(keyValue, chart); // gives the chart a "room" in the data manager
         List<Entry> entries = graphDataHolder.getEntries();
         LineDataSet lineDataSet = new LineDataSet(entries, keyValue);
+
+        // Set properties and styling
+        lineDataSet.setDrawValues(false);
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
         chart.setData(new LineData(dataSets));
@@ -77,7 +81,16 @@ public class HomeContentScroll extends Fragment {
         // data manager will update the graphs and refresh them
 
 
+        // Set an onclick listener for the graph
+
+        graphView.setOnClickListener(this);
+
         return graphView;
     }
 
+    @Override
+    public void onClick(View view) {
+        // handle the onclick
+
+    }
 }

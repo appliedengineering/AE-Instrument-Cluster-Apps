@@ -11,6 +11,7 @@ import android.widget.EditText;
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText ipAddressTextBox;
+    private EditText portTextBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +22,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         // Control some settings
         Button savedChangesButton = findViewById(R.id.save_changes_button);
         ipAddressTextBox = findViewById(R.id.ip_address_edit_text);
+        portTextBox = findViewById(R.id.port_edit_text);
 
         // Restore values
         SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
         String ipAddress = settings.getString("ipAddress", "192.168.137.1");
+        String port = settings.getString("port", "5556");
+        portTextBox.setText(port);
         ipAddressTextBox.setText(ipAddress);
         savedChangesButton.setOnClickListener(this);
     }

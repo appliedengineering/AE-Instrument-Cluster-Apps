@@ -2,12 +2,18 @@ package com.appliedengineering.aeinstrumentcluster.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
+import com.appliedengineering.aeinstrumentcluster.Backend.TimestampNetworking;
 import com.appliedengineering.aeinstrumentcluster.R;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.BackendDelegate;
@@ -15,6 +21,7 @@ import com.appliedengineering.aeinstrumentcluster.Backend.BackendDelegate;
 public class HomeActivity extends AppCompatActivity {
 
     private BackendDelegate backendDelegateObj;
+    private TimestampNetworking timestampNetworking;
     private DataManager dataManager;
 
     private HomeTopBar homeTopBarFragment;
@@ -45,6 +52,8 @@ public class HomeActivity extends AppCompatActivity {
         // Create backend objects
         dataManager = new DataManager();
         backendDelegateObj = new BackendDelegate(dataManager, homeTopBarFragment, this);
+        timestampNetworking = new TimestampNetworking(this);
+
 
         // Add the fragments programmatically
         getSupportFragmentManager()
@@ -61,6 +70,33 @@ public class HomeActivity extends AppCompatActivity {
 
         // Make sure to only start execute after everything has been setup
         backendDelegateObj.execute();
+        timestampNetworking.execute();
+
+
+        // set up the pull to refresh functionality
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.pullToRefresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+//                Intent mStartActivity = new Intent(HomeActivity.this.getApplicationContext(), HomeActivity.class);
+//                int mPendingIntentId = 123456;
+//                PendingIntent mPendingIntent = PendingIntent.getActivity(
+//                        HomeActivity.this.getApplicationContext(),
+//                        mPendingIntentId,
+//                        mStartActivity,
+//                        PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager mgr = (AlarmManager) HomeActivity.this.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, mPendingIntent);
+//                HomeActivity.this.onDestroy();
+//
+//                Intent intent = new Intent(Intent.ACTION_MAIN);
+//                intent.addCategory(Intent.CATEGORY_HOME);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -70,6 +106,12 @@ public class HomeActivity extends AppCompatActivity {
         if (backendDelegateObj != null) { // shouldn't be possible that the obj is ever null
             backendDelegateObj.cancel(true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
 }

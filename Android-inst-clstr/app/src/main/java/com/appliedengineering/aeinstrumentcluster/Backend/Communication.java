@@ -9,7 +9,9 @@ public final class Communication {
 
     private static ZMQ.Context ctx;
     public static ZMQ.Socket sub = null;
+    public static ZMQ.Socket timeSocket = null;
     private static String connectionString = "";
+    private static String timeConnectionString = "";
 
     private Communication(){} // private constructor
 
@@ -35,6 +37,30 @@ public final class Communication {
             sub.subscribe("".getBytes());
         }catch (ZMQException e){
             LogUtil.addc("Connect error: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean connectToTimestampSocket(String connectionString) {
+        timeConnectionString = connectionString;
+        try {
+            timeSocket = ctx.socket(ZMQ.REQ);
+            timeSocket.connect(timeConnectionString);
+        }catch (ZMQException e){
+            LogUtil.addc("Connect error: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean disconnectTimeSocket(){
+        try{
+            timeSocket.disconnect(timeConnectionString);
+            timeSocket.close();
+            timeSocket = null;
+        }catch (ZMQException e){
+            Log.d("communication", e.getMessage());
             return false;
         }
         return true;
@@ -74,4 +100,21 @@ public final class Communication {
         return buffer;
     }
 
+
+    public static boolean sendTimestamp(byte[] data) throws ZMQException {
+        timeSocket.send(data);
+
+        return true; // assume no error
+    }
+
+    public static byte[] recvTimestamp() throws ZMQException{
+        byte[] buffer = null;
+        try{
+            buffer = timeSocket.recv();
+        }
+        catch (ZMQException e){
+            LogUtil.add( "Recv Error: " + e.getMessage());
+        }
+        return buffer;
+    }
 }

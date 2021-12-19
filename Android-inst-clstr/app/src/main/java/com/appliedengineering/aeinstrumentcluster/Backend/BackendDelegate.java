@@ -11,12 +11,14 @@ import com.appliedengineering.aeinstrumentcluster.UI.HomeTopBar;
 
 import org.msgpack.core.MessagePack;
 import org.msgpack.core.MessageUnpacker;
+import org.msgpack.value.FloatValue;
 import org.msgpack.value.MapValue;
 import org.msgpack.value.Value;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 //import org.zeromq.EmbeddedLibraryTools;
@@ -56,8 +58,9 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
 
         SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
         String ipAddress = settings.getString("ipAddress", "192.168.137.1");
+        String port = settings.getString("port", "5556");
 
-        LogUtil.add("Communication setup: " + Communication.connect("tcp://"+ipAddress+":5556"));
+        LogUtil.add("Communication setup: " + Communication.connect("tcp://"+ipAddress+":"+port));
     }
 
     @Override
@@ -128,13 +131,25 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
 
         Map<Value, Value> map = mv.map();
 
-        dataManager.addData(map);
-
+        // get the time
+        double timeStamp = 0;
 //        for (Map.Entry<Value, Value> entry : map.entrySet()) {
 //            Value key = entry.getKey();
 //            Value value = entry.getValue();
-//            LogUtil.add(String.format("%s : %s", key.toString(), value.toString()));
+//            if(key.toString().equals("timeStamp")) {
+//                LogUtil.add(String.format("YES %s : %s", key.toString(), value.toString()));
+//                // Very special converting is needed to retain digits
+//                FloatValue timestampValues = value.asFloatValue();
+//                timeStamp = timestampValues.toLong();
+//            }
 //        }
+
+        // bypass for now
+        timeStamp = System.currentTimeMillis();
+
+        dataManager.addData(map, (long) timeStamp);
+
+
     }
 
 

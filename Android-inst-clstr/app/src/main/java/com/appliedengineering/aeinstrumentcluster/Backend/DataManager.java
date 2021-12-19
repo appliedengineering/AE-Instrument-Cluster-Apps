@@ -41,13 +41,13 @@ public class DataManager {
         return dataHolder;
     }
 
-    public void addData(Map<Value, Value> map) {
+    public void addData(Map<Value, Value> map, long timeStamp) {
         dataIndex++;
         try {
             // First convert the format of the map, make it more friendly
             List<String> keyValues = Arrays.asList(DataManager.GRAPH_KEY_VALUES);
-            float timeStamp = dataIndex;
-            LogUtil.add("Timestamp: " + timeStamp/1000f);
+            //long timeStamp = getTimestamp(map);
+            LogUtil.add("Timestamp: " + timeStamp);
             for (Map.Entry<Value, Value> entry : map.entrySet()) {
                 Value key = entry.getKey();
                 Value value = entry.getValue();
@@ -61,7 +61,7 @@ public class DataManager {
                         LogUtil.addc("Could not parse number! Corrupted data?");
                     }
 
-                    graphsMap.get(keyValue).addEntry(new Entry(timeStamp, entryValue));
+                    graphsMap.get(keyValue).addEntry(new Entry(dataIndex, entryValue));
                     graphsMap.get(keyValue).updateGraphView();
                 }
 
@@ -73,17 +73,20 @@ public class DataManager {
         }
     }
 
-    private float getTimestamp(Map<Value, Value> map) {
-        float entryValue = 0;
+    private long getTimestamp(Map<Value, Value> map) {
+        long entryValue = 0;
         for (Map.Entry<Value, Value> entry : map.entrySet()) {
-            if(entry.getKey().toString().equals("timeStamp")){
+            Value key = entry.getKey();
+            Value value = entry.getValue();
+            if(key.toString().equals("timeStamp")){
                 try {
-                    entryValue = Float.parseFloat(entry.getValue().toString());
+                    entryValue = Long.parseLong(value.toString());
                 } catch (NumberFormatException e) {
                     LogUtil.addc("Could not parse number! Corrupted data?");
                 }
             }
         }
+        LogUtil.add("Calc Time"+entryValue);
         return entryValue;
     }
 
