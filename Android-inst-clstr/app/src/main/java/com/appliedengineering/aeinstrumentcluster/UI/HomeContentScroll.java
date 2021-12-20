@@ -3,6 +3,7 @@ package com.appliedengineering.aeinstrumentcluster.UI;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
+import com.appliedengineering.aeinstrumentcluster.GraphViewActivity;
 import com.appliedengineering.aeinstrumentcluster.R;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,14 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeContentScroll extends Fragment implements View.OnClickListener {
+public class HomeContentScroll extends Fragment {
 
     private final DataManager dataManager;
 
-    public HomeContentScroll(DataManager dataManager){
+    public HomeContentScroll(){
         super(R.layout.home_content_scroll_layout);
-        this.dataManager = dataManager;
-
+        this.dataManager = DataManager.dataManager;
     }
 
 
@@ -82,15 +83,19 @@ public class HomeContentScroll extends Fragment implements View.OnClickListener 
 
 
         // Set an onclick listener for the graph
+        TextView lineChartTitle = graphView.findViewById(R.id.line_chart_title);
 
-        graphView.setOnClickListener(this);
+        lineChartTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent graphViewIntent = new Intent(view.getContext(), GraphViewActivity.class);
+                graphViewIntent.putExtra(GraphViewActivity.DATA_INDEX, keyValue);
+                startActivity(graphViewIntent);
+            }
+        });
 
         return graphView;
     }
 
-    @Override
-    public void onClick(View view) {
-        // handle the onclick
 
-    }
 }

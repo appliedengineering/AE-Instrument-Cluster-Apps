@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class DataManager {
 
+    // The data manager needs to be static in order to access it from another activity
+    public static DataManager dataManager;
     private int dataIndex = 0;
 
     private HashMap<String, GraphDataHolder> graphsMap = new HashMap<>();

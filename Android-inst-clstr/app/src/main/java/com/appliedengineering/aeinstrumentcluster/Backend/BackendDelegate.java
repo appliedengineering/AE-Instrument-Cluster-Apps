@@ -51,8 +51,8 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     // end options
 
 
-    public BackendDelegate(DataManager dataManager, HomeTopBar homeTopBar, Activity activity) {
-        this.dataManager = dataManager;
+    public BackendDelegate(HomeTopBar homeTopBar, Activity activity) {
+        this.dataManager = DataManager.dataManager;
         this.homeTopBar = homeTopBar;
         Communication.init();
 

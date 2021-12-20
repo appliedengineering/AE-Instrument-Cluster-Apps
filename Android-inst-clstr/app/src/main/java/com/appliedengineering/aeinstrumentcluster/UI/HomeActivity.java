@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
+import com.appliedengineering.aeinstrumentcluster.Backend.LogUtil;
 import com.appliedengineering.aeinstrumentcluster.Backend.TimestampNetworking;
 import com.appliedengineering.aeinstrumentcluster.R;
 
@@ -50,8 +51,8 @@ public class HomeActivity extends AppCompatActivity {
         homeTopBarFragment = new HomeTopBar();
 
         // Create backend objects
-        dataManager = new DataManager();
-        backendDelegateObj = new BackendDelegate(dataManager, homeTopBarFragment, this);
+        DataManager.dataManager = new DataManager();
+        backendDelegateObj = new BackendDelegate(homeTopBarFragment, this);
         timestampNetworking = new TimestampNetworking(this);
 
 
@@ -61,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
                 .add(R.id.top_header, homeTopBarFragment)
                 .commit();
 
-        homeContentScrollFragment = new HomeContentScroll(dataManager);
+        homeContentScrollFragment = new HomeContentScroll();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.content_scroll, homeContentScrollFragment)
@@ -78,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                LogUtil.add("Refresh Started");
 //                Intent mStartActivity = new Intent(HomeActivity.this.getApplicationContext(), HomeActivity.class);
 //                int mPendingIntentId = 123456;
 //                PendingIntent mPendingIntent = PendingIntent.getActivity(

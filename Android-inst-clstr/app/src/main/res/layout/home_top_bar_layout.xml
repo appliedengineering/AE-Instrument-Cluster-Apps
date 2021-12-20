@@ -39,6 +39,10 @@
         android:text="Status: offline"
         android:paddingHorizontal="@dimen/padding"
         android:gravity="center"
+        android:focusable="true"
+        android:clickable="true"
+
+        android:foreground="?attr/selectableItemBackground"
         android:fontFamily="@font/sfprodisplaysemibold"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"

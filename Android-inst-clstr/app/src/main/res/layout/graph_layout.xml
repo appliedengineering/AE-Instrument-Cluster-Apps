@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:padding="@dimen/padding"
+
     >
 
     <TextView
@@ -19,9 +20,22 @@
         android:fontFamily="@font/sfprodisplayblack"
         android:textColor="@color/black"
         android:paddingHorizontal="@dimen/padding"
+        android:paddingVertical="@dimen/paddingHalf"
         android:textAlignment="center"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"/>
 
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/forward_arrow_ic"
+        app:layout_constraintBottom_toBottomOf="@+id/line_chart_title"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/line_chart_title"
+        app:layout_constraintTop_toTopOf="@+id/line_chart_title"
+        app:tint="@color/black" />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
