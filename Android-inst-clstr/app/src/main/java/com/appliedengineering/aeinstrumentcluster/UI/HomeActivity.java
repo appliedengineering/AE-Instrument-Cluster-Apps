@@ -1,51 +1,32 @@
 package com.appliedengineering.aeinstrumentcluster.UI;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.appliedengineering.aeinstrumentcluster.Backend.BackendDelegate;
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
-import com.appliedengineering.aeinstrumentcluster.Backend.LogUtil;
 import com.appliedengineering.aeinstrumentcluster.Backend.TimestampNetworking;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.animation.AnimationUtil;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SettingsPref;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SharedPrefUtil;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SnapshotsPref;
 import com.appliedengineering.aeinstrumentcluster.R;
-
-import com.appliedengineering.aeinstrumentcluster.Backend.BackendDelegate;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -73,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     private EditText portTextBox;
     private EditText ipAddressTextBox;
 
-    private Boolean isSystemDarkMode(){
+    private Boolean isSystemDarkMode() {
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
                 return true;
@@ -147,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 updateSnapshotLoadability();
-                if(b && isSnapshotLoaded.getValue()) {
+                if (b && isSnapshotLoaded.getValue()) {
                     Toast.makeText(HomeActivity.this, "Remove all loaded snapshots before starting network", Toast.LENGTH_LONG).show();
                     isNetworkEnabled.setChecked(false);
                     return;
@@ -161,12 +142,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 updateSnapshotLoadability();
-                if(isNetworkEnabled.isChecked()) {
+                if (isNetworkEnabled.isChecked()) {
                     generateDebugData.setChecked(false);
                     Toast.makeText(HomeActivity.this, "You must first disable the network!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(b && isSnapshotLoaded.getValue()) {
+                if (b && isSnapshotLoaded.getValue()) {
                     Toast.makeText(HomeActivity.this, "Remove all loaded snapshots before starting debug data", Toast.LENGTH_LONG).show();
                     generateDebugData.setChecked(false);
                     return;
@@ -197,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
         isSnapshotLoaded.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLoaded) {
-                if(isLoaded) {
+                if (isLoaded) {
                     snapshotLoadedIndicator.setText("yes");
                 } else {
                     snapshotLoadedIndicator.setText("no");
@@ -216,14 +197,15 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-
         ipAddressTextBox.setText(settingsPref.ipAddress);
         ipAddressTextBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -234,10 +216,12 @@ public class HomeActivity extends AppCompatActivity {
         portTextBox.setText(settingsPref.port);
         portTextBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {

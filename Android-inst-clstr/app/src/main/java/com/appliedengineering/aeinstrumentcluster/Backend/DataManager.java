@@ -2,13 +2,10 @@ package com.appliedengineering.aeinstrumentcluster.Backend;
 
 import android.util.Log;
 
-import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.DataPoint;
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.Util;
 import com.appliedengineering.aeinstrumentcluster.UI.HomeActivity;
-import com.appliedengineering.aeinstrumentcluster.UI.HomeContentScroll;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
@@ -16,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 import org.msgpack.value.Value;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +28,7 @@ public class DataManager {
 
     private HashMap<String, GraphDataHolder> graphsMap = new HashMap<>();
 
-    public static String serializeData(){
+    public static String serializeData() {
         // format {startTime}delimiter{GSON encoded data}
         // delimiter = $>$<$>$<$
         return START_TIME
@@ -40,7 +36,7 @@ public class DataManager {
                 + new Gson().toJson(dataManager.graphsMap);
     }
 
-    public static final String[] GRAPH_KEY_VALUES = new String[] {
+    public static final String[] GRAPH_KEY_VALUES = new String[]{
             "psuMode",
             "throttlePercent",
             "dutyPercent",
@@ -64,13 +60,13 @@ public class DataManager {
         try {
             // First convert the format of the map, make it more friendly
             List<String> keyValues = Arrays.asList(DataManager.GRAPH_KEY_VALUES);
-            long timeStamp = getTimestamp(map)*1000L;
+            long timeStamp = getTimestamp(map) * 1000L;
             for (Map.Entry<Value, Value> entry : map.entrySet()) {
                 Value key = entry.getKey();
                 Value value = entry.getValue();
 
                 String keyValue = key.toString();
-                if(keyValues.contains(keyValue)) {
+                if (keyValues.contains(keyValue)) {
                     float entryValue = Util.parseFloat(value.toString());
 
                     graphsMap.get(keyValue).addEntry(timeStamp, entryValue);
@@ -90,12 +86,12 @@ public class DataManager {
         for (Map.Entry<Value, Value> entry : map.entrySet()) {
             Value key = entry.getKey();
             Value value = entry.getValue();
-            if(key.toString().equals("timeStamp")){
+            if (key.toString().equals("timeStamp")) {
                 entryValue = (long) (Util.parseDouble(value.toString().split("E")[0]) * Math.pow(10, 9));
 
             }
         }
-        LogUtil.add("Calc Time"+entryValue);
+        LogUtil.add("Calc Time" + entryValue);
         return entryValue;
     }
 
@@ -108,7 +104,7 @@ public class DataManager {
         for (Map.Entry<String, Float> entry : map.entrySet()) {
             String key = entry.getKey();
             float value = entry.getValue();
-            if(keyValues.contains(key)) {
+            if (keyValues.contains(key)) {
                 graphsMap.get(key).addEntry(currentTimeMillis, value);
                 graphsMap.get(key).updateGraphView();
             }
@@ -116,7 +112,8 @@ public class DataManager {
     }
 
     public void loadDataFromString(String snapshot) {
-        Type typeOfHashMap = new TypeToken<Map<String, GraphDataHolder>>() { }.getType();
+        Type typeOfHashMap = new TypeToken<Map<String, GraphDataHolder>>() {
+        }.getType();
 
         String[] tokens = snapshot.split(SERIALIZATION_DELIMITER);
         String extraData = tokens[0];
@@ -128,7 +125,7 @@ public class DataManager {
 
         LinkedTreeMap<String, GraphDataHolder> newGraphDataHolder = new Gson().fromJson(gsonData, typeOfHashMap);
 
-        for(String key : graphsMap.keySet()) {
+        for (String key : graphsMap.keySet()) {
             // get the graph and update it
             GraphDataHolder graphDataHolder = graphsMap.get(key);
             graphDataHolder.setDataPoints(newGraphDataHolder.get(key).getDataPoints());
@@ -139,7 +136,7 @@ public class DataManager {
     }
 
     public void reset() {
-        for(String key : graphsMap.keySet()) {
+        for (String key : graphsMap.keySet()) {
             // get the graph and reset it
             GraphDataHolder graphDataHolder = graphsMap.get(key);
             graphDataHolder.getDataPoints().clear();

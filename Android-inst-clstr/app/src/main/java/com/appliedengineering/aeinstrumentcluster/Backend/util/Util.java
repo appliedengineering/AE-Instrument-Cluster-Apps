@@ -6,7 +6,7 @@ public class Util {
     public static String formatTitle(String keyValue) {
         String[] tokens = keyValue.split("(?=\\p{Upper})");
         String returnString = "";
-        for(String token : tokens) {
+        for (String token : tokens) {
             returnString += token.substring(0, 1).toUpperCase() + token.substring(1) + " ";
         }
         return returnString;

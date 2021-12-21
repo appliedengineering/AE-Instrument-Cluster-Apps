@@ -1,12 +1,9 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.SystemClock;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SettingsPref;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SharedPrefUtil;
@@ -15,23 +12,19 @@ import com.appliedengineering.aeinstrumentcluster.UI.HomeTopBar;
 
 import org.msgpack.core.MessagePack;
 import org.msgpack.core.MessageUnpacker;
-import org.msgpack.value.FloatValue;
 import org.msgpack.value.MapValue;
 import org.msgpack.value.Value;
-import org.msgpack.value.ValueType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 //import org.zeromq.EmbeddedLibraryTools;
 
 
 // Class design found here: https://stackoverflow.com/a/36155334/
-public class BackendDelegate extends AsyncTask<Void, Void, Void>{
+public class BackendDelegate extends AsyncTask<Void, Void, Void> {
 
     private static final int NO_MESSAGE_COUNT_THRESHOLD = 5;
 
@@ -60,7 +53,6 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     // end options
 
 
-
     public BackendDelegate(HomeTopBar homeTopBar, Activity activity) {
         this.dataManager = DataManager.dataManager;
         this.homeTopBar = homeTopBar;
@@ -78,9 +70,9 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
         debugThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(isRunning) {
+                while (isRunning) {
                     if (generateDebugData) {
-                        if(!isNetworkEnabled) {
+                        if (!isNetworkEnabled) {
                             dataManager.addDebugData(generateDebugData(), System.currentTimeMillis());
                         }
                     }
@@ -94,14 +86,14 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     private Map<String, Float> generateDebugData() {
         Map<String, Float> map = new HashMap<>();
         for (String key : DataManager.GRAPH_KEY_VALUES) {
-            map.put(key, (float) (Math.random()*100f));
+            map.put(key, (float) (Math.random() * 100f));
         }
         return map;
     }
 
     private void connect(Activity activity) {
         settings = SharedPrefUtil.loadSettingsPreferences(activity);
-        String connectionString = "tcp://"+settings.ipAddress+":"+settings.port;
+        String connectionString = "tcp://" + settings.ipAddress + ":" + settings.port;
         Communication.connect(connectionString);
     }
 
@@ -111,7 +103,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     }
 
     @Override
-    protected void onCancelled(){
+    protected void onCancelled() {
         isRunning = false;
         Communication.deinit();
     }
@@ -119,20 +111,18 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... params) {
 
-        while (isRunning){
+        while (isRunning) {
             try {
                 byte[] data = Communication.recv();
                 if (data != null) {
                     noMessageCount = 0;
                     handleData(data);
-                }
-                else{
+                } else {
                     noMessageCount++;
                     LogUtil.add("No msg to be received");
                 }
                 updateHomeTopBar();
-            }
-            catch (ZMQException e){
+            } catch (ZMQException e) {
                 if (!e.equals(ZMQ.Error.EAGAIN)) {
                     LogUtil.addc("Error - " + e.getMessage());
                 }
@@ -148,22 +138,22 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     private void updateHomeTopBar() {
         // show connected indicator
         String textToDisplay;
-        if(noMessageCount >= NO_MESSAGE_COUNT_THRESHOLD) {
+        if (noMessageCount >= NO_MESSAGE_COUNT_THRESHOLD) {
             // offline
             textToDisplay = "Status: offline";
         } else {
             // online
             textToDisplay = "Status: online";
         }
-        if(!isNetworkEnabled) {
+        if (!isNetworkEnabled) {
             textToDisplay = "Status: DISABLED";
         }
-        if(generateDebugData) {
+        if (generateDebugData) {
             textToDisplay = "Status: DEBUG";
         }
 
         String finalTextToDisplay = textToDisplay;
-        if(homeTopBar.getActivity() != null) {
+        if (homeTopBar.getActivity() != null) {
             homeTopBar.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -176,7 +166,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     }
 
     private void handleData(byte[] data) throws IOException {
-        if(!isNetworkEnabled) return;
+        if (!isNetworkEnabled) return;
 
         LogUtil.add("Received data: " + new String(data));
 
