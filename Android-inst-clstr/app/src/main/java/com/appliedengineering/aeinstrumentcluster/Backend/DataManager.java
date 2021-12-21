@@ -2,7 +2,9 @@ package com.appliedengineering.aeinstrumentcluster.Backend;
 
 import android.util.Log;
 
+import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.DataPoint;
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
+import com.appliedengineering.aeinstrumentcluster.UI.HomeActivity;
 import com.appliedengineering.aeinstrumentcluster.UI.HomeContentScroll;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -13,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import org.msgpack.value.Value;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -139,6 +142,19 @@ public class DataManager {
             graphDataHolder.setDataPoints(newGraphDataHolder.get(key).getDataPoints());
         }
 
+        HomeActivity.isSnapshotLoaded = true;
+
+    }
+
+    public void reset() {
+        for(String key : graphsMap.keySet()) {
+            // get the graph and reset it
+            GraphDataHolder graphDataHolder = graphsMap.get(key);
+            graphDataHolder.getDataPoints().clear();
+            graphDataHolder.updateGraphView();
+        }
+
+        HomeActivity.isSnapshotLoaded = false;
     }
 
 

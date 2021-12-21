@@ -88,8 +88,8 @@ public class GraphDataHolder {
             chart.invalidate();
 
             // move to the latest entry
-            if(dataPoints.size() > 11) {
-                chart.moveViewToX(dataPoints.size() - 11);
+            if(dataPoints.size() > 20) {
+                chart.moveViewToX(dataPoints.size() - 20);
             }
         }
     }

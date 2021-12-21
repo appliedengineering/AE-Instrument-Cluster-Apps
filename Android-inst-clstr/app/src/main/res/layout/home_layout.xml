@@ -124,9 +124,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:backgroundTint="@color/white"
+                        android:digits="0123456789."
                         android:hint="192.168.137.1"
                         android:inputType="number|numberDecimal"
-                        android:digits="0123456789."
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -152,9 +152,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:backgroundTint="@color/white"
+                        android:digits="0123456789"
                         android:hint="5556"
                         android:inputType="number|numberDecimal"
-                        android:digits="0123456789"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -241,6 +241,29 @@
                         android:text="Take Snapshot" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/paddingDouble"
+                    android:paddingVertical="@dimen/paddingHalf">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sfprodisplaysemibold"
+                        android:text="Remove all loaded snapshots"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+
+                    <Button
+                        android:id="@+id/remove_snapshot_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/red"
+                        android:text="Remove" />
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/paddingQuarter"
@@ -317,6 +340,28 @@
                 android:elevation="@dimen/cardview_default_elevation"
                 android:outlineAmbientShadowColor="@color/colorAccent"
                 android:outlineSpotShadowColor="@color/colorAccent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sfprotextbold"
+                    android:text="Snapshot Loaded:"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/snapshot_loaded_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:textColor="@color/black"
+                    android:text="no" />
+            </LinearLayout>
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"

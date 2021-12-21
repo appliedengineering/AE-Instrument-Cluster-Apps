@@ -3,6 +3,8 @@ package com.appliedengineering.aeinstrumentcluster.UI;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +18,16 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
@@ -44,6 +50,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private HomeTopBar homeTopBarFragment;
     private HomeContentScroll homeContentScrollFragment;
+
+    public static boolean isSnapshotLoadable = false;
+    public static boolean isSnapshotLoaded = false;
+    public static TextView snapshotLoadedIndicator;
 
     private Boolean isSystemDarkMode(){
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
@@ -111,21 +121,34 @@ public class HomeActivity extends AppCompatActivity {
 
         // Is network enabled switch
         SwitchMaterial isNetworkEnabled = findViewById(R.id.is_network_enabled);
+        SwitchMaterial generateDebugData = findViewById(R.id.generate_debug_data);
+
         isNetworkEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                isSnapshotLoadable = !generateDebugData.isChecked() && !isNetworkEnabled.isChecked();
+                if(b && isSnapshotLoaded) {
+                    Toast.makeText(HomeActivity.this, "Remove all loaded snapshots before starting network", Toast.LENGTH_LONG).show();
+                    isNetworkEnabled.setChecked(false);
+                    return;
+                }
                 backendDelegateObj.setNetworkEnabled(b);
             }
         });
 
         // Debug switch
-        SwitchMaterial generateDebugData = findViewById(R.id.generate_debug_data);
         generateDebugData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                isSnapshotLoadable = !generateDebugData.isChecked() && !isNetworkEnabled.isChecked();
                 if(isNetworkEnabled.isChecked()) {
                     generateDebugData.setChecked(false);
                     Toast.makeText(HomeActivity.this, "You must first disable the network!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(b && isSnapshotLoaded) {
+                    Toast.makeText(HomeActivity.this, "Remove all loaded snapshots before starting debug data", Toast.LENGTH_LONG).show();
+                    generateDebugData.setChecked(false);
                     return;
                 }
                 backendDelegateObj.setGenerateDebugData(b);
@@ -166,7 +189,69 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        snapshotLoadedIndicator = findViewById(R.id.snapshot_loaded_indicator);
 
+        // Remove snapshots button
+        Button removeSnapshotsButton = findViewById(R.id.remove_snapshot_button);
+        removeSnapshotsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataManager.dataManager.reset();
+                isSnapshotLoaded = false;
+                snapshotLoadedIndicator.setText("no");
+            }
+        });
+
+        // Restore data
+        SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
+        String ipAddress = settings.getString("ipAddress", "");
+        String port = settings.getString("port", "");
+
+        EditText ipAddressTextBox = findViewById(R.id.network_ip_address_text_box);
+        ipAddressTextBox.setText(ipAddress);
+        ipAddressTextBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                updateIpAddress(editable.toString());
+            }
+        });
+
+        EditText portTextBox = findViewById(R.id.network_port_text_box);
+        portTextBox.setText(port);
+        portTextBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                updatePort(editable.toString());
+            }
+        });
+
+
+    }
+
+    private void updatePort(String toString) {
+        SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("port", toString);
+        editor.commit();
+    }
+
+    private void updateIpAddress(String toString) {
+        SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("ipAddress", toString);
+        editor.commit();
     }
 
     @Override

@@ -34,7 +34,9 @@ public class GraphViewActivity extends AppCompatActivity {
         if(graphDataHolder != null) {
             LineChart chart = findViewById(R.id.lineChartId);
             graphDataHolder.register(chart);
-            graphDataHolder.updateGraphView(); // just to display the chart faster so user does not have to wait
+            graphDataHolder.updateGraphView();
+            graphDataHolder.updateGraphView();
+            // need to update two times, for reasons explained in another class
         }
 
     }
