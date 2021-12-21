@@ -30,13 +30,17 @@ public class GraphViewActivity extends AppCompatActivity {
 
         // retrieve the data
         dataManager = DataManager.dataManager;
-        GraphDataHolder graphDataHolder = dataManager.getGraphDataHolderRef(chartId); // just for testing, hard code the id
+        GraphDataHolder graphDataHolder = dataManager.getGraphDataHolderRef(chartId);
         if(graphDataHolder != null) {
             LineChart chart = findViewById(R.id.lineChartId);
             graphDataHolder.register(chart);
             graphDataHolder.updateGraphView(); // just to display the chart faster so user does not have to wait
-            // setContentView(chart);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

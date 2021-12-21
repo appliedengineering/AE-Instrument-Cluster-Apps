@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -16,16 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".GraphViewActivity"
-            android:screenOrientation="landscape"
+            android:name=".SnapshotViewer"
             android:exported="false" />
+        <activity
+            android:name=".GraphViewActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".DetailsActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
             android:exported="true" />
-        <activity android:name=".UI.HomeActivity"
+        <activity
+            android:name=".UI.HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

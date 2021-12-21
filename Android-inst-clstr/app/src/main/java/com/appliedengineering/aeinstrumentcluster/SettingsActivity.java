@@ -39,6 +39,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("ipAddress", ipAddressTextBox.getText().toString());
+        editor.putString("port", portTextBox.getText().toString());
         editor.commit();
 
         finish();

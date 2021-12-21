@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="Graph Key Value"
+        android:textSize="18dp"
         android:fontFamily="@font/sfprodisplayblack"
         android:textColor="@color/black"
         android:paddingHorizontal="@dimen/padding"
@@ -35,7 +36,8 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/line_chart_title"
         app:layout_constraintTop_toTopOf="@+id/line_chart_title"
-        app:tint="@color/black" />
+        app:tint="@color/colorAccent"
+        android:padding="@dimen/paddingHalf"/>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"

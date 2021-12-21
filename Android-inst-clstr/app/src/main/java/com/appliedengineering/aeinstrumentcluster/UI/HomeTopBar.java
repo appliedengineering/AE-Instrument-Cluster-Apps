@@ -30,4 +30,6 @@ public class HomeTopBar extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         startActivity(new Intent(getContext(), SettingsActivity.class));
     }
+
+
 }

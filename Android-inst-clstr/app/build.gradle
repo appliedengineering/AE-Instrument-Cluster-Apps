@@ -37,10 +37,11 @@ dependencies {
     // start external libs
 
     implementation 'org.zeromq:jeromq:0.5.2'
-    //implementation 'com.github.zeromq:jeromq:master-SNAPSHOT'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.google.android.material:material:1.4.0'
-    //compile 'org.msgpack:msgpack-core:0.8.22'
+
+    // data serialization
+    implementation 'com.google.code.gson:gson:2.8.7'
 
     // end external libs
     testImplementation 'junit:junit:4.12'

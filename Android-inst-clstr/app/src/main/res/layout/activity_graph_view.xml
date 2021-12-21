@@ -19,13 +19,15 @@
         android:textColor="@color/black"
         android:paddingHorizontal="@dimen/padding"
         android:paddingVertical="@dimen/paddingHalf"
-        android:textAlignment="center"
-        android:gravity="center_horizontal" />
+        android:gravity="left"
+        android:layout_marginHorizontal="@dimen/paddingDouble"
+        android:textSize="24dp"/>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChartId"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/paddingDouble"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph_title_view"
         tools:layout_editor_absoluteX="0dp" />
