@@ -27,6 +27,8 @@ public class GraphDataHolder {
     private transient LineChart chart;
     private List<DataPoint> dataPoints;
     private transient List<LineChart> chartsToUpdate = new ArrayList<>();
+    private transient final static int POINTS_VISIBLE_MIN = 10;
+    private transient final static int POINTS_VISIBLE_MAX = 20;
 
     public GraphDataHolder(String keyValue, LineChart chart) {
 
@@ -44,8 +46,9 @@ public class GraphDataHolder {
 
     public void updateGraphView() {
         for (LineChart chart : chartsToUpdate) {
+            List<Entry> entries = getEntriesFormatted();
             LogUtil.add(getEntriesFormatted().toString());
-            LineDataSet lineDataSet = new LineDataSet(getEntriesFormatted(), keyValue);
+            LineDataSet lineDataSet = new LineDataSet(entries, keyValue);
             LineData lineData = new LineData(lineDataSet);
 
             if (chartsToUpdate.indexOf(chart) == 0) {
@@ -55,22 +58,25 @@ public class GraphDataHolder {
 
                 // auto scroll the graph view
                 // limit the number of visible entries
-                chart.setVisibleXRange(10, 20);
+                chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
 
                 chart.getAxisLeft().setDrawGridLines(false);
                 chart.getXAxis().setDrawGridLines(false);
+                chart.getXAxis().setDrawGridLines(false);
                 chart.getXAxis().setDrawLabels(false);
             } else {
-                chart.setVisibleXRange(1, 20);
+                chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
             }
 
             // make the chart smooth
             lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             lineDataSet.setCubicIntensity(.1f);
             lineDataSet.setDrawCircles(false);
-            Description description = new Description();
-            description.setText(keyValue);
-            chart.setDescription(description);
+            if(!entries.isEmpty()) {
+                Description description = new Description();
+                description.setText("Current value: " + entries.get(dataPoints.size() - 1).getY());
+                chart.setDescription(description);
+            }
 
 
             Drawable drawable = ContextCompat.getDrawable(chart.getContext(), R.drawable.fade_cool_blue);
@@ -81,12 +87,16 @@ public class GraphDataHolder {
 
             // update graphview
             chart.notifyDataSetChanged();
-            chart.invalidate();
 
             // move to the latest entry
-            if (dataPoints.size() > 20) {
-                chart.moveViewToX(dataPoints.size() - 20);
+            if (dataPoints.size() > POINTS_VISIBLE_MIN) {
+                float lastX = entries.get(dataPoints.size() - POINTS_VISIBLE_MIN).getX();
+                float lastY = entries.get(dataPoints.size() - POINTS_VISIBLE_MIN).getY();
+                chart.moveViewToAnimated(lastX, lastY, lineDataSet.getAxisDependency(), 100);
+            } else {
+                chart.invalidate();
             }
+
         }
     }
 

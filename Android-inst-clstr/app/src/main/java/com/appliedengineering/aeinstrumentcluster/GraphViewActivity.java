@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.Util;
 import com.github.mikephil.charting.charts.LineChart;
 
 public class GraphViewActivity extends AppCompatActivity {
@@ -24,7 +25,7 @@ public class GraphViewActivity extends AppCompatActivity {
 
         // set the title
         TextView title = findViewById(R.id.graph_title_view);
-        title.setText(chartId);
+        title.setText(Util.formatTitle(chartId));
 
         // retrieve the data
         dataManager = DataManager.dataManager;
