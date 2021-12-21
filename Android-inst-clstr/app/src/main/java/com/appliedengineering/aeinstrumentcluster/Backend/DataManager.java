@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DataManager {
 
@@ -27,14 +28,16 @@ public class DataManager {
     // The data manager needs to be static in order to access it from another activity
     public static DataManager dataManager;
 
-    private HashMap<String, GraphDataHolder> graphsMap = new HashMap<>();
+    private final ConcurrentHashMap<String, GraphDataHolder> graphsMap = new ConcurrentHashMap<>();
 
     public static String serializeData() {
         // format {startTime}delimiter{GSON encoded data}
         // delimiter = $>$<$>$<$
+
         return START_TIME
                 + SERIALIZATION_DELIMITER
-                + new Gson().toJson(dataManager.graphsMap);
+                + new Gson().toJson(new HashMap<>(dataManager.graphsMap));
+
     }
 
     public static final String[] GRAPH_KEY_VALUES = new String[]{
@@ -69,9 +72,10 @@ public class DataManager {
                 String keyValue = key.toString();
                 if (keyValues.contains(keyValue)) {
                     float entryValue = Util.parseFloat(value.toString());
-
-                    graphsMap.get(keyValue).addEntry(timeStamp, entryValue);
-                    graphsMap.get(keyValue).updateGraphView(activity);
+                    if(graphsMap.get(keyValue) != null) {
+                        graphsMap.get(keyValue).addEntry(timeStamp, entryValue);
+                        graphsMap.get(keyValue).updateGraphView(activity);
+                    }
                 }
 
 
@@ -144,7 +148,8 @@ public class DataManager {
             graphDataHolder.getDataPoints().clear();
             graphDataHolder.updateGraphView(activity);
         }
-
+        // reset time
+        START_TIME = System.currentTimeMillis();
         HomeActivity.isSnapshotLoaded.setValue(false);
     }
 

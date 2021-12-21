@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.appliedengineering.aeinstrumentcluster.UI.HomeActivity;
 
+import java.util.HashSet;
+
 public class SharedPrefUtil {
 
     public static SettingsPref loadSettingsPreferences(Activity activity) {
@@ -26,7 +28,7 @@ public class SharedPrefUtil {
     public static SnapshotsPref loadSnapshotsPreferences(Activity activity) {
         SnapshotsPref snapshotsPref = new SnapshotsPref();
         SharedPreferences settings = activity.getSharedPreferences(SharedPrefsConstants.SNAPSHOTS_PREF, 0);
-        snapshotsPref.snapshots = settings.getStringSet(SharedPrefsConstants.SNAPSHOTS_PREF_SNAPSHOTS, null);
+        snapshotsPref.snapshots = new HashSet<>(settings.getStringSet(SharedPrefsConstants.SNAPSHOTS_PREF_SNAPSHOTS, null));
         return snapshotsPref;
     }
 

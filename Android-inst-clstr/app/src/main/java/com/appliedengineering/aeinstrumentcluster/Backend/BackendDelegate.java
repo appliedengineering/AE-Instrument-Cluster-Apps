@@ -76,7 +76,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
                             dataManager.addDebugData(generateDebugData(), System.currentTimeMillis(), homeTopBar.getActivity());
                         }
                     }
-                    SystemClock.sleep(1000);
+                    SystemClock.sleep(100);
                 }
             }
         });

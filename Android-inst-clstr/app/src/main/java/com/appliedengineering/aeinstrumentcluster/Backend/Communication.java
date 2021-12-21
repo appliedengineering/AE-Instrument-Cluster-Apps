@@ -46,7 +46,7 @@ public final class Communication {
     public static boolean connectToTimestampSocket(String connectionString) {
         timeConnectionString = connectionString;
         try {
-            timeSocket = ctx.socket(ZMQ.REQ);
+            timeSocket = ctx.socket(ZMQ.PAIR);
             timeSocket.connect(timeConnectionString);
         } catch (ZMQException e) {
             LogUtil.addc("Connect error: " + e.getMessage());

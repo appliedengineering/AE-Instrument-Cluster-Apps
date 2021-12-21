@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SettingsPref;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SharedPrefUtil;
+
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
@@ -14,11 +17,9 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
     private volatile boolean isRunning = true;
 
     public TimestampNetworking(Activity activity) {
-
-        // SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
-        String ipAddress = "192.168.3.2";
-        String port = "5546";
-
+        SettingsPref settings = SharedPrefUtil.loadSettingsPreferences(activity);
+        String connectionString = "tcp://" + settings.ipAddress + ":55561";
+        Communication.connectToTimestampSocket(connectionString);
     }
 
     @Override
@@ -32,11 +33,9 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
             try {
 
                 Communication.sendTimestamp(Long.toString(System.currentTimeMillis()).getBytes());
-                byte[] data = Communication.recv();
+                byte[] data = Communication.recvTimestamp();
                 if (data != null) {
                     handleData(data);
-                } else {
-                    LogUtil.add("No msg to be received");
                 }
             } catch (ZMQException e) {
                 if (!e.equals(ZMQ.Error.EAGAIN)) {
@@ -53,7 +52,7 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
 
 
     private void handleData(byte[] data) throws IOException {
-        LogUtil.add(new String(data));
+        LogUtil.add("Timestamp updated: " + new String(data));
     }
 
 }

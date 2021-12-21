@@ -97,7 +97,7 @@ public class GraphDataHolder {
 
                     // move to the latest entry
                     if (entries.size() > POINTS_VISIBLE_MIN) {
-                        float lastX = entries.get(entries.size() - POINTS_VISIBLE_MIN).getX();
+                        float lastX = entries.get(entries.size() - 1).getX();
                         chart.moveViewToX(lastX);
                     } else {
                         chart.invalidate();
