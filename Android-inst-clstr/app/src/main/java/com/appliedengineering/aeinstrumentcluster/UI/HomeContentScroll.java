@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.Util;
 import com.appliedengineering.aeinstrumentcluster.GraphViewActivity;
 import com.appliedengineering.aeinstrumentcluster.R;
 
@@ -60,7 +61,7 @@ public class HomeContentScroll extends Fragment {
         TextView chartTitle = graphView.findViewById(R.id.line_chart_title);
 
         // Set the title
-        chartTitle.setText(formatTitle(keyValue));
+        chartTitle.setText(Util.formatTitle(keyValue));
 
         // Add the graph view to the right place in the indexed map
         // The string key
@@ -97,14 +98,6 @@ public class HomeContentScroll extends Fragment {
         return graphView;
     }
 
-    private String formatTitle(String keyValue) {
-        String[] tokens = keyValue.split("(?=\\p{Upper})");
-        String returnString = "";
-        for(String token : tokens) {
-            returnString += token.substring(0, 1).toUpperCase() + token.substring(1) + " ";
-        }
-        return returnString;
-    }
 
 
 }

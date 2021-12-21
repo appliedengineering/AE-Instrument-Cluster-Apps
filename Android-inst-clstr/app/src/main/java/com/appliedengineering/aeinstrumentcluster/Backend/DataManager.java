@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.DataPoint;
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.Util;
 import com.appliedengineering.aeinstrumentcluster.UI.HomeActivity;
 import com.appliedengineering.aeinstrumentcluster.UI.HomeContentScroll;
 import com.github.mikephil.charting.charts.LineChart;
@@ -59,23 +60,18 @@ public class DataManager {
         return dataHolder;
     }
 
-    public void addData(Map<Value, Value> map, long timeStamp) {
+    public void addData(Map<Value, Value> map) {
         try {
             // First convert the format of the map, make it more friendly
             List<String> keyValues = Arrays.asList(DataManager.GRAPH_KEY_VALUES);
-            timeStamp = getTimestamp(map)*1000L;
+            long timeStamp = getTimestamp(map)*1000L;
             for (Map.Entry<Value, Value> entry : map.entrySet()) {
                 Value key = entry.getKey();
                 Value value = entry.getValue();
 
                 String keyValue = key.toString();
                 if(keyValues.contains(keyValue)) {
-                    float entryValue = 0;
-                    try {
-                        entryValue = Float.parseFloat(value.toString());
-                    } catch (NumberFormatException e) {
-                        LogUtil.addc("Could not parse number! Corrupted data?");
-                    }
+                    float entryValue = Util.parseFloat(value.toString());
 
                     graphsMap.get(keyValue).addEntry(timeStamp, entryValue);
                     graphsMap.get(keyValue).updateGraphView();
@@ -95,12 +91,8 @@ public class DataManager {
             Value key = entry.getKey();
             Value value = entry.getValue();
             if(key.toString().equals("timeStamp")){
-                try {
-                    LogUtil.add("Value:" + value.toString());
-                    entryValue = (long) (Double.parseDouble(value.toString().split("E")[0]) * Math.pow(10, 9));
-                } catch (NumberFormatException e) {
-                    LogUtil.addc("Could not parse number! Corrupted data?");
-                }
+                entryValue = (long) (Util.parseDouble(value.toString().split("E")[0]) * Math.pow(10, 9));
+
             }
         }
         LogUtil.add("Calc Time"+entryValue);
@@ -142,7 +134,7 @@ public class DataManager {
             graphDataHolder.setDataPoints(newGraphDataHolder.get(key).getDataPoints());
         }
 
-        HomeActivity.isSnapshotLoaded = true;
+        HomeActivity.isSnapshotLoaded.setValue(true);
 
     }
 
@@ -154,7 +146,7 @@ public class DataManager {
             graphDataHolder.updateGraphView();
         }
 
-        HomeActivity.isSnapshotLoaded = false;
+        HomeActivity.isSnapshotLoaded.setValue(false);
     }
 
 

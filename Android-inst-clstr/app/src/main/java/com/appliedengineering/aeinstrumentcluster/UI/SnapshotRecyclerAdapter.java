@@ -98,12 +98,11 @@ public class SnapshotRecyclerAdapter extends RecyclerView.Adapter<SnapshotRecycl
         @Override
         public void onClick(View view) {
             if(snapshot != null) {
-                if(!HomeActivity.isSnapshotLoadable){
+                if(!HomeActivity.isSnapshotLoadable.getValue()){
                     Toast.makeText(view.getContext(), "Disable debug data and network before loading snapshot!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 DataManager.dataManager.loadDataFromString(snapshot);
-                HomeActivity.snapshotLoadedIndicator.setText("yes");
             }
         }
 

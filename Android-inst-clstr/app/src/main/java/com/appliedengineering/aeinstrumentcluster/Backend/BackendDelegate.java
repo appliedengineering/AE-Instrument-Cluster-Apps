@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SettingsPref;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SharedPrefUtil;
 import com.appliedengineering.aeinstrumentcluster.R;
 import com.appliedengineering.aeinstrumentcluster.UI.HomeTopBar;
 
@@ -32,6 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BackendDelegate extends AsyncTask<Void, Void, Void>{
 
     private static final int NO_MESSAGE_COUNT_THRESHOLD = 5;
+
     private final DataManager dataManager;
     private final HomeTopBar homeTopBar;
     private volatile boolean isRunning = true;
@@ -39,11 +42,11 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     private volatile boolean generateDebugData = false;
     private Thread debugThread;
 
+
     private volatile int noMessageCount = NO_MESSAGE_COUNT_THRESHOLD;
 
     // options
-    private String connectionPort = "";
-    private String connectionIPAddress = "";
+    private volatile SettingsPref settings;
 
 
     // not used
@@ -57,15 +60,15 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
     // end options
 
 
-    private final Activity activity;
 
     public BackendDelegate(HomeTopBar homeTopBar, Activity activity) {
         this.dataManager = DataManager.dataManager;
         this.homeTopBar = homeTopBar;
-        this.activity = activity;
+        //this.activity = activity;
+
         Communication.init();
 
-        connect();
+        connect(activity);
 
         setUpDebugThread();
     }
@@ -77,10 +80,9 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
             public void run() {
                 while(isRunning) {
                     if (generateDebugData) {
-                        if(isNetworkEnabled) {
-                            return;
+                        if(!isNetworkEnabled) {
+                            dataManager.addDebugData(generateDebugData(), System.currentTimeMillis());
                         }
-                        dataManager.addDebugData(generateDebugData(), System.currentTimeMillis());
                     }
                     SystemClock.sleep(1000);
                 }
@@ -91,24 +93,21 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
 
     private Map<String, Float> generateDebugData() {
         Map<String, Float> map = new HashMap<>();
-        for (String key :
-                DataManager.GRAPH_KEY_VALUES) {
+        for (String key : DataManager.GRAPH_KEY_VALUES) {
             map.put(key, (float) (Math.random()*100f));
         }
         return map;
     }
 
-    private void connect() {
-        loadPreferences(activity);
-
-        String connectionString = "tcp://"+connectionIPAddress+":"+connectionPort;
-
-        LogUtil.add("Communication setup: " + Communication.connect(connectionString));
+    private void connect(Activity activity) {
+        settings = SharedPrefUtil.loadSettingsPreferences(activity);
+        String connectionString = "tcp://"+settings.ipAddress+":"+settings.port;
+        Communication.connect(connectionString);
     }
 
-    public void reconnect() {
+    public void reconnect(Activity activity) {
         Communication.disconnect();
-        connect();
+        connect(activity);
     }
 
     @Override
@@ -156,24 +155,24 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
             // online
             textToDisplay = "Status: online";
         }
-        if(homeTopBar.getView() != null) {
-            if(!isNetworkEnabled) {
-                textToDisplay = "Status: DISABLED";
-            }
-            if(generateDebugData) {
-                textToDisplay = "Status: DEBUG";
-            }
-            String finalTextToDisplay = textToDisplay;
-            homeTopBar.getActivity().runOnUiThread(new Runnable() {
+        if(!isNetworkEnabled) {
+            textToDisplay = "Status: DISABLED";
+        }
+        if(generateDebugData) {
+            textToDisplay = "Status: DEBUG";
+        }
 
+        String finalTextToDisplay = textToDisplay;
+        if(homeTopBar.getActivity() != null) {
+            homeTopBar.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     TextView indicator = homeTopBar.getView().findViewById(R.id.status_indicator_text);
-
                     indicator.setText(finalTextToDisplay);
                 }
             });
         }
+
     }
 
     private void handleData(byte[] data) throws IOException {
@@ -187,23 +186,10 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void>{
 
         Map<Value, Value> map = mv.map();
 
-        // bypass for now
-        long timeStamp = System.currentTimeMillis();
-
-        dataManager.addData(map, timeStamp);
+        dataManager.addData(map);
 
 
     }
-
-
-    // preferences
-    private void loadPreferences(Activity activity){
-        SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
-        connectionIPAddress =  settings.getString("ipAddress", "192.168.137.1");
-        connectionPort = settings.getString("port", "5556");
-    }
-
-
 
     public void setNetworkEnabled(boolean isEnabled) {
         isNetworkEnabled = isEnabled;

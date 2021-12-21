@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,10 @@ import android.widget.Toast;
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
 import com.appliedengineering.aeinstrumentcluster.Backend.LogUtil;
 import com.appliedengineering.aeinstrumentcluster.Backend.TimestampNetworking;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.animation.AnimationUtil;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SettingsPref;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SharedPrefUtil;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SnapshotsPref;
 import com.appliedengineering.aeinstrumentcluster.R;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.BackendDelegate;
@@ -46,14 +51,27 @@ public class HomeActivity extends AppCompatActivity {
 
     private BackendDelegate backendDelegateObj;
     private TimestampNetworking timestampNetworking;
-    private DataManager dataManager;
+
+    // prefs
+    private SettingsPref settingsPref;
+    private SnapshotsPref snapshotsPref;
 
     private HomeTopBar homeTopBarFragment;
     private HomeContentScroll homeContentScrollFragment;
 
-    public static boolean isSnapshotLoadable = false;
-    public static boolean isSnapshotLoaded = false;
-    public static TextView snapshotLoadedIndicator;
+    public static MutableLiveData<Boolean> isSnapshotLoadable = new MutableLiveData<>(false);
+    public static MutableLiveData<Boolean> isSnapshotLoaded = new MutableLiveData<>(false);
+
+    // components
+    private SwitchMaterial isNetworkEnabled;
+    private SwitchMaterial generateDebugData;
+    private Button restartNetworkButton;
+    private RecyclerView snapshotRecyclerView;
+    private Button takeSnapshot;
+    private Button removeSnapshotsButton;
+    private TextView snapshotLoadedIndicator;
+    private EditText portTextBox;
+    private EditText ipAddressTextBox;
 
     private Boolean isSystemDarkMode(){
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
@@ -68,9 +86,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(/*isSystemDarkMode() ? R.style.DarkTheme : */R.style.LightTheme);
+        setTheme(R.style.LightTheme);
         setContentView(R.layout.home_layout);
-        //System.out.println(" is dark mode - " + isSystemDarkMode());
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -82,6 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         backendDelegateObj = new BackendDelegate(homeTopBarFragment, this);
         timestampNetworking = new TimestampNetworking(this);
 
+        homeContentScrollFragment = new HomeContentScroll();
 
         // Add the fragments programmatically
         getSupportFragmentManager()
@@ -89,7 +108,6 @@ public class HomeActivity extends AppCompatActivity {
                 .add(R.id.top_header, homeTopBarFragment)
                 .commit();
 
-        homeContentScrollFragment = new HomeContentScroll();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.content_scroll, homeContentScrollFragment)
@@ -100,34 +118,36 @@ public class HomeActivity extends AppCompatActivity {
         backendDelegateObj.execute();
         timestampNetworking.execute();
 
+        // Extract all references
+        restartNetworkButton = findViewById(R.id.restart_network_button);
+        isNetworkEnabled = findViewById(R.id.is_network_enabled);
+        generateDebugData = findViewById(R.id.generate_debug_data);
+        snapshotRecyclerView = findViewById(R.id.snapshot_recycler_view);
+        takeSnapshot = findViewById(R.id.take_snapshot_button);
+        snapshotLoadedIndicator = findViewById(R.id.snapshot_loaded_indicator);
+        removeSnapshotsButton = findViewById(R.id.remove_snapshot_button);
+        ipAddressTextBox = findViewById(R.id.network_ip_address_text_box);
+        portTextBox = findViewById(R.id.network_port_text_box);
+
+        // load all prefs
+        settingsPref = SharedPrefUtil.loadSettingsPreferences(this);
+        snapshotsPref = SharedPrefUtil.loadSnapshotsPreferences(this);
 
         // Restart network button
-        Button restartNetworkButton = findViewById(R.id.restart_network_button);
         restartNetworkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backendDelegateObj.reconnect();
-                restartNetworkButton.setText("Restarted!");
-                restartNetworkButton.animate().alpha(0.5f).setDuration(1000).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        // restore the text
-                        restartNetworkButton.animate().alpha(1f).setDuration(1000);
-                        restartNetworkButton.setText("Restart");
-                    }
-                });
+                backendDelegateObj.reconnect(HomeActivity.this);
+                AnimationUtil.setDepressedButtonAnimation("Restart", "Restarting", restartNetworkButton);
             }
         });
 
         // Is network enabled switch
-        SwitchMaterial isNetworkEnabled = findViewById(R.id.is_network_enabled);
-        SwitchMaterial generateDebugData = findViewById(R.id.generate_debug_data);
-
         isNetworkEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                isSnapshotLoadable = !generateDebugData.isChecked() && !isNetworkEnabled.isChecked();
-                if(b && isSnapshotLoaded) {
+                updateSnapshotLoadability();
+                if(b && isSnapshotLoaded.getValue()) {
                     Toast.makeText(HomeActivity.this, "Remove all loaded snapshots before starting network", Toast.LENGTH_LONG).show();
                     isNetworkEnabled.setChecked(false);
                     return;
@@ -140,13 +160,13 @@ public class HomeActivity extends AppCompatActivity {
         generateDebugData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                isSnapshotLoadable = !generateDebugData.isChecked() && !isNetworkEnabled.isChecked();
+                updateSnapshotLoadability();
                 if(isNetworkEnabled.isChecked()) {
                     generateDebugData.setChecked(false);
                     Toast.makeText(HomeActivity.this, "You must first disable the network!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(b && isSnapshotLoaded) {
+                if(b && isSnapshotLoaded.getValue()) {
                     Toast.makeText(HomeActivity.this, "Remove all loaded snapshots before starting debug data", Toast.LENGTH_LONG).show();
                     generateDebugData.setChecked(false);
                     return;
@@ -156,59 +176,48 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         // Set up recycler view
-        RecyclerView snapshotRecyclerView = findViewById(R.id.snapshot_recycler_view);
         SnapshotRecyclerAdapter snapshotRecyclerAdapter = new SnapshotRecyclerAdapter();
         snapshotRecyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.VERTICAL, false));
         snapshotRecyclerView.setAdapter(snapshotRecyclerAdapter);
-        // add data
-        SharedPreferences snapshots = HomeActivity.this.getSharedPreferences("Snapshots", 0);
-        snapshotRecyclerAdapter.setData(snapshots.getStringSet("snapshots",  null));
+        snapshotRecyclerAdapter.setData(snapshotsPref.snapshots);
 
         // Take snapshot button
-        Button takeSnapshot = findViewById(R.id.take_snapshot_button);
         takeSnapshot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String serializedData = DataManager.serializeData();
-                LogUtil.add("Serialized data: " + serializedData);
-                // save the data in sharedPreferences
-                SharedPreferences snapshots = HomeActivity.this.getSharedPreferences("Snapshots", 0);
-                SharedPreferences.Editor editor = snapshots.edit();
-
-                // read existing data (if any)
-                Set<String> snapshotsSet = new HashSet<>();
-                if(snapshots.getStringSet("snapshots", null) != null) {
-                    snapshotsSet.addAll(snapshots.getStringSet("snapshots", null));
-                }
-                snapshotsSet.add(serializedData);
-                editor.putStringSet("snapshots", snapshotsSet);
-                LogUtil.add(snapshotsSet.size() + " <- number of snapshots");
-                editor.commit();
-                snapshotRecyclerAdapter.setData(snapshotsSet);
+                snapshotsPref.snapshots.add(serializedData);
+                SharedPrefUtil.saveSnapshotsPreferences(HomeActivity.this, snapshotsPref);
+                snapshotRecyclerAdapter.setData(snapshotsPref.snapshots);
 
             }
         });
 
-        snapshotLoadedIndicator = findViewById(R.id.snapshot_loaded_indicator);
+        // snapshot loaded indicator
+        isSnapshotLoaded.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoaded) {
+                if(isLoaded) {
+                    snapshotLoadedIndicator.setText("yes");
+                } else {
+                    snapshotLoadedIndicator.setText("no");
+                }
+            }
+        });
+
 
         // Remove snapshots button
-        Button removeSnapshotsButton = findViewById(R.id.remove_snapshot_button);
         removeSnapshotsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DataManager.dataManager.reset();
-                isSnapshotLoaded = false;
-                snapshotLoadedIndicator.setText("no");
+                isSnapshotLoaded.setValue(false);
             }
         });
 
-        // Restore data
-        SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
-        String ipAddress = settings.getString("ipAddress", "");
-        String port = settings.getString("port", "");
 
-        EditText ipAddressTextBox = findViewById(R.id.network_ip_address_text_box);
-        ipAddressTextBox.setText(ipAddress);
+
+        ipAddressTextBox.setText(settingsPref.ipAddress);
         ipAddressTextBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -222,8 +231,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        EditText portTextBox = findViewById(R.id.network_port_text_box);
-        portTextBox.setText(port);
+        portTextBox.setText(settingsPref.port);
         portTextBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -240,32 +248,28 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void updateSnapshotLoadability() {
+        isSnapshotLoadable.setValue(!generateDebugData.isChecked() && !isNetworkEnabled.isChecked());
+    }
+
     private void updatePort(String toString) {
-        SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("port", toString);
-        editor.commit();
+        settingsPref.port = toString;
+        SharedPrefUtil.saveSettingsPreferences(this, settingsPref);
     }
 
     private void updateIpAddress(String toString) {
-        SharedPreferences settings = getSharedPreferences("SettingsInfo", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("ipAddress", toString);
-        editor.commit();
+        settingsPref.ipAddress = toString;
+        SharedPrefUtil.saveSettingsPreferences(this, settingsPref);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (backendDelegateObj != null) { // shouldn't be possible that the obj is ever null
-            backendDelegateObj.cancel(true);
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
 }

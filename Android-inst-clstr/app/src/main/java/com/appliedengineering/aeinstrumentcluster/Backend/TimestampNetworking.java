@@ -27,7 +27,7 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void>{
     public TimestampNetworking(Activity activity) {
         Communication.init();
 
-        SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
+        // SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
         String ipAddress = "192.168.3.2";
         String port = "5546";
 
@@ -42,9 +42,6 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected Void doInBackground(Void... params) {
-
-        loadPreferences();
-
         while (isRunning){
             try {
 
@@ -64,7 +61,7 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void>{
             } catch (IOException e) {
                 LogUtil.addc(e.getStackTrace().toString());
             }
-            // SystemClock.sleep(1000);
+            SystemClock.sleep(1000);
         }
 
         return null;
@@ -75,16 +72,5 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void>{
     private void handleData(byte[] data) throws IOException {
         LogUtil.add(new String(data));
     }
-
-
-    // preferences
-    private void loadPreferences(){
-
-    }
-
-    private void savePreferences(){
-
-    }
-    // end preferences
 
 }
