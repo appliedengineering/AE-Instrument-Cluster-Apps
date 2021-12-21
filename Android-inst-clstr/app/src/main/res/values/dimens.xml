@@ -4,4 +4,5 @@
     <dimen name="paddingHalf">5dp</dimen>
     <dimen name="paddingDouble">20dp</dimen>
     <dimen name="navbarHeight">48dp</dimen>
+    <dimen name="paddingQuarter">2dp</dimen>
 </resources>

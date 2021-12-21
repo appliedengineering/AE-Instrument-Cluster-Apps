@@ -31,31 +31,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-<!--                <com.google.android.material.tabs.TabLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content">-->
+                <!--                <com.google.android.material.tabs.TabLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content">-->
 
-<!--                    <com.google.android.material.tabs.TabItem-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Debug" />-->
+                <!--                    <com.google.android.material.tabs.TabItem-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="Debug" />-->
 
-<!--                    <com.google.android.material.tabs.TabItem-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Networking"-->
-<!--                        android:background="@color/white"/>-->
+                <!--                    <com.google.android.material.tabs.TabItem-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="Networking"-->
+                <!--                        android:background="@color/white"/>-->
 
-<!--                    <com.google.android.material.tabs.TabItem-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Snapshots" />-->
+                <!--                    <com.google.android.material.tabs.TabItem-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="Snapshots" />-->
 
-<!--                </com.google.android.material.tabs.TabLayout>-->
+                <!--                </com.google.android.material.tabs.TabLayout>-->
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/paddingDouble"
                     android:fontFamily="@font/sfprotextbold"
                     android:gravity="center"
                     android:padding="@dimen/padding"
@@ -84,6 +85,13 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/paddingQuarter"
+                    android:layout_marginHorizontal="@dimen/paddingDouble"
+                    android:layout_marginVertical="@dimen/paddingDouble"
+                    android:background="@color/white" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,6 +101,62 @@
                     android:text="Networking"
                     android:textColor="@color/white"
                     android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/paddingDouble"
+                    android:paddingVertical="@dimen/paddingHalf"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sfprodisplaysemibold"
+                        android:text="IP Address"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/network_ip_address_text_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:backgroundTint="@color/white"
+                        android:hint="192.168.137.1"
+                        android:inputType="number|numberDecimal"
+                        android:digits="0123456789."
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/paddingDouble"
+                    android:paddingVertical="@dimen/paddingHalf"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sfprodisplaysemibold"
+                        android:text="Network Port"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/network_port_text_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:backgroundTint="@color/white"
+                        android:hint="5556"
+                        android:inputType="number|numberDecimal"
+                        android:digits="0123456789"
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -138,6 +202,13 @@
                         android:checked="true" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/paddingQuarter"
+                    android:layout_marginHorizontal="@dimen/paddingDouble"
+                    android:layout_marginVertical="@dimen/paddingDouble"
+                    android:background="@color/white" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,6 +241,25 @@
                         android:text="Take Snapshot" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/paddingQuarter"
+                    android:layout_marginHorizontal="@dimen/paddingDouble"
+                    android:layout_marginVertical="@dimen/paddingDouble"
+                    android:background="@color/white" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sfprotextbold"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/padding"
+                    android:text="Saved Snapshots"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,23 +270,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/sfprodisplaysemibold"
-                        android:text="Saved snapshots:"
-                        android:textColor="@color/white"
-                        android:textSize="18dp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/paddingDouble"
-                    android:paddingVertical="@dimen/paddingHalf">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="monospace"
-                        android:text="${insert instructions here}"
+                        android:fontFamily="@font/sfprodisplayregular"
+                        android:text="Click to load snapshot, long press to view"
                         android:textColor="@color/white"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -234,13 +309,14 @@
                 android:padding="@dimen/padding"
                 android:text="@string/pull_down_handle_text"
                 android:textColor="@color/black" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/colorAccent"
                 android:elevation="@dimen/cardview_default_elevation"
-                android:outlineSpotShadowColor="@color/colorAccent"
-                android:outlineAmbientShadowColor="@color/colorAccent"/>
+                android:outlineAmbientShadowColor="@color/colorAccent"
+                android:outlineSpotShadowColor="@color/colorAccent" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
