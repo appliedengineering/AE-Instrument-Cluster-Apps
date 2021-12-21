@@ -73,7 +73,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
                 while (isRunning) {
                     if (generateDebugData) {
                         if (!isNetworkEnabled) {
-                            dataManager.addDebugData(generateDebugData(), System.currentTimeMillis());
+                            dataManager.addDebugData(generateDebugData(), System.currentTimeMillis(), homeTopBar.getActivity());
                         }
                     }
                     SystemClock.sleep(1000);
@@ -129,7 +129,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
             } catch (IOException e) {
                 LogUtil.addc(e.getStackTrace().toString());
             }
-            SystemClock.sleep(500);
+            SystemClock.sleep(10);
         }
 
         return null;
@@ -176,7 +176,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
 
         Map<Value, Value> map = mv.map();
 
-        dataManager.addData(map);
+        dataManager.addData(map, homeTopBar.getActivity());
 
 
     }

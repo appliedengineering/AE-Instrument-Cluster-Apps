@@ -1,5 +1,6 @@
 package com.appliedengineering.aeinstrumentcluster.Backend.dataTypes;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
@@ -27,7 +28,7 @@ public class GraphDataHolder {
     private transient LineChart chart;
     private List<DataPoint> dataPoints;
     private transient List<LineChart> chartsToUpdate = new ArrayList<>();
-    private transient final static int POINTS_VISIBLE_MIN = 10;
+    private transient final static int POINTS_VISIBLE_MIN = 5;
     private transient final static int POINTS_VISIBLE_MAX = 20;
 
     public GraphDataHolder(String keyValue, LineChart chart) {
@@ -44,7 +45,7 @@ public class GraphDataHolder {
 //        chart.getXAxis().setDrawGridLines(false);
     }
 
-    public void updateGraphView() {
+    public void updateGraphView(Activity activity) {
         for (LineChart chart : chartsToUpdate) {
             List<Entry> entries = getEntriesFormatted();
             LogUtil.add(getEntriesFormatted().toString());
@@ -72,9 +73,9 @@ public class GraphDataHolder {
             lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             lineDataSet.setCubicIntensity(.1f);
             lineDataSet.setDrawCircles(false);
-            if(!entries.isEmpty()) {
+            if (!entries.isEmpty()) {
                 Description description = new Description();
-                description.setText("Current value: " + entries.get(dataPoints.size() - 1).getY());
+                description.setText("Current value: " + entries.get(entries.size() - 1).getY());
                 chart.setDescription(description);
             }
 
@@ -84,27 +85,37 @@ public class GraphDataHolder {
             lineDataSet.setLineWidth(3f);
             lineDataSet.setFillDrawable(drawable);
             chart.setData(lineData);
+            chart.getLegend().setEnabled(false);
 
-            // update graphview
-            chart.notifyDataSetChanged();
+            // this section must run on UI thread
+            // to prevent crashes
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // update graphview
+                    chart.notifyDataSetChanged();
 
-            // move to the latest entry
-            if (dataPoints.size() > POINTS_VISIBLE_MIN) {
-                float lastX = entries.get(dataPoints.size() - POINTS_VISIBLE_MIN).getX();
-                float lastY = entries.get(dataPoints.size() - POINTS_VISIBLE_MIN).getY();
-                chart.moveViewToAnimated(lastX, lastY, lineDataSet.getAxisDependency(), 100);
-            } else {
-                chart.invalidate();
-            }
+                    // move to the latest entry
+                    if (entries.size() > POINTS_VISIBLE_MIN) {
+                        float lastX = entries.get(entries.size() - POINTS_VISIBLE_MIN).getX();
+                        chart.moveViewToX(lastX);
+                    } else {
+                        chart.invalidate();
+                    }
+                }
+            });
 
         }
+
     }
 
     private List<Entry> getEntriesFormatted() {
         // Format the data relative to the time elapsed
         List<Entry> newEntryList = new ArrayList<>();
         int i = 0;
-        for (DataPoint e : dataPoints) {
+        // make a copy of dataPoints just in case to avoid ConcurrentModificationException
+        List<DataPoint> dataPointsCopy = new ArrayList<>(dataPoints);
+        for (DataPoint e : dataPointsCopy) {
             i++;
             float x, y;
             Log.d(TAG, "getEntriesFormatted: " + (long) e.getX() + " , " + DataManager.START_TIME);
@@ -132,11 +143,11 @@ public class GraphDataHolder {
         return dataPoints;
     }
 
-    public void setDataPoints(List<DataPoint> dataPoints) {
+    public void setDataPoints(List<DataPoint> dataPoints, Activity activity) {
         this.dataPoints = dataPoints;
-        updateGraphView();
+        updateGraphView(activity);
         chart.notifyDataSetChanged();
-        updateGraphView();
+        updateGraphView(activity);
         // the view needs to be refreshed two times
         // first time is for the chart to realize that new data has been added
         // second time is for the chart to re-render the view with proper scaling

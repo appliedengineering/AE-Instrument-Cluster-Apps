@@ -1,5 +1,6 @@
 package com.appliedengineering.aeinstrumentcluster.Backend;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
@@ -56,11 +57,11 @@ public class DataManager {
         return dataHolder;
     }
 
-    public void addData(Map<Value, Value> map) {
+    public void addData(Map<Value, Value> map, Activity activity) {
         try {
             // First convert the format of the map, make it more friendly
             List<String> keyValues = Arrays.asList(DataManager.GRAPH_KEY_VALUES);
-            long timeStamp = getTimestamp(map) * 1000L;
+            long timeStamp = getTimestamp(map);
             for (Map.Entry<Value, Value> entry : map.entrySet()) {
                 Value key = entry.getKey();
                 Value value = entry.getValue();
@@ -70,7 +71,7 @@ public class DataManager {
                     float entryValue = Util.parseFloat(value.toString());
 
                     graphsMap.get(keyValue).addEntry(timeStamp, entryValue);
-                    graphsMap.get(keyValue).updateGraphView();
+                    graphsMap.get(keyValue).updateGraphView(activity);
                 }
 
 
@@ -87,7 +88,8 @@ public class DataManager {
             Value key = entry.getKey();
             Value value = entry.getValue();
             if (key.toString().equals("timeStamp")) {
-                entryValue = (long) (Util.parseDouble(value.toString().split("E")[0]) * Math.pow(10, 9));
+                LogUtil.add("Value: "+ value.toString().split("E")[0]);
+                entryValue = (long) (Util.parseDouble(value.toString().split("E")[0]) * Math.pow(10, 12));
 
             }
         }
@@ -99,19 +101,19 @@ public class DataManager {
         return graphsMap.get(keyValue);
     }
 
-    public void addDebugData(Map<String, Float> map, long currentTimeMillis) {
+    public void addDebugData(Map<String, Float> map, long currentTimeMillis, Activity activity) {
         List<String> keyValues = Arrays.asList(DataManager.GRAPH_KEY_VALUES);
         for (Map.Entry<String, Float> entry : map.entrySet()) {
             String key = entry.getKey();
             float value = entry.getValue();
             if (keyValues.contains(key)) {
                 graphsMap.get(key).addEntry(currentTimeMillis, value);
-                graphsMap.get(key).updateGraphView();
+                graphsMap.get(key).updateGraphView(activity);
             }
         }
     }
 
-    public void loadDataFromString(String snapshot) {
+    public void loadDataFromString(String snapshot, Activity activity) {
         Type typeOfHashMap = new TypeToken<Map<String, GraphDataHolder>>() {
         }.getType();
 
@@ -128,19 +130,19 @@ public class DataManager {
         for (String key : graphsMap.keySet()) {
             // get the graph and update it
             GraphDataHolder graphDataHolder = graphsMap.get(key);
-            graphDataHolder.setDataPoints(newGraphDataHolder.get(key).getDataPoints());
+            graphDataHolder.setDataPoints(newGraphDataHolder.get(key).getDataPoints(), activity);
         }
 
         HomeActivity.isSnapshotLoaded.setValue(true);
 
     }
 
-    public void reset() {
+    public void reset(Activity activity) {
         for (String key : graphsMap.keySet()) {
             // get the graph and reset it
             GraphDataHolder graphDataHolder = graphsMap.get(key);
             graphDataHolder.getDataPoints().clear();
-            graphDataHolder.updateGraphView();
+            graphDataHolder.updateGraphView(activity);
         }
 
         HomeActivity.isSnapshotLoaded.setValue(false);

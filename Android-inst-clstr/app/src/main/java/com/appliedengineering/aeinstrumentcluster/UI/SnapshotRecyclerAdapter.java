@@ -1,5 +1,6 @@
 package com.appliedengineering.aeinstrumentcluster.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
@@ -29,7 +30,12 @@ import java.util.Set;
 
 public class SnapshotRecyclerAdapter extends RecyclerView.Adapter<SnapshotRecyclerAdapter.SnapshotViewHolder> {
 
-    List<String> snapshots = new ArrayList<>();
+    private List<String> snapshots = new ArrayList<>();
+    private Activity activity;
+
+    public SnapshotRecyclerAdapter(Activity activity) {
+        this.activity = activity;
+    }
 
     public void setData(Set<String> stringSet) {
         snapshots.clear();
@@ -45,7 +51,8 @@ public class SnapshotRecyclerAdapter extends RecyclerView.Adapter<SnapshotRecycl
     public SnapshotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new SnapshotViewHolder(
                 LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.snapshot_view, parent, false));
+                        .inflate(R.layout.snapshot_view, parent, false),
+                activity);
     }
 
     @Override
@@ -63,11 +70,14 @@ public class SnapshotRecyclerAdapter extends RecyclerView.Adapter<SnapshotRecycl
         private final TextView charCount;
         private final TextView hash;
         private final TextView date;
+        private final Activity activity;
 
         private String snapshot;
 
-        public SnapshotViewHolder(@NonNull View itemView) {
+        public SnapshotViewHolder(@NonNull View itemView, Activity activity) {
             super(itemView);
+
+            this.activity = activity;
 
             title = itemView.findViewById(R.id.snapshot_title);
             charCount = itemView.findViewById(R.id.snapshot_char_count);
@@ -100,7 +110,7 @@ public class SnapshotRecyclerAdapter extends RecyclerView.Adapter<SnapshotRecycl
                     Toast.makeText(view.getContext(), "Disable debug data and network before loading snapshot!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                DataManager.dataManager.loadDataFromString(snapshot);
+                DataManager.dataManager.loadDataFromString(snapshot, activity);
             }
         }
 

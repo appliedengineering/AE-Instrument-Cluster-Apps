@@ -9,25 +9,21 @@ import org.zeromq.ZMQException;
 
 import java.io.IOException;
 
-
 public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
 
     private volatile boolean isRunning = true;
 
     public TimestampNetworking(Activity activity) {
-        Communication.init();
 
         // SharedPreferences settings = activity.getSharedPreferences("SettingsInfo", 0);
         String ipAddress = "192.168.3.2";
         String port = "5546";
 
-        LogUtil.add("Communication setup: " + Communication.connectToTimestampSocket("tcp://" + ipAddress + ":5546"));
     }
 
     @Override
     protected void onCancelled() {
         isRunning = false;
-        Communication.deinit();
     }
 
     @Override
@@ -50,8 +46,8 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
                 LogUtil.addc(e.getStackTrace().toString());
             }
             SystemClock.sleep(1000);
-        }
 
+        }
         return null;
     }
 

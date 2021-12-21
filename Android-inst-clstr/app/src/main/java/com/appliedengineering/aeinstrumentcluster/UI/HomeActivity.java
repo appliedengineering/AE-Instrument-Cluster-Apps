@@ -157,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         // Set up recycler view
-        SnapshotRecyclerAdapter snapshotRecyclerAdapter = new SnapshotRecyclerAdapter();
+        SnapshotRecyclerAdapter snapshotRecyclerAdapter = new SnapshotRecyclerAdapter(this);
         snapshotRecyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.VERTICAL, false));
         snapshotRecyclerView.setAdapter(snapshotRecyclerAdapter);
         snapshotRecyclerAdapter.setData(snapshotsPref.snapshots);
@@ -191,7 +191,7 @@ public class HomeActivity extends AppCompatActivity {
         removeSnapshotsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataManager.dataManager.reset();
+                DataManager.dataManager.reset(HomeActivity.this);
                 isSnapshotLoaded.setValue(false);
             }
         });
