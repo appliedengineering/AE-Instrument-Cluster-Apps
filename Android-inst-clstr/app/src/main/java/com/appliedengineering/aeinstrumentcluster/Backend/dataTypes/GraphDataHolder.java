@@ -31,11 +31,15 @@ public class GraphDataHolder {
     private transient final static int POINTS_VISIBLE_MIN = 5;
     private transient final static int POINTS_VISIBLE_MAX = 20;
 
+    private transient final Drawable drawable;
+
+
     public GraphDataHolder(String keyValue, LineChart chart) {
 
         this.keyValue = keyValue;
         this.chart = chart;
         this.dataPoints = new ArrayList<>();
+        this.drawable =  ContextCompat.getDrawable(chart.getContext(), R.drawable.fade_cool_blue);
         chartsToUpdate.add(chart);
 
         // initial init
@@ -45,7 +49,7 @@ public class GraphDataHolder {
 //        chart.getXAxis().setDrawGridLines(false);
     }
 
-    public void updateGraphView(Activity activity) {
+    public synchronized void updateGraphView(Activity activity) {
         for (LineChart chart : chartsToUpdate) {
             List<Entry> entries = getEntriesFormatted();
             LogUtil.add(getEntriesFormatted().toString());
@@ -80,7 +84,6 @@ public class GraphDataHolder {
             }
 
 
-            Drawable drawable = ContextCompat.getDrawable(chart.getContext(), R.drawable.fade_cool_blue);
             lineDataSet.setDrawFilled(true);
             lineDataSet.setLineWidth(3f);
             lineDataSet.setFillDrawable(drawable);
@@ -92,15 +95,17 @@ public class GraphDataHolder {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    // update graphview
-                    chart.notifyDataSetChanged();
+                    synchronized (chart) {
+                        // update graphview
+                        chart.notifyDataSetChanged();
 
-                    // move to the latest entry
-                    if (entries.size() > POINTS_VISIBLE_MIN) {
-                        float lastX = entries.get(entries.size() - 1).getX();
-                        chart.moveViewToX(lastX);
-                    } else {
-                        chart.invalidate();
+                        // move to the latest entry
+                        if (entries.size() > POINTS_VISIBLE_MIN) {
+                            float lastX = entries.get(entries.size() - 1).getX();
+                            chart.moveViewToX(lastX);
+                        } else {
+                            chart.invalidate();
+                        }
                     }
                 }
             });
@@ -135,7 +140,7 @@ public class GraphDataHolder {
 
     // GETTERS AND SETTERS
 
-    public void addEntry(long x, float y) {
+    public synchronized void addEntry(long x, float y) {
         dataPoints.add(new DataPoint(x, y));
     }
 

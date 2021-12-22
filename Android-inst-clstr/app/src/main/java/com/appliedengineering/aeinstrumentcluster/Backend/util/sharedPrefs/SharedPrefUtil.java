@@ -28,7 +28,7 @@ public class SharedPrefUtil {
     public static SnapshotsPref loadSnapshotsPreferences(Activity activity) {
         SnapshotsPref snapshotsPref = new SnapshotsPref();
         SharedPreferences settings = activity.getSharedPreferences(SharedPrefsConstants.SNAPSHOTS_PREF, 0);
-        snapshotsPref.snapshots = new HashSet<>(settings.getStringSet(SharedPrefsConstants.SNAPSHOTS_PREF_SNAPSHOTS, null));
+        snapshotsPref.snapshots = new HashSet<>(settings.getStringSet(SharedPrefsConstants.SNAPSHOTS_PREF_SNAPSHOTS, new HashSet<>()));
         return snapshotsPref;
     }
 

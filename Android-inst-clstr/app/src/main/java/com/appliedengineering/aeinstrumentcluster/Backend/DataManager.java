@@ -2,6 +2,7 @@ package com.appliedengineering.aeinstrumentcluster.Backend;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.dataTypes.GraphDataHolder;
 import com.appliedengineering.aeinstrumentcluster.Backend.util.Util;
@@ -142,16 +143,23 @@ public class DataManager {
     }
 
     public void reset(Activity activity) {
-        for (String key : graphsMap.keySet()) {
-            // get the graph and reset it
-            GraphDataHolder graphDataHolder = graphsMap.get(key);
-            graphDataHolder.getDataPoints().clear();
-            graphDataHolder.updateGraphView(activity);
+        if(HomeActivity.isSnapshotLoadable.getValue()) {
+            for (String key : graphsMap.keySet()) {
+                // get the graph and reset it
+                GraphDataHolder graphDataHolder = graphsMap.get(key);
+                graphDataHolder.getDataPoints().clear();
+                graphDataHolder.updateGraphView(activity);
+            }
+            // reset time
+            START_TIME = System.currentTimeMillis();
+            HomeActivity.isSnapshotLoaded.setValue(false);
+        } else {
+            Toast.makeText(activity, "Disable all network before clearing!", Toast.LENGTH_LONG).show();
         }
-        // reset time
-        START_TIME = System.currentTimeMillis();
-        HomeActivity.isSnapshotLoaded.setValue(false);
     }
+
+
+
 
 
     // These following properties need to be handled differently
