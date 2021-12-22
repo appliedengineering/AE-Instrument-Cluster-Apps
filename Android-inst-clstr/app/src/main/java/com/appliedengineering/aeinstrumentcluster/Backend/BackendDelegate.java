@@ -18,13 +18,15 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 //import org.zeromq.EmbeddedLibraryTools;
 
 
 // Class design found here: https://stackoverflow.com/a/36155334/
-public class BackendDelegate extends AsyncTask<Void, Void, Void> {
+public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
 
     private static final int NO_MESSAGE_COUNT_THRESHOLD = 5;
 
@@ -33,24 +35,14 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
     private volatile boolean isRunning = true;
     private volatile boolean isNetworkEnabled = true;
     private volatile boolean generateDebugData = false;
-    private Thread debugThread;
+    // private Thread debugThread;
 
+    private final List<Map<Value, Value>> mapsToBePosted = new ArrayList<>();
 
     private volatile int noMessageCount = NO_MESSAGE_COUNT_THRESHOLD;
 
     // options
     private volatile SettingsPref settings;
-
-
-    // not used
-//    private String connectionAddress = "";
-//    private String connectionGroup = "";
-//    private int receiveReconnect = -1;
-//    private int receiveTimeout = -1;
-//    private int reconnectTimeout = -1;
-//    private int receiveBuffer = 60;
-
-    // end options
 
 
     public BackendDelegate(HomeTopBar homeTopBar, Activity activity) {
@@ -66,21 +58,21 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
     }
 
     private void setUpDebugThread() {
-        // the debug thread is a thread dedicated to debugging
-        debugThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isRunning) {
-                    if (generateDebugData) {
-                        if (!isNetworkEnabled) {
-                            dataManager.addDebugData(generateDebugData(), System.currentTimeMillis(), homeTopBar.getActivity());
-                        }
-                    }
-                    SystemClock.sleep(100);
-                }
-            }
-        });
-        debugThread.start();
+//        // the debug thread is a thread dedicated to debugging
+//        debugThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (isRunning) {
+//                    if (generateDebugData) {
+//                        if (!isNetworkEnabled) {
+//                            dataManager.addDebugData(generateDebugData(), System.currentTimeMillis(), homeTopBar.getActivity());
+//                        }
+//                    }
+//                    SystemClock.sleep(100);
+//                }
+//            }
+//        });
+//        debugThread.start();
     }
 
     private Map<String, Float> generateDebugData() {
@@ -116,7 +108,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
                 byte[] data = Communication.recv();
                 if (data != null) {
                     noMessageCount = 0;
-                    handleData(data);
+                    handleData(data, homeTopBar.getActivity());
                 } else {
                     noMessageCount++;
                     LogUtil.add("No msg to be received");
@@ -134,6 +126,7 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
 
         return null;
     }
+
 
     private void updateHomeTopBar() {
         // show connected indicator
@@ -165,18 +158,31 @@ public class BackendDelegate extends AsyncTask<Void, Void, Void> {
 
     }
 
-    private void handleData(byte[] data) throws IOException {
-        if (!isNetworkEnabled) return;
+    private void handleData(byte[] data, Activity activity) throws IOException {
+        if(activity != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isNetworkEnabled) return;
 
-        LogUtil.add("Received data: " + new String(data));
+                    LogUtil.add("Received data: " + new String(data));
 
-        // unpack the data into readable format
-        MessageUnpacker messageUnpacker = MessagePack.newDefaultUnpacker(data);
-        MapValue mv = (MapValue) messageUnpacker.unpackValue();
+                    // unpack the data into readable format
+                    MessageUnpacker messageUnpacker = MessagePack.newDefaultUnpacker(data);
+                    MapValue mv = null;
+                    try {
+                        mv = (MapValue) messageUnpacker.unpackValue();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
 
-        Map<Value, Value> map = mv.map();
+                    Map<Value, Value> map = mv.map();
 
-        dataManager.addData(map, homeTopBar.getActivity());
+                    dataManager.addData(map, homeTopBar.getActivity());
+                }
+            });
+        }
 
 
     }

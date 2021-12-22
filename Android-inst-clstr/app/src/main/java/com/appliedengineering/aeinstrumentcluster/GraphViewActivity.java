@@ -33,8 +33,8 @@ public class GraphViewActivity extends AppCompatActivity {
         if (graphDataHolder != null) {
             LineChart chart = findViewById(R.id.lineChartId);
             graphDataHolder.register(chart);
-            graphDataHolder.updateGraphView(this);
-            graphDataHolder.updateGraphView(this);
+            graphDataHolder.updateGraphView();
+            graphDataHolder.updateGraphView();
             // need to update two times, for reasons explained in another class
         }
 

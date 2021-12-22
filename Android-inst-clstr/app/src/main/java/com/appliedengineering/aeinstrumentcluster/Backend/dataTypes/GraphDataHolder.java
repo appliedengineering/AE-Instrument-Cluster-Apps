@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,10 @@ public class GraphDataHolder {
 
     private transient final Drawable drawable;
 
+    private transient final LineDataSet lineDataSet;
+    private transient final LineData lineData;
+    private transient final List<Entry> entriesList = new ArrayList<>();
+
 
     public GraphDataHolder(String keyValue, LineChart chart) {
 
@@ -40,99 +45,88 @@ public class GraphDataHolder {
         this.chart = chart;
         this.dataPoints = new ArrayList<>();
         this.drawable =  ContextCompat.getDrawable(chart.getContext(), R.drawable.fade_cool_blue);
-        chartsToUpdate.add(chart);
 
         // initial init
+        lineDataSet = new LineDataSet(entriesList, keyValue);
+        lineData = new LineData(lineDataSet);
 
-//        // hide the grid
-//        chart.getAxisLeft().setDrawGridLines(false);
-//        chart.getXAxis().setDrawGridLines(false);
+        addChart(chart);
+
     }
 
-    public synchronized void updateGraphView(Activity activity) {
+    private void addChart(LineChart chart) {
+        chartsToUpdate.add(chart);
+        formatChart(chart);
+    }
+
+    private void formatChart(LineChart chart) {
+        if (chartsToUpdate.indexOf(chart) == 0) {
+            // Hide labels
+            lineData.setDrawValues(false);
+            lineData.setHighlightEnabled(false);
+
+            // auto scroll the graph view
+            // limit the number of visible entries
+            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
+
+            chart.getAxisLeft().setDrawGridLines(false);
+            chart.getXAxis().setDrawGridLines(false);
+            chart.getXAxis().setDrawGridLines(false);
+            chart.getXAxis().setDrawLabels(false);
+        } else {
+            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
+        }
+        // make the chart smooth
+        // lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        // lineDataSet.setCubicIntensity(.1f);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setLineWidth(3f);
+        lineDataSet.setFillDrawable(drawable);
+        chart.setData(lineData);
+        chart.getLegend().setEnabled(false);
+
+    }
+
+    public synchronized void updateGraphView() {
         for (LineChart chart : chartsToUpdate) {
-            List<Entry> entries = getEntriesFormatted();
-            LogUtil.add(getEntriesFormatted().toString());
-            LineDataSet lineDataSet = new LineDataSet(entries, keyValue);
-            LineData lineData = new LineData(lineDataSet);
-
-            if (chartsToUpdate.indexOf(chart) == 0) {
-                // Hide labels
-                lineData.setDrawValues(false);
-                lineData.setHighlightEnabled(false);
-
-                // auto scroll the graph view
-                // limit the number of visible entries
-                chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
-
-                chart.getAxisLeft().setDrawGridLines(false);
-                chart.getXAxis().setDrawGridLines(false);
-                chart.getXAxis().setDrawGridLines(false);
-                chart.getXAxis().setDrawLabels(false);
-            } else {
-                chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
-            }
-
-            // make the chart smooth
-            lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            lineDataSet.setCubicIntensity(.1f);
-            lineDataSet.setDrawCircles(false);
-            if (!entries.isEmpty()) {
+            if (!entriesList.isEmpty()) {
                 Description description = new Description();
-                description.setText("Current value: " + entries.get(entries.size() - 1).getY());
+                description.setText("Current value: " + entriesList.get(entriesList.size() - 1).getY());
                 chart.setDescription(description);
             }
 
 
-            lineDataSet.setDrawFilled(true);
-            lineDataSet.setLineWidth(3f);
-            lineDataSet.setFillDrawable(drawable);
-            chart.setData(lineData);
-            chart.getLegend().setEnabled(false);
-
-            // this section must run on UI thread
-            // to prevent crashes
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (chart) {
-                        // update graphview
-                        chart.notifyDataSetChanged();
-
-                        // move to the latest entry
-                        if (entries.size() > POINTS_VISIBLE_MIN) {
-                            float lastX = entries.get(entries.size() - 1).getX();
-                            chart.moveViewToX(lastX);
-                        } else {
-                            chart.invalidate();
-                        }
-                    }
-                }
-            });
+            // update graphview
+            lineDataSet.notifyDataSetChanged();
+            lineData.notifyDataChanged();
+            chart.notifyDataSetChanged();
+            // chart.invalidate();
+            // move to the latest entry
+            if (entriesList.size() > POINTS_VISIBLE_MIN) {
+                float lastX = entriesList.get(entriesList.size() - 1).getX();
+                chart.moveViewToX(lastX);
+            } else {
+                chart.invalidate();
+            }
 
         }
 
     }
 
-    private List<Entry> getEntriesFormatted() {
+    private List<Entry> getEntriesFormatted(DataPoint... dataPoints) {
         // Format the data relative to the time elapsed
         List<Entry> newEntryList = new ArrayList<>();
-        int i = 0;
         // make a copy of dataPoints just in case to avoid ConcurrentModificationException
-        List<DataPoint> dataPointsCopy = new ArrayList<>(dataPoints);
-        for (DataPoint e : dataPointsCopy) {
-            i++;
+        for (DataPoint e : dataPoints) {
             float x, y;
-            Log.d(TAG, "getEntriesFormatted: " + (long) e.getX() + " , " + DataManager.START_TIME);
+            Log.d(TAG, "getEntriesFormatted: " + e.getX() + " , " + DataManager.START_TIME);
             x = (e.getX() - DataManager.START_TIME) / 1000f; // divide by 1000 to convert to seconds
             y = e.getY();
             Entry newEntry = new Entry(x, y);
 
             newEntryList.add(newEntry);
         }
-
-        // The entries MUST be sorted
-        Collections.sort(newEntryList, new EntryXComparator());
 
         return newEntryList;
 
@@ -141,21 +135,34 @@ public class GraphDataHolder {
     // GETTERS AND SETTERS
 
     public synchronized void addEntry(long x, float y) {
-        dataPoints.add(new DataPoint(x, y));
+        DataPoint newPoint = new DataPoint(x, y);
+        dataPoints.add(newPoint);
+        entriesList.addAll(getEntriesFormatted(newPoint));
+        lineDataSet.notifyDataSetChanged();
+        updateGraphView();
+    }
+
+    public synchronized void clear() {
+        dataPoints.clear();
+        entriesList.clear();
+        updateGraphView();
     }
 
     public List<DataPoint> getDataPoints() {
         return dataPoints;
     }
 
-    public void setDataPoints(List<DataPoint> dataPoints, Activity activity) {
+    public synchronized void setDataPoints(List<DataPoint> dataPoints, Activity activity) {
         this.dataPoints = dataPoints;
-        updateGraphView(activity);
-        chart.notifyDataSetChanged();
-        updateGraphView(activity);
-        // the view needs to be refreshed two times
-        // first time is for the chart to realize that new data has been added
-        // second time is for the chart to re-render the view with proper scaling
+        entriesList.addAll(getEntriesFormatted(dataPoints.toArray(new DataPoint[0])));
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                updateGraphView();
+
+            }
+        });
+
     }
 
     public void deRegister(LineChart lineChart) {
@@ -163,6 +170,7 @@ public class GraphDataHolder {
     }
 
     public void register(LineChart lineChart) {
-        chartsToUpdate.add(lineChart);
+        addChart(lineChart);
     }
+
 }

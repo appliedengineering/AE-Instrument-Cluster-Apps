@@ -75,7 +75,6 @@ public class DataManager {
                     float entryValue = Util.parseFloat(value.toString());
                     if(graphsMap.get(keyValue) != null) {
                         graphsMap.get(keyValue).addEntry(timeStamp, entryValue);
-                        graphsMap.get(keyValue).updateGraphView(activity);
                     }
                 }
 
@@ -113,7 +112,6 @@ public class DataManager {
             float value = entry.getValue();
             if (keyValues.contains(key)) {
                 graphsMap.get(key).addEntry(currentTimeMillis, value);
-                graphsMap.get(key).updateGraphView(activity);
             }
         }
     }
@@ -147,8 +145,7 @@ public class DataManager {
             for (String key : graphsMap.keySet()) {
                 // get the graph and reset it
                 GraphDataHolder graphDataHolder = graphsMap.get(key);
-                graphDataHolder.getDataPoints().clear();
-                graphDataHolder.updateGraphView(activity);
+                graphDataHolder.clear();
             }
             // reset time
             START_TIME = System.currentTimeMillis();

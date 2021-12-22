@@ -61,15 +61,15 @@ public class HomeContentScroll extends Fragment {
         // Add the graph view to the right place in the indexed map
         // The string key
         GraphDataHolder graphDataHolder = dataManager.registerForDataManager(keyValue, chart); // gives the chart a "room" in the data manager
-        List<Entry> entries = new ArrayList<>();
-        LineDataSet lineDataSet = new LineDataSet(entries, keyValue);
-
-        // Set properties and styling
-        lineDataSet.setDrawValues(false);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineDataSet);
-        chart.setData(new LineData(dataSets));
+//        List<Entry> entries = new ArrayList<>();
+//        LineDataSet lineDataSet = new LineDataSet(entries, keyValue);
+//
+//        // Set properties and styling
+//        lineDataSet.setDrawValues(false);
+//
+//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+//        dataSets.add(lineDataSet);
+//        chart.setData(new LineData(dataSets));
 
         // After initializing an empty graph, we store the reference to the entries var so that we can update it later
         // also store the reference to the linechart, we will need it later
