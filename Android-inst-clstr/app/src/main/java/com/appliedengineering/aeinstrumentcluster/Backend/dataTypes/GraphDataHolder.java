@@ -31,8 +31,8 @@ public class GraphDataHolder {
     private transient LineChart chart;
     private List<DataPoint> dataPoints;
     private transient List<LineChart> chartsToUpdate = new ArrayList<>();
-    private transient final static int POINTS_VISIBLE_MIN = 5;
-    private transient final static int POINTS_VISIBLE_MAX = 20;
+    private transient static int POINTS_VISIBLE_MIN = 5;
+    private transient static int POINTS_VISIBLE_MAX = 5;
 
     private transient final Drawable drawable;
 
@@ -70,16 +70,17 @@ public class GraphDataHolder {
             lineData.setDrawValues(false);
             lineData.setHighlightEnabled(false);
 
-            // auto scroll the graph view
-            // limit the number of visible entries
-            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
-
             chart.getAxisLeft().setDrawGridLines(false);
+            chart.getAxisRight().setDrawGridLines(false);
             chart.getXAxis().setDrawGridLines(false);
-            chart.getXAxis().setDrawGridLines(false);
+
+            chart.getAxisLeft().setDrawLabels(false);
             chart.getXAxis().setDrawLabels(false);
-        } else {
-            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
+
+            chart.getAxisLeft().setDrawAxisLine(false);
+            chart.getAxisRight().setDrawAxisLine(false);
+            chart.getXAxis().setDrawAxisLine(false);
+
         }
         // make the chart smooth
         if(settingsPref.cubicLineFitting) {
@@ -110,7 +111,11 @@ public class GraphDataHolder {
             lineDataSet.notifyDataSetChanged();
             lineData.notifyDataChanged();
             chart.notifyDataSetChanged();
-            // chart.invalidate();
+
+            // auto scroll the graph view
+            // limit the number of visible entries
+            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MAX);
+
             // move to the latest entry
             if (entriesList.size() > POINTS_VISIBLE_MIN) {
                 float lastX = entriesList.get(entriesList.size() - 1).getX();
