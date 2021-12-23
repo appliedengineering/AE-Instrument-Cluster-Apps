@@ -2,8 +2,12 @@ package com.appliedengineering.aeinstrumentcluster.Backend;
 
 import android.util.Log;
 
+import org.msgpack.core.MessageBufferPacker;
+import org.msgpack.core.MessagePack;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
+
+import java.io.IOException;
 
 public final class Communication {
 
@@ -23,6 +27,7 @@ public final class Communication {
 
     public static void deinit() {
         sub.close();
+        timeSocket.close();
         ctx.close();
     }
 
@@ -46,7 +51,7 @@ public final class Communication {
     public static boolean connectToTimestampSocket(String connectionString) {
         timeConnectionString = connectionString;
         try {
-            timeSocket = ctx.socket(ZMQ.PAIR);
+            timeSocket = ctx.socket(ZMQ.REQ);
             timeSocket.connect(timeConnectionString);
         } catch (ZMQException e) {
             LogUtil.addc("Connect error: " + e.getMessage());
@@ -84,10 +89,7 @@ public final class Communication {
             LogUtil.add("Failed disconnect but not severe error");
         }
 
-        if (!connect(connectionStr)) {
-            return false;
-        }
-        return true;
+        return connect(connectionStr);
     }
 
     public static byte[] recv() throws ZMQException {
@@ -101,10 +103,18 @@ public final class Communication {
     }
 
 
-    public static boolean sendTimestamp(byte[] data) throws ZMQException {
-        timeSocket.send(data);
-
-        return true; // assume no error
+    public static boolean sendTimestamp(long data) throws ZMQException {
+        // pack the data
+        MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
+        try {
+            packer.packTimestamp(data);
+            timeSocket.send(packer.toByteArray());
+            packer.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public static byte[] recvTimestamp() throws ZMQException {
@@ -115,5 +125,9 @@ public final class Communication {
             LogUtil.add("Recv Error: " + e.getMessage());
         }
         return buffer;
+    }
+
+    public static void sendCommand(String string) {
+        // TODO: implement
     }
 }

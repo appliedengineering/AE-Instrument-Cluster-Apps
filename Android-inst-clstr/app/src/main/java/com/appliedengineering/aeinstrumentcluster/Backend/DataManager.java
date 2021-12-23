@@ -92,12 +92,10 @@ public class DataManager {
             Value key = entry.getKey();
             Value value = entry.getValue();
             if (key.toString().equals("timeStamp")) {
-                LogUtil.add("Value: "+ value.toString().split("E")[0]);
                 entryValue = (long) (Util.parseDouble(value.toString().split("E")[0]) * Math.pow(10, 12));
 
             }
         }
-        LogUtil.add("Calc Time" + entryValue);
         return entryValue;
     }
 

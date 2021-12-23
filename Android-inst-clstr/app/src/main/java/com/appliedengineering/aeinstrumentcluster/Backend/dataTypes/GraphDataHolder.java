@@ -120,7 +120,6 @@ public class GraphDataHolder {
         // make a copy of dataPoints just in case to avoid ConcurrentModificationException
         for (DataPoint e : dataPoints) {
             float x, y;
-            Log.d(TAG, "getEntriesFormatted: " + e.getX() + " , " + DataManager.START_TIME);
             x = (e.getX() - DataManager.START_TIME) / 1000f; // divide by 1000 to convert to seconds
             y = e.getY();
             Entry newEntry = new Entry(x, y);

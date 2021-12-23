@@ -1,6 +1,7 @@
 package com.appliedengineering.aeinstrumentcluster.UI;
 
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -96,8 +97,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
         // Make sure to only start execute after everything has been setup
-        backendDelegateObj.execute();
-        timestampNetworking.execute();
+        // execute the tasks in parallel
+        backendDelegateObj.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        timestampNetworking.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         // Extract all references
         restartNetworkButton = findViewById(R.id.restart_network_button);

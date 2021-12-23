@@ -35,7 +35,7 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
     private volatile boolean isRunning = true;
     private volatile boolean isNetworkEnabled = true;
     private volatile boolean generateDebugData = false;
-    // private Thread debugThread;
+    private Thread debugThread;
 
     private final List<Map<Value, Value>> mapsToBePosted = new ArrayList<>();
 
@@ -58,21 +58,28 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
     }
 
     private void setUpDebugThread() {
-//        // the debug thread is a thread dedicated to debugging
-//        debugThread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (isRunning) {
-//                    if (generateDebugData) {
-//                        if (!isNetworkEnabled) {
-//                            dataManager.addDebugData(generateDebugData(), System.currentTimeMillis(), homeTopBar.getActivity());
-//                        }
-//                    }
-//                    SystemClock.sleep(100);
-//                }
-//            }
-//        });
-//        debugThread.start();
+        // the debug thread is a thread dedicated to debugging
+        debugThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isRunning) {
+                    if (generateDebugData) {
+                        if (!isNetworkEnabled) {
+                            if(homeTopBar.getActivity() != null) {
+                                homeTopBar.getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dataManager.addDebugData(generateDebugData(), System.currentTimeMillis(), homeTopBar.getActivity());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    SystemClock.sleep(100);
+                }
+            }
+        });
+        debugThread.start();
     }
 
     private Map<String, Float> generateDebugData() {
@@ -111,7 +118,7 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
                     handleData(data, homeTopBar.getActivity());
                 } else {
                     noMessageCount++;
-                    LogUtil.add("No msg to be received");
+                    // LogUtil.add("No msg to be received");
                 }
                 updateHomeTopBar();
             } catch (ZMQException e) {
@@ -165,7 +172,7 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
                 public void run() {
                     if (!isNetworkEnabled) return;
 
-                    LogUtil.add("Received data: " + new String(data));
+                    // LogUtil.add("Received data: " + new String(data));
 
                     // unpack the data into readable format
                     MessageUnpacker messageUnpacker = MessagePack.newDefaultUnpacker(data);
