@@ -55,8 +55,8 @@ public class DataManager {
             "voltageChange"
     };
 
-    public GraphDataHolder registerForDataManager(String keyValue, LineChart chart) {
-        GraphDataHolder dataHolder = new GraphDataHolder(keyValue, chart);
+    public GraphDataHolder registerForDataManager(String keyValue, LineChart chart, Activity activity) {
+        GraphDataHolder dataHolder = new GraphDataHolder(keyValue, chart, activity);
         graphsMap.put(keyValue, dataHolder);
         return dataHolder;
     }

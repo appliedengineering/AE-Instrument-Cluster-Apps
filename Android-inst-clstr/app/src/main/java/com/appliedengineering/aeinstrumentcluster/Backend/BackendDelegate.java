@@ -157,8 +157,10 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
             homeTopBar.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    TextView indicator = homeTopBar.getView().findViewById(R.id.status_indicator_text);
-                    indicator.setText(finalTextToDisplay);
+                    if(homeTopBar.getView() != null) {
+                        TextView indicator = homeTopBar.getView().findViewById(R.id.status_indicator_text);
+                        indicator.setText(finalTextToDisplay);
+                    }
                 }
             });
         }

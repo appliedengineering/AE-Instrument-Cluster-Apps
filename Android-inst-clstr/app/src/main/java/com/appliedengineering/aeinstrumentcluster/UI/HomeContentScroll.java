@@ -60,16 +60,7 @@ public class HomeContentScroll extends Fragment {
 
         // Add the graph view to the right place in the indexed map
         // The string key
-        GraphDataHolder graphDataHolder = dataManager.registerForDataManager(keyValue, chart); // gives the chart a "room" in the data manager
-//        List<Entry> entries = new ArrayList<>();
-//        LineDataSet lineDataSet = new LineDataSet(entries, keyValue);
-//
-//        // Set properties and styling
-//        lineDataSet.setDrawValues(false);
-//
-//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-//        dataSets.add(lineDataSet);
-//        chart.setData(new LineData(dataSets));
+        dataManager.registerForDataManager(keyValue, chart, getActivity()); // gives the chart a "room" in the data manager
 
         // After initializing an empty graph, we store the reference to the entries var so that we can update it later
         // also store the reference to the linechart, we will need it later
@@ -79,9 +70,7 @@ public class HomeContentScroll extends Fragment {
 
 
         // Set an onclick listener for the graph
-        TextView lineChartTitle = graphView.findViewById(R.id.line_chart_title);
-
-        lineChartTitle.setOnClickListener(new View.OnClickListener() {
+        chartTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent graphViewIntent = new Intent(view.getContext(), GraphViewActivity.class);

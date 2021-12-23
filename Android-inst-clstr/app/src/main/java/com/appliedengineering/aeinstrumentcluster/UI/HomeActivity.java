@@ -54,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
     private TextView snapshotLoadedIndicator;
     private EditText portTextBox;
     private EditText ipAddressTextBox;
+    private SwitchMaterial drawBackground;
+    private SwitchMaterial useCubicLine;
 
     private Boolean isSystemDarkMode() {
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
@@ -111,6 +113,8 @@ public class HomeActivity extends AppCompatActivity {
         removeSnapshotsButton = findViewById(R.id.remove_snapshot_button);
         ipAddressTextBox = findViewById(R.id.network_ip_address_text_box);
         portTextBox = findViewById(R.id.network_port_text_box);
+        drawBackground = findViewById(R.id.viewport_draw_bg_text_box);
+        useCubicLine = findViewById(R.id.viewport_draw_cubic_text_box);
 
         // load all prefs
         settingsPref = SharedPrefUtil.loadSettingsPreferences(this);
@@ -155,6 +159,26 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
                 backendDelegateObj.setGenerateDebugData(b);
+            }
+        });
+
+        // draw background switch
+        drawBackground.setChecked(settingsPref.drawBackground);
+        drawBackground.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settingsPref.drawBackground = isChecked;
+                SharedPrefUtil.saveSettingsPreferences(HomeActivity.this, settingsPref);
+            }
+        });
+
+        // use cubic line fitting
+        useCubicLine.setChecked(settingsPref.cubicLineFitting);
+        useCubicLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settingsPref.cubicLineFitting = isChecked;
+                SharedPrefUtil.saveSettingsPreferences(HomeActivity.this, settingsPref);
             }
         });
 
@@ -230,6 +254,7 @@ public class HomeActivity extends AppCompatActivity {
                 updatePort(editable.toString());
             }
         });
+
 
 
     }

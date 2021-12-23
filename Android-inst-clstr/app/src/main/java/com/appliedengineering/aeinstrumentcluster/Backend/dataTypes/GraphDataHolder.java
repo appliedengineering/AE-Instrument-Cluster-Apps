@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
 import com.appliedengineering.aeinstrumentcluster.Backend.LogUtil;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SettingsPref;
+import com.appliedengineering.aeinstrumentcluster.Backend.util.sharedPrefs.SharedPrefUtil;
 import com.appliedengineering.aeinstrumentcluster.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -38,9 +40,12 @@ public class GraphDataHolder {
     private transient final LineData lineData;
     private transient final List<Entry> entriesList = new ArrayList<>();
 
+    private transient final SettingsPref settingsPref;
 
-    public GraphDataHolder(String keyValue, LineChart chart) {
 
+    public GraphDataHolder(String keyValue, LineChart chart, Activity activity) {
+
+        this.settingsPref = SharedPrefUtil.loadSettingsPreferences(activity);
         this.keyValue = keyValue;
         this.chart = chart;
         this.dataPoints = new ArrayList<>();
@@ -77,12 +82,16 @@ public class GraphDataHolder {
             chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MIN);
         }
         // make the chart smooth
-        // lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        // lineDataSet.setCubicIntensity(.1f);
+        if(settingsPref.cubicLineFitting) {
+            lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            lineDataSet.setCubicIntensity(.1f);
+        }
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawFilled(true);
         lineDataSet.setLineWidth(3f);
-        lineDataSet.setFillDrawable(drawable);
+        if(settingsPref.drawBackground) {
+            lineDataSet.setFillDrawable(drawable);
+        }
         chart.setData(lineData);
         chart.getLegend().setEnabled(false);
 

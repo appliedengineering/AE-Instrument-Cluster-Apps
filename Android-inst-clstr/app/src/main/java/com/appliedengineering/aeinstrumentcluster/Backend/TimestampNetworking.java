@@ -26,7 +26,7 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
 
     public TimestampNetworking(Activity activity) {
         SettingsPref settings = SharedPrefUtil.loadSettingsPreferences(activity);
-        String connectionString = "tcp://" + settings.ipAddress + ":55561";
+        String connectionString = "tcp://" + settings.timestampIp + ":" + settings.timestampPort;
         LogUtil.add("Connecting to timestamp networking");
         Communication.connectToTimestampSocket(connectionString);
         LogUtil.add("Connected to timestamp networking");
@@ -63,12 +63,11 @@ public class TimestampNetworking extends AsyncTask<Void, Void, Void> {
                 }
             } catch (IOException e) {
                 LogUtil.addc(e.getStackTrace().toString());
-            } finally {
-                Communication.disconnectTimeSocket();
             }
             SystemClock.sleep(1000);
 
         }
+        Communication.disconnectTimeSocket();
         return null;
     }
 
