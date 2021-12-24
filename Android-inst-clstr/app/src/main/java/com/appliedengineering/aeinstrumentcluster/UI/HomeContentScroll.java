@@ -60,7 +60,7 @@ public class HomeContentScroll extends Fragment {
 
         // Add the graph view to the right place in the indexed map
         // The string key
-        dataManager.registerForDataManager(keyValue, chart, getActivity()); // gives the chart a "room" in the data manager
+        GraphDataHolder graphDataHolder = dataManager.registerForDataManager(keyValue, chart, getActivity()); // gives the chart a "room" in the data manager
 
         // After initializing an empty graph, we store the reference to the entries var so that we can update it later
         // also store the reference to the linechart, we will need it later
@@ -76,6 +76,14 @@ public class HomeContentScroll extends Fragment {
                 Intent graphViewIntent = new Intent(view.getContext(), GraphViewActivity.class);
                 graphViewIntent.putExtra(GraphViewActivity.DATA_INDEX, keyValue);
                 startActivity(graphViewIntent);
+            }
+        });
+
+        chartTitle.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                graphDataHolder.stopOrStartGraph();
+                return true;
             }
         });
 
