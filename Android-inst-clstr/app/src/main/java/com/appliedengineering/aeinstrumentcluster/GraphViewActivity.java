@@ -1,5 +1,6 @@
 package com.appliedengineering.aeinstrumentcluster;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -15,9 +16,20 @@ public class GraphViewActivity extends AppCompatActivity {
     private DataManager dataManager;
     public static final String DATA_INDEX = "DATA_INDEX";
 
+    private Boolean isSystemDarkMode() {
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                return true;
+            case Configuration.UI_MODE_NIGHT_NO:
+                return false;
+        }
+        return false;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(isSystemDarkMode() ? R.style.DarkTheme : R.style.LightTheme);
         setContentView(R.layout.activity_graph_view);
 
         // get the proper id

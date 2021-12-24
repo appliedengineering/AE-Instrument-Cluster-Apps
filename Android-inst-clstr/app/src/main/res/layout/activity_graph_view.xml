@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GraphViewActivity"
-    android:background="@color/white">
+    android:background="?attr/backgroundColor">
 
     <TextView
         android:id="@+id/graph_title_view"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="Graph Key Value"
         android:fontFamily="@font/sfprodisplayblack"
-        android:textColor="@color/black"
+        android:textColor="?attr/inverse_backgroundColor"
         android:paddingHorizontal="@dimen/padding"
         android:paddingVertical="@dimen/paddingHalf"
         android:gravity="left"

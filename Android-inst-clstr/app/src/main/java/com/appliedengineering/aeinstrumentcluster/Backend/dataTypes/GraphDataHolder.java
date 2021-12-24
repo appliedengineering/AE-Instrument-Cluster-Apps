@@ -1,8 +1,10 @@
 package com.appliedengineering.aeinstrumentcluster.Backend.dataTypes;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.util.TypedValue;
 
 import androidx.core.content.ContextCompat;
 
@@ -81,6 +83,16 @@ public class GraphDataHolder {
             chart.getAxisRight().setDrawAxisLine(false);
             chart.getXAxis().setDrawAxisLine(false);
 
+            // set the correct colors
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = chart.getContext().getTheme();
+            theme.resolveAttribute(R.attr.inverse_backgroundColor, typedValue, true);
+            int labelColor = typedValue.data;
+
+            chart.getAxisRight().setTextColor(labelColor);
+            chart.getDescription().setTextColor(labelColor);
+
+
         }
         // make the chart smooth
         if(settingsPref.cubicLineFitting) {
@@ -101,9 +113,7 @@ public class GraphDataHolder {
     public synchronized void updateGraphView() {
         for (LineChart chart : chartsToUpdate) {
             if (!entriesList.isEmpty()) {
-                Description description = new Description();
-                description.setText("Current value: " + entriesList.get(entriesList.size() - 1).getY());
-                chart.setDescription(description);
+                chart.getDescription().setText("Current value: " + entriesList.get(entriesList.size() - 1).getY());
             }
 
 
@@ -114,7 +124,7 @@ public class GraphDataHolder {
 
             // auto scroll the graph view
             // limit the number of visible entries
-            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MAX);
+            // chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MAX);
 
             // move to the latest entry
             if (entriesList.size() > POINTS_VISIBLE_MIN) {

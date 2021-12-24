@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.LightTheme);
+        setTheme(isSystemDarkMode() ? R.style.DarkTheme : R.style.LightTheme);
         setContentView(R.layout.home_layout);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

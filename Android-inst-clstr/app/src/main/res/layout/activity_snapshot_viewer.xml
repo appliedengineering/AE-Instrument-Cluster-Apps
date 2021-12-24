@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SnapshotViewer"
-    android:background="@color/dark_gray">
+    android:background="?attr/backgroundColor">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,7 +17,7 @@
                 android:id="@+id/snapshot_viewer_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/inverse_backgroundColor"
                 android:fontFamily="monospace"/>
         </LinearLayout>
     </ScrollView>

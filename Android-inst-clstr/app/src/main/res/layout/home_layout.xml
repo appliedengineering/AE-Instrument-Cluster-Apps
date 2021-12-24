@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_gray"
+    android:background="?attr/backgroundColor"
     android:fitsSystemWindows="false">
 
     <androidx.fragment.app.FragmentContainerView
@@ -44,7 +44,7 @@
                 <!--                        android:layout_width="wrap_content"-->
                 <!--                        android:layout_height="wrap_content"-->
                 <!--                        android:text="Networking"-->
-                <!--                        android:background="@color/white"/>-->
+                <!--                        android:background="?attr/inverse_backgroundColor"/>-->
 
                 <!--                    <com.google.android.material.tabs.TabItem-->
                 <!--                        android:layout_width="wrap_content"-->
@@ -61,7 +61,7 @@
                     android:gravity="center"
                     android:padding="@dimen/padding"
                     android:text="Debug"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/inverse_backgroundColor"
                     android:textSize="24sp" />
 
                 <LinearLayout
@@ -76,7 +76,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Generate debug data"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -90,7 +90,7 @@
                     android:layout_height="@dimen/paddingQuarter"
                     android:layout_marginHorizontal="@dimen/paddingDouble"
                     android:layout_marginVertical="@dimen/paddingDouble"
-                    android:background="@color/white" />
+                    android:background="?attr/inverse_backgroundColor" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                     android:gravity="center"
                     android:padding="@dimen/padding"
                     android:text="Viewport Properties"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/inverse_backgroundColor"
                     android:textSize="24sp" />
 
                 <LinearLayout
@@ -115,7 +115,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Viewport Width"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -123,11 +123,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789"
                         android:hint="10 (in seconds)"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -142,7 +142,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplayregular"
                         android:text="Change following view settings only if you face performance issues"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
                 </LinearLayout>
 
@@ -158,17 +158,17 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Draw background?"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/viewport_draw_bg_text_box"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -183,17 +183,17 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Use cubic bezier line fitting?"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/viewport_draw_cubic_text_box"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <View
@@ -201,7 +201,7 @@
                     android:layout_height="@dimen/paddingQuarter"
                     android:layout_marginHorizontal="@dimen/paddingDouble"
                     android:layout_marginVertical="@dimen/paddingDouble"
-                    android:background="@color/white" />
+                    android:background="?attr/inverse_backgroundColor" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -210,8 +210,30 @@
                     android:gravity="center"
                     android:padding="@dimen/padding"
                     android:text="Networking"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/inverse_backgroundColor"
                     android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/paddingDouble"
+                    android:paddingVertical="@dimen/paddingHalf">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sfprodisplaysemibold"
+                        android:text="Is network enabled?"
+                        android:textColor="?attr/inverse_backgroundColor"
+                        android:textSize="18dp" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/is_network_enabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -226,7 +248,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Network Protocol"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -234,10 +256,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789."
                         android:hint="tcp"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -253,7 +275,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="IP Address"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -261,11 +283,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789."
                         android:hint="192.168.137.1"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -281,7 +303,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Network Port"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -289,11 +311,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789"
                         android:hint="5556"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -309,7 +331,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Refresh Interval (ms)"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -317,11 +339,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789"
                         android:hint="1000"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -337,7 +359,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Timestamp Server IP"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -345,11 +367,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789."
                         android:hint="192.168.137.1"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -365,7 +387,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Timestamp Port"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <EditText
@@ -373,11 +395,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="?attr/inverse_backgroundColor"
                         android:digits="0123456789"
                         android:hint="5556"
                         android:inputType="number|numberDecimal"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/inverse_backgroundColor" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -392,7 +414,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Update (sync) timestamp"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <Button
@@ -414,7 +436,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Restart network"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <Button
@@ -424,34 +446,12 @@
                         android:text="Restart" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/paddingDouble"
-                    android:paddingVertical="@dimen/paddingHalf">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/sfprodisplaysemibold"
-                        android:text="Is network enabled?"
-                        android:textColor="@color/white"
-                        android:textSize="18dp" />
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/is_network_enabled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true" />
-                </LinearLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/paddingQuarter"
                     android:layout_marginHorizontal="@dimen/paddingDouble"
                     android:layout_marginVertical="@dimen/paddingDouble"
-                    android:background="@color/white" />
+                    android:background="?attr/inverse_backgroundColor" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -460,7 +460,7 @@
                     android:gravity="center"
                     android:padding="@dimen/padding"
                     android:text="Snapsphots"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/inverse_backgroundColor"
                     android:textSize="24sp" />
 
                 <LinearLayout
@@ -475,7 +475,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Take snapshot"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <Button
@@ -497,7 +497,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplaysemibold"
                         android:text="Remove all loaded snapshots"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
 
                     <Button
@@ -513,7 +513,7 @@
                     android:layout_height="@dimen/paddingQuarter"
                     android:layout_marginHorizontal="@dimen/paddingDouble"
                     android:layout_marginVertical="@dimen/paddingDouble"
-                    android:background="@color/white" />
+                    android:background="?attr/inverse_backgroundColor" />
 
 
                 <TextView
@@ -524,7 +524,7 @@
                     android:gravity="center"
                     android:paddingVertical="@dimen/padding"
                     android:text="Saved Snapshots"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/inverse_backgroundColor"
                     android:textSize="24sp" />
 
                 <LinearLayout
@@ -539,7 +539,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/sfprodisplayregular"
                         android:text="Click to load snapshot, long press to view"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/inverse_backgroundColor"
                         android:textSize="18dp" />
                 </LinearLayout>
 
@@ -564,10 +564,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="?attr/backgroundColor"
             android:orientation="vertical"
             app:behavior_peekHeight="@dimen/navbarHeight"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -575,16 +580,7 @@
                 android:gravity="center"
                 android:padding="@dimen/padding"
                 android:text="@string/pull_down_handle_text"
-                android:textColor="@color/black" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorAccent"
-                android:elevation="@dimen/cardview_default_elevation"
-                android:outlineAmbientShadowColor="@color/colorAccent"
-                android:outlineSpotShadowColor="@color/colorAccent" />
-
+                android:textColor="@color/colorAccent" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -606,7 +602,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/sfprotextbold"
                             android:text="Snapshot Loaded:"
-                            android:textColor="@color/black" />
+                            android:textColor="?attr/inverse_backgroundColor" />
 
                         <TextView
                             android:id="@+id/snapshot_loaded_indicator"
@@ -614,7 +610,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="no"
-                            android:textColor="@color/black" />
+                            android:textColor="?attr/inverse_backgroundColor" />
                     </LinearLayout>
 
                     <androidx.fragment.app.FragmentContainerView

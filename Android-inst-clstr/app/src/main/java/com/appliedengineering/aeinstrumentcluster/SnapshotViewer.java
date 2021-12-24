@@ -10,6 +10,7 @@ public class SnapshotViewer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_snapshot_viewer);
 
         String snapshot = getIntent().getStringExtra("SNAPSHOT_INDEX");
