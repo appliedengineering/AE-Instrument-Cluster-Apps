@@ -212,6 +212,7 @@ public class GraphDataHolder {
 
     public synchronized void setDataPoints(List<DataPoint> dataPoints, Activity activity) {
         this.dataPoints = dataPoints;
+        entriesList.clear();
         entriesList.addAll(getEntriesFormatted(dataPoints.toArray(new DataPoint[0])));
         activity.runOnUiThread(new Runnable() {
             @Override
