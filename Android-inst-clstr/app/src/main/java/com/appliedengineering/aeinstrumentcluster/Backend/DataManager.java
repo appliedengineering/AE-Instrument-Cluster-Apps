@@ -42,17 +42,14 @@ public class DataManager {
     }
 
     public static final String[] GRAPH_KEY_VALUES = new String[]{
-            "psuMode",
-            "throttlePercent",
-            "dutyPercent",
-            "pwmFrequency",
-            "rpm",
-            "torque",
-            "tempC",
-            "sourceVoltage",
-            "pwmCurrent",
-            "powerChange",
-            "voltageChange"
+            "TP",
+            "DP",
+            "CP",
+            "BV",
+            "BC",
+            "posLat",
+            "posLon",
+            "speed"
     };
 
     public GraphDataHolder registerForDataManager(String keyValue, LineChart chart, Activity activity) {

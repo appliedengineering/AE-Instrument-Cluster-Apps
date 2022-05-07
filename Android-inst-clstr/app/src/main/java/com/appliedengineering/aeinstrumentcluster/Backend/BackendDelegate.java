@@ -114,6 +114,7 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
             try {
                 byte[] data = Communication.recv();
                 if (data != null) {
+                    LogUtil.add("Receiving data from raspberry pi");
                     noMessageCount = 0;
                     handleData(data, homeTopBar.getActivity());
                 } else {
@@ -174,7 +175,7 @@ public class BackendDelegate extends AsyncTask<Void, Activity, Void> {
                 public void run() {
                     if (!isNetworkEnabled) return;
 
-                    // LogUtil.add("Received data: " + new String(data));
+                    LogUtil.add("Received data: " + new String(data));
 
                     // unpack the data into readable format
                     MessageUnpacker messageUnpacker = MessagePack.newDefaultUnpacker(data);

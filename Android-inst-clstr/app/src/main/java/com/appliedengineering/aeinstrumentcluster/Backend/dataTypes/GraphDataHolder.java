@@ -148,14 +148,14 @@ public class GraphDataHolder {
 
             // auto scroll the graph view
             // limit the number of visible entries
-            // chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MAX);
+            chart.setVisibleXRange(POINTS_VISIBLE_MIN, POINTS_VISIBLE_MAX);
             chart.setScaleEnabled(true);
             chart.setScaleYEnabled(false);
             chart.setScaleXEnabled(true);
 
             if(!entriesList.isEmpty()) {
                 float lastX = entriesList.get(entriesList.size() - 1).getX();
-                chart.setScaleMinima(lastX * .25f, 1f); // keep zooming out as more points are added
+                // chart.setScaleMinima(lastX * .25f, 1f); // keep zooming out as more points are added
                 // by using the lastX to calculate the scale the effects of adding points are counteracted
                 // move to the latest entry
                 if (entriesList.size() > POINTS_VISIBLE_MIN && !isChartStopped) {

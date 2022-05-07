@@ -3,7 +3,11 @@ package com.appliedengineering.aeinstrumentcluster.UI;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Vibrator;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appliedengineering.aeinstrumentcluster.Backend.DataManager;
@@ -101,6 +106,19 @@ public class SnapshotRecyclerAdapter extends RecyclerView.Adapter<SnapshotRecycl
             title.setText(snapshot.split(DataManager.SERIALIZATION_DELIMITER)[1].substring(0, 50));
             charCount.setText(snapshot.length() + " chars");
             hash.setText(getHash(snapshot));
+
+            // set the correct text color
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = itemView.getContext().getTheme();
+            theme.resolveAttribute(R.attr.inverse_backgroundColor, typedValue, true);
+            int labelColor = typedValue.data;
+            date.setTextColor(labelColor);
+            title.setTextColor(labelColor);
+            charCount.setTextColor(labelColor);
+            // convert to 50% alpha
+            int alphaColor = ColorUtils.setAlphaComponent(labelColor, 255/2);
+            hash.setTextColor(alphaColor);
+
         }
 
         @Override

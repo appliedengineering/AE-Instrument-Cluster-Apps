@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     private EditText ipAddressTextBox;
     private SwitchMaterial drawBackground;
     private SwitchMaterial useCubicLine;
+    private Button sendTimestampButton;
 
     private Boolean isSystemDarkMode() {
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
@@ -115,6 +116,7 @@ public class HomeActivity extends AppCompatActivity {
         portTextBox = findViewById(R.id.network_port_text_box);
         drawBackground = findViewById(R.id.viewport_draw_bg_text_box);
         useCubicLine = findViewById(R.id.viewport_draw_cubic_text_box);
+        sendTimestampButton = findViewById(R.id.resend_timestamp_button);
 
         // load all prefs
         settingsPref = SharedPrefUtil.loadSettingsPreferences(this);
@@ -256,6 +258,13 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
+        // send timestamp button
+        sendTimestampButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timestampNetworking.addCommand();
+            }
+        });
 
     }
 

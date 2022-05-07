@@ -9,7 +9,7 @@ public class SharedPrefsConstants {
     public static final String SETTINGS_PREF_PORT_DEFAULT = "5556";
 
     public static final String SETTINGS_PREF_TIME_IP_ADDRESS = "ipAddressTime";
-    public static final String SETTINGS_PREF_TIME_IP_ADDRESS_DEFAULT = "192.168.1.137";
+    public static final String SETTINGS_PREF_TIME_IP_ADDRESS_DEFAULT = "192.168.1.203";
     public static final String SETTINGS_PREF_TIME_PORT = "portTime";
     public static final String SETTINGS_PREF_TIME_PORT_DEFAULT = "55561";
 

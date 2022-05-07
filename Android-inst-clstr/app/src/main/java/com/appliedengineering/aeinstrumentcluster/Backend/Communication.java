@@ -8,10 +8,11 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public final class Communication {
 
-    private static ZMQ.Context ctx;
+    private static ZMQ.Context ctx, ctxTime;
     public static ZMQ.Socket sub = null;
     public static ZMQ.Socket timeSocket = null;
     private static String connectionString = "";
@@ -22,6 +23,7 @@ public final class Communication {
 
     public static void init() {
         ctx = ZMQ.context(1); // only need 1 io thread
+        ctxTime = ZMQ.context(1); // only need 1 io thread
         printVersion();
     }
 
@@ -51,7 +53,7 @@ public final class Communication {
     public static boolean connectToTimestampSocket(String connectionString) {
         timeConnectionString = connectionString;
         try {
-            timeSocket = ctx.socket(ZMQ.REQ);
+            timeSocket = ctxTime.socket(ZMQ.REQ);
             timeSocket.connect(timeConnectionString);
         } catch (ZMQException e) {
             LogUtil.addc("Connect error: " + e.getMessage());
@@ -103,17 +105,23 @@ public final class Communication {
     }
 
 
-    public static boolean sendTimestamp(long data) throws ZMQException {
+    public static boolean sendTimestamp(double data) throws ZMQException {
         // pack the data
+
+        LogUtil.add(data+" is the time");
+
         MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
         try {
-            packer.packTimestamp(data);
+            packer.packDouble(data/1000d);
             timeSocket.send(packer.toByteArray());
             packer.close();
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // timeSocket.sendTime();
+        LogUtil.add("Receiving timestamp from raspberry pi");
+        byte[] buffer = timeSocket.recv();
+        LogUtil.add("Received timestamp from raspberry pi " + new String(buffer));
         return true;
     }
 
